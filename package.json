@@ -1,0 +1,22 @@
+{
+  "name": "cba-components",
+  "version": "1.0.0",
+  "description": "This is a repository where the components for the Chromium Browser Automation project might live.",
+  "main": "index.js",
+  "scripts": {
+    "start": "http-server . -p 3000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Manvel/cba-components.git"
+  },
+  "author": "Manvel Saroyan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Manvel/cba-components/issues"
+  },
+  "homepage": "https://github.com/Manvel/cba-components#readme",
+  "dependencies": {
+    "http-server": "^0.12.1"
+  }
+}
