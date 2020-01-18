@@ -96,6 +96,12 @@ class Column extends HTMLElement {
     this.tableHeadElem = this.table.shadowRoot.querySelector("#head");
     this.columnName = this.getAttribute("name");
     this.columnWidth = this.getAttribute("width");
+
+    // Fetch content change
+    const observer = new MutationObserver(this._render.bind(this));
+    const config = { characterData: true, attributes: false, childList: false, subtree: true };
+    observer.observe(this, config);
+
     this._render();
   }
 
