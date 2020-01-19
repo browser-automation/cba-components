@@ -11,8 +11,24 @@ class Table extends HTMLElement {
       table
       {
         border: solid 1px grey;
-        width: 100%;
         height: 100%;
+      }
+      th, td
+      {
+        border: solid 1px grey;
+        position: relative;
+      }
+      th:before
+      {
+        content: "";
+        position: absolute;
+        display: block;
+        height: 100%;
+        position: absolute;
+        right: -16px;
+        top: 0;
+        width: 16px;
+        cursor: col-resize;
       }
     </style>
     <table>
@@ -45,6 +61,11 @@ class Table extends HTMLElement {
   }
 }
 
+/**
+ * It's not possible to use <td>/<tr> as a slot content, that why we create a
+ * new custom element which reflects the status of those elements in the shadow
+ * DOM.
+ */
 class Column extends HTMLElement {
   constructor() {
     super();
@@ -53,6 +74,10 @@ class Column extends HTMLElement {
     this.columnName = null;
     this.columnWidth = "";
     this.tableHeadElem = null;
+
+    this.draggingColumn = false;
+    this.startX = 0;
+    this.startWidth = 0;
   }
 
   static get observedAttributes() {
@@ -96,24 +121,58 @@ class Column extends HTMLElement {
     this.tableHeadElem = this.table.shadowRoot.querySelector("#head");
     this.columnName = this.getAttribute("name");
     this.columnWidth = this.getAttribute("width");
+    document.addEventListener("mousemove", this._onMouseMove.bind(this));
+    document.addEventListener("mouseup", this._onMouseUp.bind(this));
 
     // Fetch content change
     const observer = new MutationObserver(this._render.bind(this));
-    const config = { characterData: true, attributes: false, childList: false, subtree: true };
+    const config = {characterData: true,
+                    attributes: false,
+                    childList: false,
+                    subtree: true };
     observer.observe(this, config);
 
     this._render();
+    const mouseDownListener = this._onMouseDown.bind(this);
+    this._getShadowColumn().addEventListener("mousedown", mouseDownListener);
   }
 
-  _getColumnById(name)
+  _getShadowColumn()
   {
-    return this.tableElem.querySelector(`th[data-id="${name}"]`);
+    return this.tableElem.querySelector(`th[data-id="${this.columnName}"]`);
+  }
+
+  _getNextShadowColumn()
+  {
+    return this.tableElem.querySelector(`th[data-id="${this.nextSibling.columnName}]"`);
+  }
+
+  _onMouseMove(ev)
+  {
+    if (this.draggingColumn)
+    {
+      const newWidth = this.startWidth + (ev.pageX - this.startX) + "px";
+      this._getShadowColumn().style.width = newWidth;
+      this.setAttribute("width", newWidth);
+    }
+  }
+
+  _onMouseDown({pageX})
+  {
+    this.draggingColumn = true;
+    this.startX = pageX;
+    this.startWidth = this._getShadowColumn().clientWidth;
+  }
+
+  _onMouseUp()
+  {
+    this.draggingColumn = false;
   }
 
   _render()
   {
-    const column = this._getColumnById(this.columnName);
-    const nextColumnElement = this.tableElem.querySelector(`th[data-id="${this.nextSibling.columnName}]"`);
+    const column = this._getShadowColumn();
+    const nextColumnElement = this._getNextShadowColumn();
     if (!column)
     {
       const columnElement = document.createElement("th");
