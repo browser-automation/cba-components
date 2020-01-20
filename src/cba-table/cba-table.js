@@ -8,10 +8,15 @@ class Table extends HTMLElement {
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
     <style>
-      table
+      div
       {
         border: solid 1px grey;
-        height: 100%;
+        height: 300px;
+        overflow: hidden;
+      }
+      table
+      {
+        width: 100%;
       }
       th, td
       {
@@ -31,9 +36,11 @@ class Table extends HTMLElement {
         cursor: col-resize;
       }
     </style>
-    <table>
-      <tr id="head"></tr>
-    </table>
+    <div>
+      <table>
+        <tr id="head"></tr>
+      </table>
+    </div>
     `;
   }
   /**
@@ -51,6 +58,11 @@ class Table extends HTMLElement {
   {
     this.tableElem = this.shadowRoot.querySelector("table");
     this._render();
+  }
+
+  _getAllColumns()
+  {
+    return this.querySelectorAll("cba-column");
   }
 
   /**
@@ -160,8 +172,18 @@ class Column extends HTMLElement {
   _onMouseDown({pageX})
   {
     this.draggingColumn = true;
-    this.startX = pageX;
+    if (this.tableElem.style.width != "max-content")
+    {
+      this.table._getAllColumns().forEach(column => column._convertWidthToPixel());
+      this.tableElem.style.width = "max-content";
+    }
     this.startWidth = this._getShadowColumn().clientWidth;
+    this.startX = pageX;
+  }
+
+  _convertWidthToPixel()
+  {
+    this.setAttribute("width", this._getShadowColumn().clientWidth + "px");
   }
 
   _onMouseUp()
