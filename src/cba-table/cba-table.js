@@ -1,9 +1,38 @@
 class Table extends HTMLElement {
   constructor() {
     super();
-    this.data = [];
-    this.columns = {};
+    this.data = [
+      {
+        id: "row1",
+        data: "Info",
+        texts: {
+          data: "Data1",
+          event: "Event1",
+          value: "Value1"
+        }
+      },
+      {
+        id: "row2",
+        data: "Info",
+        texts: {
+          data: "Data2",
+          event: "Event2",
+          value: "Value2"
+        }
+      },
+      {
+        id: "row3",
+        data: "Info",
+        texts: {
+          data: "Data3",
+          event: "Event3",
+          value: "Value3"
+        }
+      }
+    ];
+    this.columns = [];
     this.tableElem = null;
+    this.tableBodyElem = null;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
@@ -38,7 +67,11 @@ class Table extends HTMLElement {
     </style>
     <div>
       <table>
-        <tr id="head"></tr>
+        <thead>
+          <tr id="head"></tr>
+        </thead>
+        <tbody>
+        </tbody>
       </table>
     </div>
     `;
@@ -57,10 +90,15 @@ class Table extends HTMLElement {
   connectedCallback()
   {
     this.tableElem = this.shadowRoot.querySelector("table");
+    this.tableBodyElem = this.tableElem.querySelector("tbody");
+    for (const cbaColumn of this.querySelectorAll("cba-column"))
+    {
+      this.columns.push(cbaColumn.getAttribute("name"));
+    }
     this._render();
   }
 
-  _getAllColumns()
+  getAllColumns()
   {
     return this.querySelectorAll("cba-column");
   }
@@ -70,6 +108,22 @@ class Table extends HTMLElement {
    */
   _render()
   {
+    for (const {id, data, texts} of this.data)
+    {
+      const row = document.createElement("tr");
+      row.dataset.id = id;
+      for (const name of this.columns)
+      {
+        const td = document.createElement("td");
+        if (name in texts)
+        {
+          td.dataset.id = name;
+          td.textContent = texts[name];
+        }
+        row.appendChild(td);
+      }
+      this.tableBodyElem.appendChild(row);
+    }
   }
 }
 
@@ -174,7 +228,7 @@ class Column extends HTMLElement {
     this.draggingColumn = true;
     if (this.tableElem.style.width != "max-content")
     {
-      this.table._getAllColumns().forEach(column => column._convertWidthToPixel());
+      this.table.getAllColumns().forEach(column => column._convertWidthToPixel());
       this.tableElem.style.width = "max-content";
     }
     this.startWidth = this._getShadowColumn().clientWidth;
