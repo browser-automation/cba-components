@@ -4,7 +4,11 @@
   "description": "This is a repository where the components for the Chromium Browser Automation project might live.",
   "main": "index.js",
   "scripts": {
-    "start": "http-server . -p 3000"
+    "start": "npm run build:smoke:watch & http-server dist -p 3000",
+    "build": "npm run clean && webpack --config webpack.config.js",
+    "build:smoke": "npm run clean && webpack --config webpack.config.js --smoke",
+    "build:smoke:watch": "npm run clean && webpack --config webpack.config.js --smoke --watch",
+    "clean": "rm -r dist || true"
   },
   "repository": {
     "type": "git",
@@ -18,5 +22,10 @@
   "homepage": "https://github.com/Manvel/cba-components#readme",
   "dependencies": {
     "http-server": "^0.12.1"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
   }
 }
