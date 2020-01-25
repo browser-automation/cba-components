@@ -1,3 +1,5 @@
+import {html, render} from 'lit-html';
+
 class Table extends HTMLElement {
   constructor() {
     super();
@@ -68,7 +70,6 @@ class Table extends HTMLElement {
     <div>
       <table>
         <thead>
-          <tr id="head"></tr>
         </thead>
         <tbody>
         </tbody>
@@ -91,11 +92,13 @@ class Table extends HTMLElement {
   {
     this.tableElem = this.shadowRoot.querySelector("table");
     this.tableBodyElem = this.tableElem.querySelector("tbody");
+    this.tableHeadElem = this.tableElem.querySelector("thead");
     for (const cbaColumn of this.querySelectorAll("cba-column"))
     {
       this.columns.push(cbaColumn.getAttribute("name"));
     }
     this._render();
+    this._renderHead();
   }
 
   getAllColumns()
@@ -108,22 +111,12 @@ class Table extends HTMLElement {
    */
   _render()
   {
-    for (const {id, data, texts} of this.data)
-    {
-      const row = document.createElement("tr");
-      row.dataset.id = id;
-      for (const name of this.columns)
-      {
-        const td = document.createElement("td");
-        if (name in texts)
-        {
-          td.dataset.id = name;
-          td.textContent = texts[name];
-        }
-        row.appendChild(td);
-      }
-      this.tableBodyElem.appendChild(row);
-    }
+    const createRow = ({id, data, texts}) => {
+      return html`<tr data-id="${id}">${this.columns.map((name) => {
+        return html`<td data-id="${name}">${texts[name]}</td>`;
+      })}</tr>`;
+    };
+    render(html`${this.data.map(createRow)}`, this.tableBodyElem);
   }
 }
 
@@ -184,7 +177,7 @@ class Column extends HTMLElement {
     this.connected = true;
     this.table = this.closest("cba-table")
     this.tableElem = this.table.shadowRoot.querySelector("table");
-    this.tableHeadElem = this.table.shadowRoot.querySelector("#head");
+    this.tableHeadElem = this.table.shadowRoot.querySelector("thead tr");
     this.columnName = this.getAttribute("name");
     this.columnWidth = this.getAttribute("width");
     document.addEventListener("mousemove", this._onMouseMove.bind(this));
