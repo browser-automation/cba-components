@@ -1,0 +1,27 @@
+div
+{
+  border: solid 1px grey;
+  height: 300px;
+  overflow: hidden;
+}
+table
+{
+  width: 100%;
+}
+th, td
+{
+  border: solid 1px grey;
+  position: relative;
+}
+th:before
+{
+  content: "";
+  position: absolute;
+  display: block;
+  height: 100%;
+  position: absolute;
+  right: -16px;
+  top: 0;
+  width: 16px;
+  cursor: col-resize;
+}

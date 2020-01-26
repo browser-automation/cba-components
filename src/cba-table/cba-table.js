@@ -1,4 +1,5 @@
 import {html, render} from 'lit-html';
+import shadowCSS from './shadow.css';
 
 class Table extends HTMLElement {
   constructor() {
@@ -35,40 +36,16 @@ class Table extends HTMLElement {
     this.columns = [];
     this.tableElem = null;
     this.tableBodyElem = null;
+    this.caption = null;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
     <style>
-      div
-      {
-        border: solid 1px grey;
-        height: 300px;
-        overflow: hidden;
-      }
-      table
-      {
-        width: 100%;
-      }
-      th, td
-      {
-        border: solid 1px grey;
-        position: relative;
-      }
-      th:before
-      {
-        content: "";
-        position: absolute;
-        display: block;
-        height: 100%;
-        position: absolute;
-        right: -16px;
-        top: 0;
-        width: 16px;
-        cursor: col-resize;
-      }
+      ${shadowCSS}
     </style>
     <div>
       <table>
+        <caption></caption>
         <thead>
         </thead>
         <tbody>
@@ -77,13 +54,29 @@ class Table extends HTMLElement {
     </div>
     `;
   }
+
+  static get observedAttributes() {
+    return ["caption"];
+  }
+
   /**
-   * {
-   *   id:    "itemId1",
-   *   data:  {datasetname: "/"},
-   *   texts: {data-text-value: "example.com", data-text-value: "3 Cookies"}
-   * }
+   * Called each time an attribute on the custom element is changed
+   * @param {String} name attribute name
+   * @param {String} oldValue Old value of the attribute
+   * @param {String} newValue New value of the attribute
    */
+  attributeChangedCallback(name, oldValue, newValue)
+  {
+    if (oldValue === newValue || !this.connected)
+    {
+      return;
+    }
+    if (name === "caption")
+    {
+      this.caption = newValue;
+      this._renderCaption();
+    }
+  }
 
   /**
    * Invoked each time the custom element is appended into a DOM element
@@ -93,12 +86,14 @@ class Table extends HTMLElement {
     this.tableElem = this.shadowRoot.querySelector("table");
     this.tableBodyElem = this.tableElem.querySelector("tbody");
     this.tableHeadElem = this.tableElem.querySelector("thead");
+    this.caption = this.getAttribute("caption");
     for (const cbaColumn of this.querySelectorAll("cba-column"))
     {
       this.columns.push(cbaColumn.getAttribute("name"));
     }
-    this._render();
+    this._renderBody();
     this._renderHead();
+    this._renderCaption();
   }
 
   getAllColumns()
@@ -109,7 +104,7 @@ class Table extends HTMLElement {
   /**
    * Render method to be called after each state change
    */
-  _render()
+  _renderBody()
   {
     const createRow = ({id, data, texts}) => {
       return html`<tr data-id="${id}">${this.columns.map((name) => {
@@ -123,6 +118,11 @@ class Table extends HTMLElement {
   {
     const columns = html`<tr>${this.columns.map((column) => html`<th data-id="${column}"></th>`)}</tr>`;
     render(columns, this.tableHeadElem);
+  }
+
+  _renderCaption()
+  {
+    this.tableElem.querySelector("caption").textContent = this.caption;
   }
 }
 
