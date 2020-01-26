@@ -118,6 +118,12 @@ class Table extends HTMLElement {
     };
     render(html`${this.data.map(createRow)}`, this.tableBodyElem);
   }
+
+  _renderHead()
+  {
+    const columns = html`<tr>${this.columns.map((column) => html`<th data-id="${column}"></th>`)}</tr>`;
+    render(columns, this.tableHeadElem);
+  }
 }
 
 /**
@@ -177,7 +183,6 @@ class Column extends HTMLElement {
     this.connected = true;
     this.table = this.closest("cba-table")
     this.tableElem = this.table.shadowRoot.querySelector("table");
-    this.tableHeadElem = this.table.shadowRoot.querySelector("thead tr");
     this.columnName = this.getAttribute("name");
     this.columnWidth = this.getAttribute("width");
     document.addEventListener("mousemove", this._onMouseMove.bind(this));
@@ -199,11 +204,6 @@ class Column extends HTMLElement {
   _getShadowColumn()
   {
     return this.tableElem.querySelector(`th[data-id="${this.columnName}"]`);
-  }
-
-  _getNextShadowColumn()
-  {
-    return this.tableElem.querySelector(`th[data-id="${this.nextSibling.columnName}]"`);
   }
 
   _onMouseMove(ev)
@@ -241,27 +241,11 @@ class Column extends HTMLElement {
   _render()
   {
     const column = this._getShadowColumn();
-    const nextColumnElement = this._getNextShadowColumn();
     if (!column)
-    {
-      const columnElement = document.createElement("th");
-      columnElement.dataset.id = this.columnName;
-      columnElement.style.width = this.columnWidth;
-      columnElement.textContent = this.textContent;
-      if (nextColumnElement)
-      {
-        nextColumnElement.insertBefore(columnElement, nextColumnElement);
-      }
-      else
-      {
-        this.tableHeadElem.appendChild(columnElement);
-      }
-    }
-    else
-    {
-      column.style.width = this.columnWidth;
-      column.textContent = this.textContent;
-    }
+      return;
+
+    column.style.width = this.columnWidth;
+    column.textContent = this.textContent;
   }
 }
 
