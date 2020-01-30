@@ -1,13 +1,17 @@
 :host
 {
-  --color-primary: #cccccc;
-  --color-secondary: #e6e6e6;
-  --color-tertiary: #dadada;
+  --hover-primary: #eaeaea;
+  --hover-secondary: #e4e4e4;
+  --color-primary: #222222;
+  --color-border: #aaaaaa;
+  --column-primary: #f1f1f1;
+  --column-secondary: #ededed;
+  --column-tertiary: #555555;
 }
 
 div
 {
-  border: solid 1px #aaaaaa;
+  border: solid 1px var(--color-border);
   overflow: hidden;
   border-radius: 5px;
   position: relative;
@@ -16,7 +20,7 @@ div
 }
 h2
 {
-  color: #222222;
+  color: var(--color-primary);
   margin: 0;
   font-size: 11px;
   padding: 3px;
@@ -31,7 +35,7 @@ table
 th, td
 {
   position: relative;
-  border: solid 1px #aaaaaa;
+  border: solid 1px var(--color-border);
   border-left-width: 0;
   font-weight: 300;
 }
@@ -39,12 +43,15 @@ td
 {
   border-top-width: 0;
   padding: 0 2px;
-  color: #222222;
+  color: var(--color-primary);
 }
 
 th:hover
 {
-  background: linear-gradient(#eaeaea 0%, #eaeaea 50% , #e4e4e4 50%, #e4e4e4 100%);
+  background: linear-gradient(var(--hover-primary) 0%,
+                              var(--hover-primary) 50%,
+                              var(--hover-secondary) 50%,
+                              var(--hover-secondary) 100%);
   cursor: pointer;
 }
 
@@ -63,8 +70,11 @@ th:before
 thead
 {
   position: relative;
-  background: linear-gradient(#f1f1f1 0%, #f1f1f1 50%, #ededed 50%, #ededed 100%);
-  color: #555555;
+  background: linear-gradient(var(--column-primary) 0%,
+                              var(--column-primary) 50%,
+                              var(--column-secondary) 50%,
+                              var(--column-secondary) 100%);
+  color: var(--column-tertiary);
 }
 
 thead tr
@@ -74,7 +84,10 @@ thead tr
 
 tbody tr:hover
 {
-  background: linear-gradient(#eaeaea 0%, #eaeaea 50% , #e4e4e4 50%, #e4e4e4 100%);
+  background: linear-gradient(var(--hover-primary) 0%,
+                              var(--hover-primary) 50%,
+                              var(--hover-secondary) 50%,
+                              var(--hover-secondary) 100%);
   cursor: pointer;
 }
 
@@ -82,10 +95,13 @@ thead tr:after
 {
   content: "";
   position: absolute;
-  border: 1px solid #aaaaaa;
+  border: 1px solid var(--color-border);
   width: 100%;
   height: var(--column-heigh);
   border-left-width: 0;
-  background: linear-gradient(#ededed 0%, #ededed 40%, #f1f1f1 50%, #ededed, #ededed 100%);
+  background: linear-gradient(var(--column-primary) 0%,
+                              var(--column-primary) 50%,
+                              var(--column-secondary) 50%,
+                              var(--column-secondary) 100%);
 }
 
