@@ -44,8 +44,8 @@ class Table extends HTMLElement {
       ${shadowCSS}
     </style>
     <div>
+      <h2></h2>
       <table>
-        <caption></caption>
         <thead>
         </thead>
         <tbody>
@@ -122,7 +122,7 @@ class Table extends HTMLElement {
 
   _renderCaption()
   {
-    this.tableElem.querySelector("caption").textContent = this.caption;
+    this.shadowRoot.querySelector("h2").textContent = this.caption;
   }
 }
 
@@ -197,6 +197,9 @@ class Column extends HTMLElement {
     observer.observe(this, config);
 
     this._render();
+    const column = this._getShadowColumn();
+    this.tableElem.style.setProperty("--column-heigh", `${column.clientHeight}px`);
+
     const mouseDownListener = this._onMouseDown.bind(this);
     this._getShadowColumn().addEventListener("mousedown", mouseDownListener);
   }

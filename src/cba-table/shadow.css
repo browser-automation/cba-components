@@ -1,24 +1,51 @@
+:host
+{
+  --color-primary: #cccccc;
+  --color-secondary: #e6e6e6;
+  --color-tertiary: #dadada;
+}
+
 div
 {
-  border: solid 1px grey;
-  height: 300px;
+  border: solid 1px #aaaaaa;
   overflow: hidden;
   border-radius: 5px;
+  position: relative;
+  font-weight: 300;
+  height: 100%;
+}
+h2
+{
+  color: #222222;
+  margin: 0;
+  font-size: 11px;
+  padding: 3px;
+  background: linear-gradient(#dedede, #cecece);
 }
 table
 {
   width: 100%;
   border-spacing: 0;
+  font-size: 14px;
 }
 th, td
 {
   position: relative;
-  border: solid 1px grey;
+  border: solid 1px #aaaaaa;
   border-left-width: 0;
+  font-weight: 300;
 }
 td
 {
   border-top-width: 0;
+  padding: 0 2px;
+  color: #222222;
+}
+
+th:hover
+{
+  background: linear-gradient(#eaeaea 0%, #eaeaea 50% , #e4e4e4 50%, #e4e4e4 100%);
+  cursor: pointer;
 }
 
 th:before
@@ -27,9 +54,38 @@ th:before
   position: absolute;
   display: block;
   height: 100%;
-  position: absolute;
   right: -16px;
   top: 0;
   width: 16px;
   cursor: col-resize;
 }
+
+thead
+{
+  position: relative;
+  background: linear-gradient(#f1f1f1 0%, #f1f1f1 50%, #ededed 50%, #ededed 100%);
+  color: #555555;
+}
+
+thead tr
+{
+  position: relative;
+}
+
+tbody tr:hover
+{
+  background: linear-gradient(#eaeaea 0%, #eaeaea 50% , #e4e4e4 50%, #e4e4e4 100%);
+  cursor: pointer;
+}
+
+thead tr:after
+{
+  content: "";
+  position: absolute;
+  border: 1px solid #aaaaaa;
+  width: 100%;
+  height: var(--column-heigh);
+  border-left-width: 0;
+  background: linear-gradient(#ededed 0%, #ededed 40%, #f1f1f1 50%, #ededed, #ededed 100%);
+}
+
