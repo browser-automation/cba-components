@@ -1,38 +1,11 @@
 import {html, render} from 'lit-html';
+import {ifDefined} from 'lit-html/directives/if-defined';
 import shadowCSS from './shadow.css';
 
 class Table extends HTMLElement {
   constructor() {
     super();
-    this.data = [
-      {
-        id: "row1",
-        data: "Info",
-        texts: {
-          data: "Data1",
-          event: "Event1",
-          value: "Value1"
-        }
-      },
-      {
-        id: "row2",
-        data: "Info",
-        texts: {
-          data: "Data2",
-          event: "Event2",
-          value: "Value2"
-        }
-      },
-      {
-        id: "row3",
-        data: "Info",
-        texts: {
-          data: "Data3",
-          event: "Event3",
-          value: "Value3"
-        }
-      }
-    ];
+    this.data = [];
     this.columns = [];
     this.tableElem = null;
     this.tableBodyElem = null;
@@ -53,6 +26,18 @@ class Table extends HTMLElement {
       </table>
     </div>
     `;
+  }
+
+  set items(data)
+  {
+    this.data = data;
+    this._renderBody();
+  }
+
+  get items()
+  {
+    // TODO clone?
+    return this.data;
   }
 
   static get observedAttributes() {
@@ -94,6 +79,12 @@ class Table extends HTMLElement {
     this._renderBody();
     this._renderHead();
     this._renderCaption();
+    this.tableBodyElem.addEventListener("click", ({target}) => 
+    {
+      const row = target.closest("tr");
+      if (row)
+        this.selectRow(row.dataset.id);
+    });
   }
 
   getAllColumns()
@@ -101,13 +92,42 @@ class Table extends HTMLElement {
     return this.querySelectorAll("cba-column");
   }
 
+  deleteRow(rowId)
+  {
+    this.items = this.items.filter(({id}) => id != rowId);
+  }
+
+  selectRow(rowId)
+  {
+    for (const item of this.items)
+    {
+      if (item.selected)
+        delete item.selected;
+      if (item.id === rowId)
+        item.selected = true;
+    }
+    this._renderBody();
+    this._focusSelected();
+  }
+
+  getSelectedRow()
+  {
+    return this.items.filter(item => item.selected)[0]
+  }
+
+  _focusSelected()
+  {
+    this.tableBodyElem.querySelector(".highlight").focus();
+  }
+
   /**
    * Render method to be called after each state change
    */
   _renderBody()
   {
-    const createRow = ({id, data, texts}) => {
-      return html`<tr data-id="${id}">${this.columns.map((name) => {
+    const createRow = ({id, data, texts, selected}) => {
+      const selectedClass = selected ? "highlight" : undefined;
+      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
         return html`<td data-id="${name}">${texts[name]}</td>`;
       })}</tr>`;
     };
@@ -118,7 +138,9 @@ class Table extends HTMLElement {
   {
     const columnContent = html`<span class="label"></span>
                                <span class="resize"></span>`;
-    const columns = html`<tr>${this.columns.map((column) => 
+    const columns = html`<tr data-action="select"
+                             data-key-down="next-sibling"
+                             data-key-up="previouse-sibling">${this.columns.map((column) => 
                     html`<th data-id="${column}">${columnContent}</th>`)}</tr>`;
     render(columns, this.tableHeadElem);
   }

@@ -4,6 +4,7 @@
   --hover-secondary: #e4e4e4;
   --color-primary: #222222;
   --color-border: #aaaaaa;
+  --color-selected: #cccccc;
   --column-primary: #f1f1f1;
   --column-secondary: #ededed;
   --column-tertiary: #555555;
@@ -83,7 +84,13 @@ thead tr
   position: relative;
 }
 
-tbody tr:hover
+tbody tr.highlight
+{
+  background-color: var(--color-selected);
+  cursor: pointer;
+}
+
+tbody tr:not(.highlight):hover
 {
   background: linear-gradient(var(--hover-primary) 0%,
                               var(--hover-primary) 50%,
