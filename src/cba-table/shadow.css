@@ -38,12 +38,25 @@ th, td
   border: solid 1px var(--color-border);
   border-left-width: 0;
   font-weight: 300;
+  padding: 0;
 }
 td
 {
   border-top-width: 0;
   padding: 0 2px;
   color: var(--color-primary);
+}
+
+th span.resize
+{
+  position: absolute;
+  display: block;
+  height: 100%;
+  right: -8px;
+  top: 0;
+  z-index: 10;
+  width: 16px;
+  cursor: col-resize;
 }
 
 th:hover
@@ -53,18 +66,6 @@ th:hover
                               var(--hover-secondary) 50%,
                               var(--hover-secondary) 100%);
   cursor: pointer;
-}
-
-th:before
-{
-  content: "";
-  position: absolute;
-  display: block;
-  height: 100%;
-  right: -16px;
-  top: 0;
-  width: 16px;
-  cursor: col-resize;
 }
 
 thead

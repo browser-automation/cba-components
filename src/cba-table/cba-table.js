@@ -116,7 +116,10 @@ class Table extends HTMLElement {
 
   _renderHead()
   {
-    const columns = html`<tr>${this.columns.map((column) => html`<th data-id="${column}"></th>`)}</tr>`;
+    const columnContent = html`<span class="label"></span>
+                               <span class="resize"></span>`;
+    const columns = html`<tr>${this.columns.map((column) => 
+                    html`<th data-id="${column}">${columnContent}</th>`)}</tr>`;
     render(columns, this.tableHeadElem);
   }
 
@@ -201,7 +204,7 @@ class Column extends HTMLElement {
     this.tableElem.style.setProperty("--column-heigh", `${column.clientHeight}px`);
 
     const mouseDownListener = this._onMouseDown.bind(this);
-    this._getShadowColumn().addEventListener("mousedown", mouseDownListener);
+    this._getShadowColumn().querySelector(".resize").addEventListener("mousedown", mouseDownListener);
   }
 
   _getShadowColumn()
@@ -248,7 +251,7 @@ class Column extends HTMLElement {
       return;
 
     column.style.width = this.columnWidth;
-    column.textContent = this.textContent;
+    column.querySelector(".label").textContent = this.textContent;
   }
 }
 
