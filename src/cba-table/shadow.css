@@ -5,6 +5,7 @@
   --color-primary: #222222;
   --color-border: #aaaaaa;
   --color-selected: #cccccc;
+  --color-focus: #a1bbbe;
   --column-primary: #f1f1f1;
   --column-secondary: #ededed;
   --column-tertiary: #555555;
@@ -88,6 +89,17 @@ tbody tr.highlight
 {
   background-color: var(--color-selected);
   cursor: pointer;
+  outline: none;
+}
+
+tbody tr
+{
+  outline: none;
+}
+
+tbody tr:focus
+{
+  filter: drop-shadow(0 0 4px var(--color-focus));
 }
 
 tbody tr:not(.highlight):hover

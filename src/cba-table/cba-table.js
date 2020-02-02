@@ -5,7 +5,7 @@ import shadowCSS from './shadow.css';
 class Table extends HTMLElement {
   constructor() {
     super();
-    this.data = [];
+    this._data = [];
     this.columns = [];
     this.tableElem = null;
     this.tableBodyElem = null;
@@ -30,14 +30,13 @@ class Table extends HTMLElement {
 
   set items(data)
   {
-    this.data = data;
+    this._data = data;
     this._renderBody();
   }
 
   get items()
   {
-    // TODO clone?
-    return this.data;
+    return JSON.parse(JSON.stringify(this._data));
   }
 
   static get observedAttributes() {
@@ -94,12 +93,12 @@ class Table extends HTMLElement {
 
   deleteRow(rowId)
   {
-    this.items = this.items.filter(({id}) => id != rowId);
+    this.items = this._data.filter(({id}) => id != rowId);
   }
 
   selectRow(rowId)
   {
-    for (const item of this.items)
+    for (const item of this._data)
     {
       if (item.selected)
         delete item.selected;
@@ -112,7 +111,7 @@ class Table extends HTMLElement {
 
   getSelectedRow()
   {
-    return this.items.filter(item => item.selected)[0]
+    return this._data.filter(item => item.selected)[0]
   }
 
   _focusSelected()
@@ -131,7 +130,7 @@ class Table extends HTMLElement {
         return html`<td data-id="${name}">${texts[name]}</td>`;
       })}</tr>`;
     };
-    render(html`${this.data.map(createRow)}`, this.tableBodyElem);
+    render(html`${this._data.map(createRow)}`, this.tableBodyElem);
   }
 
   _renderHead()
