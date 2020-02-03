@@ -82,9 +82,14 @@ class Table extends HTMLElement {
     {
       this.columns.push(cbaColumn.getAttribute("name"));
     }
-    this._renderBody();
-    this._renderHead();
     this._renderCaption();
+    this._renderHead();
+
+    // offset of the sticky header
+    const offset = this.tableElem.offsetTop + "px";
+    this.tableElem.style.setProperty("--head-columns-offset", offset);
+    
+    this._renderBody();
     this.tableBodyElem.addEventListener("click", ({target}) => 
     {
       const row = target.closest("tr");
@@ -92,11 +97,12 @@ class Table extends HTMLElement {
         this.selectRow(row.dataset.id);
     });
 
-    this.tableBodyElem.addEventListener("keyup", ({key}) =>
+    this.tableBodyElem.addEventListener("keydown", (e) =>
     {
-      if (key === "ArrowDown")
+      e.preventDefault();
+      if (e.key === "ArrowDown")
         this.selectNextRow();
-      if (key === "ArrowUp")
+      if (e.key === "ArrowUp")
         this.selectPreviousRow();
     });
   }

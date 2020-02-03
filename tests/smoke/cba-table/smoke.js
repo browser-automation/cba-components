@@ -1,33 +1,19 @@
 const cbaTable = document.querySelector("cba-table");
-cbaTable.items = [
-  {
-    id: "row1",
+const items = [];
+for (let index = 0; index < 30; index++) {
+  items.push({
+    id: "row" + index,
     data: "Info",
     texts: {
-      data: "Data1",
-      event: "Event1",
-      value: "Value1"
+      data: "Data" + index,
+      event: "Event" + index,
+      value: "Value" + index
     }
-  },
-  {
-    id: "row2",
-    data: "Info",
-    selected: true,
-    texts: {
-      data: "Data2",
-      event: "Event2",
-      value: "Value2"
-    }
-  },
-  {
-    id: "row3",
-    data: "Info",
-    texts: {
-      data: "Data3",
-      event: "Event3",
-      value: "Value3"
-    }
-  }];
+  });
+}
+
+cbaTable.items = items;
+cbaTable.selectRow("row0");
 
 document.querySelector("#add-row").addEventListener("click", () =>
 {

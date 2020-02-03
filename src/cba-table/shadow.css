@@ -14,7 +14,8 @@
 div
 {
   border: solid 1px var(--color-border);
-  overflow: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   border-radius: 5px;
   position: relative;
   font-weight: 300;
@@ -27,9 +28,11 @@ h2
   font-size: 11px;
   padding: 3px;
   background: linear-gradient(#dedede, #cecece);
+  z-index: 20;
 }
 table
 {
+  --head-columns-offset: 0px;
   width: 100%;
   border-spacing: 0;
   font-size: 14px;
@@ -72,7 +75,9 @@ th:hover
 
 thead
 {
-  position: relative;
+  position: sticky;
+  top: 20px;
+  z-index: 20;
   background: linear-gradient(var(--column-primary) 0%,
                               var(--column-primary) 50%,
                               var(--column-secondary) 50%,
@@ -82,7 +87,24 @@ thead
 
 thead tr
 {
-  position: relative;
+  position: sticky;
+}
+
+h2
+{
+  top: 0px;
+  position: sticky;
+}
+
+th
+{
+  position: sticky;
+  top: var(--head-columns-offset);
+  z-index: 20;
+  background: linear-gradient(var(--column-primary) 0%,
+                              var(--column-primary) 50%,
+                              var(--column-secondary) 50%,
+                              var(--column-secondary) 100%);
 }
 
 tbody tr.highlight
