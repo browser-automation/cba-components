@@ -1,0 +1,10 @@
+div
+{
+  border: solid 1px var(--color-border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 5px;
+  position: relative;
+  font-weight: 300;
+  height: 100%;
+}
