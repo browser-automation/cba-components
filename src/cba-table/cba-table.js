@@ -10,6 +10,8 @@ class Table extends HTMLElement {
     this.tableElem = null;
     this.tableBodyElem = null;
     this.caption = null;
+    this.idCount = 0;
+    this.selectedId = -1;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
@@ -28,9 +30,14 @@ class Table extends HTMLElement {
     `;
   }
 
-  set items(data)
+  set items(rowItems)
   {
-    this._data = data;
+    this._data = rowItems.map((rowItem) => 
+    {
+      if (!rowItem.id)
+        rowItem.id = `cba-table-id-${++ this.idCount}`;
+      return rowItem;
+    });
     this._renderBody();
   }
 
@@ -84,6 +91,14 @@ class Table extends HTMLElement {
       if (row)
         this.selectRow(row.dataset.id);
     });
+
+    this.tableBodyElem.addEventListener("keyup", ({key}) =>
+    {
+      if (key === "ArrowDown")
+        this.selectNextRow();
+      if (key === "ArrowUp")
+        this.selectPreviousRow();
+    });
   }
 
   getAllColumns()
@@ -91,8 +106,43 @@ class Table extends HTMLElement {
     return this.querySelectorAll("cba-column");
   }
 
+  addRow(data, after)
+  {
+    const items = this.items;
+    const afterIndex = this._getItemIndex(after);
+    if (after && afterIndex !== -1)
+      items.splice(1, 0, data);
+    else
+      items.push(data);
+
+    this.items = items;
+  }
+
+  /**
+   * Update a specific row
+   * @param {object} data   row data
+   * @param {object} rowId  (optional) if not specified row ID from data is used
+   */
+  updateRow(data, rowId)
+  {
+    const items = this.items;
+    for (const item of items)
+    {
+      if (item.id === rowId || item.id === data.id)
+      {
+        for (const name in data)
+          item[name] = data[name];
+        break;
+      }
+    }
+    this.items = items;
+  }
+
   deleteRow(rowId)
   {
+    const {id} = this.getSelectedItem();
+    if (id === rowId)
+      this.selectNextRow();
     this.items = this._data.filter(({id}) => id != rowId);
   }
 
@@ -107,9 +157,43 @@ class Table extends HTMLElement {
     }
     this._renderBody();
     this._focusSelected();
+    this.dispatchEvent(new CustomEvent("select"));
   }
 
-  getSelectedRow()
+  selectNextRow()
+  {
+    const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
+    if (selectedIndex == -1)
+      return;
+    
+    const itemToSelect = this._data[selectedIndex + 1] || this._data[0];
+    this.selectRow(itemToSelect.id);
+  }
+
+  selectPreviousRow()
+  {
+    const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
+    if (selectedIndex == -1)
+      return;
+    
+    const itemToSelect = this._data[selectedIndex - 1] ||
+                         this._data[this._data.length - 1];
+    this.selectRow(itemToSelect.id);
+  }
+
+  _getItemIndex(id)
+  {
+    for (let index = 0; index < this._data.length; index++)
+      if (this._data[index].id === id)
+        return index;
+  }
+
+  _getItemById(id)
+  {
+    return this._data.filter(item => item.id === id)[0];
+  }
+
+  getSelectedItem()
   {
     return this._data.filter(item => item.selected)[0]
   }

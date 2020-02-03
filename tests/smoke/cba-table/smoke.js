@@ -31,10 +31,8 @@ cbaTable.items = [
 
 document.querySelector("#add-row").addEventListener("click", () =>
 {
-  const items = cbaTable.items;
-  const num = items.length + 1;
-  items.push({
-    id: `row${num}`,
+  const num = cbaTable.items.length + 1;
+  cbaTable.addRow({
     data: "Info",
     texts: {
       data: `Data${num}`,
@@ -42,10 +40,33 @@ document.querySelector("#add-row").addEventListener("click", () =>
       value: `Value${num}`
     }
   });
-  cbaTable.items = items;
 });
+
+onSelected();
+cbaTable.addEventListener("select", onSelected);
+
+function onSelected()
+{
+  const {texts} = cbaTable.getSelectedItem();
+  for (const name in texts)
+  {
+    const value = texts[name];
+    document.querySelector(`input[name="${name}"]`).value = value;
+  }
+}
 
 document.querySelector("#delete-row").addEventListener("click", () =>
 {
-  cbaTable.deleteRow(cbaTable.getSelectedRow().id);
+  cbaTable.deleteRow(cbaTable.getSelectedItem().id);
+});
+
+document.querySelector("#update-row").addEventListener("click", () =>
+{
+  const row = cbaTable.getSelectedItem();
+  for (const name in row.texts)
+  {
+    const value = document.querySelector(`input[name="${name}"]`).value;
+    row.texts[name] = value;
+  }
+  cbaTable.updateRow(row);
 });
