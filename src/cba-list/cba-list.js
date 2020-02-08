@@ -12,10 +12,11 @@ class List extends HTMLElement {
     </style>
     <div>
       <h2>Heading</h2>
+      <h3><a href="#">Column</a></h3>
       <ul>
-        <li>List1</li>
-        <li>List2
-          <ul><li>List2-2</li></ul>
+        <li><span class="row">List1</span></li>
+        <li class="highlight"><span class="row">List2</span>
+          <ul><li><span class="row">List2-2</span></li></ul>
         </li>
       </ul>
     </div>
