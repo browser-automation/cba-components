@@ -5,6 +5,27 @@ import shadowCSS from './shadow.css';
 class List extends HTMLElement {
   constructor() {
     super();
+    this.container = null;
+    this._data = [
+      {
+        id: "row1",
+        data: "Info",
+        text: "List1"
+      },
+      {
+        id: "row2",
+        data: "Info",
+        text: "List2",
+        subItems: [
+          {
+            id: "subrow1",
+            data: "Info",
+            text: "Sub List1"
+          }
+        ]
+      }
+    ];
+
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
     <style>
@@ -46,6 +67,8 @@ class List extends HTMLElement {
    */
   connectedCallback()
   {
+    this.container = this.shadowRoot.querySelector("ul");
+    this._render();
   }
 
 
@@ -54,6 +77,21 @@ class List extends HTMLElement {
    */
   _render()
   {
+    const createRow = (text) => html`<span class="row">${text}</span>`;
+    const createList = ({id, text}) => html`<li data-id="${id}">${createRow(text)}</li>`;
+    const result = this._data.map((row) => {
+      if (row.subItems)
+      {
+        return html`<li data-id="${row.id}">${createRow(row.text)}
+          <ul>${row.subItems.map(createList)}</ul>
+        </li>`;
+      }
+      else
+      {
+        return createList(row);
+      }
+    });
+    render(result, this.container);
   }
 }
 
