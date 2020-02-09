@@ -6,24 +6,8 @@ class List extends HTMLElement {
   constructor() {
     super();
     this.container = null;
+    this.idCount = 0;
     this._data = [
-      {
-        id: "row1",
-        data: "Info",
-        text: "List1"
-      },
-      {
-        id: "row2",
-        data: "Info",
-        text: "List2",
-        subItems: [
-          {
-            id: "subrow1",
-            data: "Info",
-            text: "Sub List1"
-          }
-        ]
-      }
     ];
 
     this.attachShadow({ mode: "open" });
@@ -42,6 +26,29 @@ class List extends HTMLElement {
       </ul>
     </div>
     `;
+  }
+
+  set items(rowItems)
+  {
+    const smth = (rowItem) =>
+    {
+      if (!rowItem.id)
+        rowItem.id = `cba-list-id-${++ this.idCount}`;
+      if (rowItem.subItems)
+      {
+        rowItem.subItems = rowItem.subItems.map(smth);
+        return rowItem;
+      }
+      else
+        return rowItem;
+    }
+    this._data = rowItems.map(smth);
+    this._render();
+  }
+
+  get items()
+  {
+    return JSON.parse(JSON.stringify(this._data));
   }
 
   static get observedAttributes() {
