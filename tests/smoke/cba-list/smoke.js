@@ -1,4 +1,6 @@
-document.querySelector("cba-list").items = [
+const cbaList = document.querySelector("cba-list");
+
+cbaList.items = [
   {
     id: "row1",
     data: "Info",
@@ -21,10 +23,12 @@ document.querySelector("cba-list").items = [
     ]
   },
   {
-    id: "row1",
+    id: "row3",
     data: "Info",
     text: "List3"
   },
 ];
 
+
+cbaList.selectRow("row2");
 

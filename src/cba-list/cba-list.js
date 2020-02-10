@@ -1,5 +1,4 @@
 import {html, render} from 'lit-html';
-import {ifDefined} from 'lit-html/directives/if-defined';
 import shadowCSS from './shadow.css';
 
 class List extends HTMLElement {
@@ -30,19 +29,19 @@ class List extends HTMLElement {
 
   set items(rowItems)
   {
-    const smth = (rowItem) =>
+    const setId = (rowItem) =>
     {
       if (!rowItem.id)
         rowItem.id = `cba-list-id-${++ this.idCount}`;
       if (rowItem.subItems)
       {
-        rowItem.subItems = rowItem.subItems.map(smth);
+        rowItem.subItems = rowItem.subItems.map(setId);
         return rowItem;
       }
       else
         return rowItem;
     }
-    this._data = rowItems.map(smth);
+    this._data = rowItems.map(setId);
     this._render();
   }
 
@@ -78,20 +77,57 @@ class List extends HTMLElement {
     this._render();
   }
 
+  selectRow(rowId)
+  {
+    const updateSelected = (items) =>
+    {
+      for (const item of items)
+      {
+        if (item.selected)
+          delete item.selected;
+        if (item.id === rowId)
+          item.selected = true;
+        if (item.subItems)
+          updateSelected(item.subItems);
+      }
+    };
+    updateSelected(this._data);
+    this._render();
+    this._focusSelected();
+    this.dispatchEvent(new CustomEvent("select"));
+  }
+
+  _focusSelected()
+  {
+    this.container.querySelector(".highlight").focus();
+  }
+
 
   /**
    * Render method to be called after each state change
    */
   _render()
   {
-    const createRow = (text) => html`<span class="row">${text}</span>`;
-    const createList = ({id, text}) => html`<li data-id="${id}">${createRow(text)}</li>`;
+    const createRow = (text, selected) =>
+    {
+      const classes = ["row"];
+      if (selected)
+        classes.push("highlight");
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}">${text}</span>`;
+    }
+    const createList = ({id, selected, text}) => {
+      return html`<li data-id="${id}">
+                      ${createRow(text, selected)}
+                  </li>`;
+    }
     const result = this._data.map((row) => {
-      if (row.subItems)
+      const {id, subItems, selected, text} = row;
+      if (subItems)
       {
-        return html`<li data-id="${row.id}">${createRow(row.text)}
-          <ul>${row.subItems.map(createList)}</ul>
-        </li>`;
+        return html`<li data-id="${id}">
+                        ${createRow(text, selected)}
+                        <ul>${row.subItems.map(createList)}</ul>
+                    </li>`;
       }
       else
       {

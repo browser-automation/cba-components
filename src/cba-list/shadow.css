@@ -85,7 +85,7 @@ li .row
   padding-left: 10px;
 }
 
-li:not(.highlight) .row:hover
+li .row:not(.highlight):hover
 {
   background: linear-gradient(var(--hover-primary) 0%,
               var(--hover-primary) 50%,
@@ -94,7 +94,7 @@ li:not(.highlight) .row:hover
   cursor: pointer;
 }
 
-li.highlight > .row
+li > .row.highlight
 {
   background-color: var(--color-selected);
   cursor: pointer;
