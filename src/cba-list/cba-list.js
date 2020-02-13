@@ -122,11 +122,11 @@ class List extends HTMLElement {
   {
     const item = this.getSelectedItem();
     const [index, parentIndex] = this.getIndex(item.id);
-    if (parentIndex)
+    if (parentIndex >= 0)
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index + 1] ||
-                           this._data[index + 1] ||
+                           this._data[parentIndex + 1] ||
                            this._data[0];
       this.selectRow(itemToSelect.id);
     }
@@ -143,7 +143,7 @@ class List extends HTMLElement {
   {
     const item = this.getSelectedItem();
     const [index, parentIndex] = this.getIndex(item.id);
-    if (parentIndex)
+    if (parentIndex >= 0)
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index - 1] ||
@@ -209,7 +209,7 @@ class List extends HTMLElement {
     if (parent)
       return [parent.subItems.indexOf(item), this._data.indexOf(parent)];
     else
-      return [this._data.indexOf(item)];
+      return [this._data.indexOf(item), -1];
   }
 
   getSelectedItem()
@@ -218,9 +218,30 @@ class List extends HTMLElement {
     return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
-  addRow()
+  addRow(data, parentOrSubId)
   {
-    
+    const items = this.items;
+    const [index, parentIndex] = this.getIndex(parentOrSubId);
+    console.log(index, parentIndex);
+    if (parentOrSubId)
+    {
+      if (parentIndex != -1)
+      {
+        items[parentIndex].subItems.push(data);
+      }
+      else if (index != -1)
+      {
+        if (!items[index].subItems)
+          items[index].subItems = [];
+        items[index].subItems.push(data);
+      }
+      else
+        return false;
+    }
+    else
+      items.push(data);
+
+    this.items = items;
   }
 
   updateRow(data, rowId)
@@ -237,7 +258,6 @@ class List extends HTMLElement {
     if (index < 0)
       return;
 
-    console.log(index, parentIndex);
     const {id} = this.getSelectedItem();
     if (id === rowId)
       this.selectPreviousRow();

@@ -42,6 +42,25 @@ document.querySelector("#delete-row").addEventListener("click", () =>
   const item = cbaList.getSelectedItem();
   cbaList.deleteRow(item.id);
 });
+let count = 4;
+document.querySelector("#add-item").addEventListener("click", () =>
+{
+  count++;
+  cbaList.addRow({
+    data: `Info${count}`,
+    text: `List${count}`
+  });
+});
+
+document.querySelector("#add-subitem").addEventListener("click", () =>
+{
+  count++;
+  const {id} = cbaList.getSelectedItem();
+  cbaList.addRow({
+    data: `Info${count}`,
+    text: `List${count}`
+  }, id);
+});
 
 cbaList.selectRow("row2");
 
