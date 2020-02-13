@@ -218,6 +218,37 @@ class List extends HTMLElement {
     return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
+  addRow()
+  {
+    
+  }
+
+  updateRow(data, rowId)
+  {
+    const item = this._findItem("id", rowId);
+    for (const key in data)
+      item[key] = data[key];
+    this._render();
+  }
+
+  deleteRow(rowId)
+  {
+    const [index, parentIndex] = this.getIndex(rowId);
+    if (index < 0)
+      return;
+
+    console.log(index, parentIndex);
+    const {id} = this.getSelectedItem();
+    if (id === rowId)
+      this.selectPreviousRow();
+
+    if (parentIndex >= 0)
+      this._data[parentIndex].subItems.splice(index, 1);
+    else
+      this._data.splice(index, 1);
+    this._render();
+  }
+
   _focusSelected()
   {
     this.container.querySelector(".highlight").focus();

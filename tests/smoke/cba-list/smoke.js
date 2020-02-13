@@ -30,5 +30,18 @@ cbaList.items = [
 ];
 
 
+document.querySelector("#update-row").addEventListener("click", () =>
+{
+  const item = cbaList.getSelectedItem();
+  item.text = document.querySelector("input").value;
+  cbaList.updateRow(item, item.id);
+});
+
+document.querySelector("#delete-row").addEventListener("click", () =>
+{
+  const item = cbaList.getSelectedItem();
+  cbaList.deleteRow(item.id);
+});
+
 cbaList.selectRow("row2");
 
