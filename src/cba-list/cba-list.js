@@ -84,11 +84,16 @@ class List extends HTMLElement {
 
     this.container.addEventListener("keydown", (e) =>
     {
-      e.preventDefault();
       if (e.key === "ArrowDown")
+      {
+        e.preventDefault();
         this.selectNextRow();
+      }
       if (e.key === "ArrowUp")
+      {
+        e.preventDefault();
         this.selectPreviousRow();
+      }
     });
     this._render();
   }
@@ -156,6 +161,42 @@ class List extends HTMLElement {
     }
   }
 
+  _findItem(property, value, parent)
+  {
+    const search = (items, parentItem) =>
+    {
+      for (const item of items)
+      {
+        if (item[property] && item[property] === value)
+        {
+          if (parent)
+          {
+            if (parentItem)
+              return parentItem;
+            else
+              return false;
+          }
+          else
+            return item
+        }
+        if (item.subItems)
+        {
+          const found = search(item.subItems, item);
+          if (found)
+            return found;
+        }
+      }
+      return false;
+    };
+    return search(this._data);
+  }
+
+  getItem(rowId)
+  {
+    const item = this._findItem("id", rowId);
+    return item ? JSON.parse(JSON.stringify(item)) : false;
+  }
+
   /**
    * Get index and parentIndex for a row item.
    * @param {string} rowId ID of the row item
@@ -163,48 +204,24 @@ class List extends HTMLElement {
    */
   getIndex(rowId)
   {
-    const findRow = (rowItems, parentIndex) =>
-    {
-      for (let index = 0; index < rowItems.length; index++)
-      {
-        const {subItems, id} = rowItems[index];
-        if (id === rowId)
-          return [index, parentIndex];
-        if (subItems)
-        {
-          const foundRow = findRow(subItems, index);
-          if (foundRow)
-            return foundRow;
-        }
-      }
-    }
-    return findRow(this._data) || [];
+    const parent = this._findItem("id", rowId, true);
+    const item = this._findItem("id", rowId);
+    if (parent)
+      return [parent.subItems.indexOf(item), this._data.indexOf(parent)];
+    else
+      return [this._data.indexOf(item)];
   }
 
   getSelectedItem()
   {
-    const findSelected = (items) =>
-    {
-      for (const item of items) {
-        if (item.selected)
-          return JSON.parse(JSON.stringify(item))
-        if (item.subItems)
-        {
-          const selected = findSelected(item.subItems);
-          if (selected)
-            return selected;
-        }
-      }
-      return false;
-    };
-    return findSelected(this._data);
+    const item = this._findItem("selected", true);
+    return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
   _focusSelected()
   {
     this.container.querySelector(".highlight").focus();
   }
-
 
   /**
    * Render method to be called after each state change
