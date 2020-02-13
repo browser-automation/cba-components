@@ -62,5 +62,11 @@ document.querySelector("#add-subitem").addEventListener("click", () =>
   }, id);
 });
 
+cbaList.addEventListener("select", () =>
+{
+  const {text} = cbaList.getSelectedItem();
+  document.querySelector("input").value = text;
+});
+
 cbaList.selectRow("row2");
 
