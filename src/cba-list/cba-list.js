@@ -6,6 +6,7 @@ class List extends HTMLElement {
     super();
     this.container = null;
     this.idCount = 0;
+    this.draggable = false;
     this._data = [
     ];
 
@@ -74,6 +75,7 @@ class List extends HTMLElement {
   connectedCallback()
   {
     this.container = this.shadowRoot.querySelector("ul");
+    this.draggable = this.getAttribute("draggable");
 
     this.container.addEventListener("click", ({target}) => 
     {
@@ -81,6 +83,15 @@ class List extends HTMLElement {
       if (row)
         this.selectRow(row.parentElement.dataset.id);
     });
+
+    if (this.draggable)
+    {
+      this.container.addEventListener("dragstart", (e) =>
+      {
+        const rowId = e.target.closest("[data-id]").dataset.id;
+        e.dataTransfer.setData("text/plain", `${rowId}#${this.id}`);
+      });
+    }
 
     this.container.addEventListener("keydown", (e) =>
     {
@@ -284,7 +295,7 @@ class List extends HTMLElement {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}">${text}</span>`;
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="true">${text}</span>`;
     }
     const createList = ({id, selected, text}) => {
       return html`<li data-id="${id}">

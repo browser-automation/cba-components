@@ -12,6 +12,7 @@ class Table extends HTMLElement {
     this.caption = null;
     this.idCount = 0;
     this.selectedId = -1;
+    this.droppable = false;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
@@ -78,6 +79,7 @@ class Table extends HTMLElement {
     this.tableBodyElem = this.tableElem.querySelector("tbody");
     this.tableHeadElem = this.tableElem.querySelector("thead");
     this.caption = this.getAttribute("caption");
+    this.droppable = this.getAttribute("droppable");
     for (const cbaColumn of this.querySelectorAll("cba-column"))
     {
       this.columns.push(cbaColumn.getAttribute("name"));
@@ -105,6 +107,36 @@ class Table extends HTMLElement {
       if (e.key === "ArrowUp")
         this.selectPreviousRow();
     });
+
+    // Dropping element
+    if (this.droppable)
+    {
+      const clearDragEnter = (e) =>
+      {
+        const row = e.target.closest("tr");
+        if (row && row.classList.contains("dragenter"))
+          row.classList.remove("dragenter");
+      };
+      this.tableBodyElem.addEventListener("dragenter", (e) =>
+      {
+        const row = e.target.closest("tr");
+        if (row && !row.classList.contains("dragenter"))
+          row.classList.add("dragenter");
+      });
+      this.tableBodyElem.addEventListener("dragleave", (clearDragEnter));
+      this.tableBodyElem.addEventListener("dragover", (e) =>
+      {
+        e.preventDefault();
+      });
+      this.tableBodyElem.addEventListener("drop", (e) =>
+      {
+        clearDragEnter(e);
+        const row = e.target.closest("tr");
+        const [rowId, listId] = e.dataTransfer.getData("text/plain").split("#");
+        const {data} = document.getElementById(listId).getItem(rowId);
+        this.addRow(data, row.dataset.id);
+      });
+    }
   }
 
   getAllColumns()
@@ -117,7 +149,7 @@ class Table extends HTMLElement {
     const items = this.items;
     const afterIndex = this._getItemIndex(after);
     if (after && afterIndex !== -1)
-      items.splice(1, 0, data);
+      items.splice(afterIndex + 1, 0, data);
     else
       items.push(data);
 

@@ -133,6 +133,14 @@ tbody tr:not(.highlight):hover
   cursor: pointer;
 }
 
+tbody tr.dragenter
+{
+  background: linear-gradient(var(--hover-primary) 0%,
+                              var(--hover-primary) 50%,
+                              var(--hover-secondary) 50%,
+                              var(--hover-secondary) 100%);
+}
+
 thead tr:after
 {
   content: "";
