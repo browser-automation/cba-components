@@ -131,10 +131,13 @@ class Table extends HTMLElement {
       this.tableBodyElem.addEventListener("drop", (e) =>
       {
         clearDragEnter(e);
-        const row = e.target.closest("tr");
-        const [rowId, listId] = e.dataTransfer.getData("text/plain").split("#");
-        const {data} = document.getElementById(listId).getItem(rowId);
-        this.addRow(data, row.dataset.id);
+        const dropRowId = e.target.closest("tr").dataset.id;
+        const [dragRowId, dragId] = e.dataTransfer.getData("text/plain").split("#");
+        this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
+          dropRowId,
+          dragRowId,
+          dragId
+        }}));
       });
     }
   }
