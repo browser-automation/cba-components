@@ -5,8 +5,11 @@ class List extends HTMLElement {
   constructor() {
     super();
     this.container = null;
+    this.subHeading = null;
     this.idCount = 0;
     this.draggable = false;
+    this.sort = false;
+    this.connected = false;
     this._data = [
     ];
 
@@ -43,6 +46,8 @@ class List extends HTMLElement {
         return rowItem;
     }
     this._data = rowItems.map(setId);
+    if (this.sort)
+      this._sortItems();
     this._render();
   }
 
@@ -52,7 +57,7 @@ class List extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return [];
+    return ["sort"];
   }
 
   /**
@@ -67,6 +72,12 @@ class List extends HTMLElement {
     {
       return;
     }
+    if (name === "sort")
+    {
+      this.sort = this.getAttribute("sort");
+      this._sortItems();
+      this._render();
+    }
   }
 
   /**
@@ -75,7 +86,10 @@ class List extends HTMLElement {
   connectedCallback()
   {
     this.container = this.shadowRoot.querySelector("ul");
+    this.subHeading = this.shadowRoot.querySelector("h3");
     this.draggable = this.getAttribute("draggable");
+    this.sort = this.getAttribute("sortable");
+    this.connected = true;
 
     this.container.addEventListener("click", ({target}) => 
     {
@@ -106,7 +120,39 @@ class List extends HTMLElement {
         this.selectPreviousRow();
       }
     });
+
+    this.subHeading.addEventListener("click", (e) =>
+    {
+      if (this.sort == "desc")
+        this.setAttribute("sort", "asc");
+      else if (this.sort == "asc")
+        this.setAttribute("sort", "desc");
+      else
+        this.setAttribute("sort", "asc");
+    });
     this._render();
+  }
+
+  _sortItems()
+  {
+    let sortMethod = null;
+    if (this.sort == "asc")
+    {
+      sortMethod = (a, b) =>
+      {
+        return a.text.localeCompare(b.text, undefined, {numeric: true})
+      }
+    }
+    if (this.sort == "desc")
+    {
+      sortMethod = (a, b) =>
+      {
+        return b.text.localeCompare(a.text, undefined, {numeric: true});
+      }
+    }
+    if (sortMethod)
+      this._data = this._data.sort(sortMethod);
+    return this._data;
   }
 
   selectRow(rowId)
@@ -233,7 +279,6 @@ class List extends HTMLElement {
   {
     const items = this.items;
     const [index, parentIndex] = this.getIndex(parentOrSubId);
-    console.log(index, parentIndex);
     if (parentOrSubId)
     {
       if (parentIndex != -1)

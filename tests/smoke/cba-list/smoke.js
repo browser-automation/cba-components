@@ -29,6 +29,19 @@ cbaList.items = [
   },
 ];
 
+const cbaSortableList = document.querySelector("#sortable");
+cbaSortableList.items = [
+  {
+    text: "List1"
+  },
+  {
+    text: "List3"
+  },
+  {
+    text: "List2"
+  },
+];
+
 
 document.querySelector("#update-row").addEventListener("click", () =>
 {
