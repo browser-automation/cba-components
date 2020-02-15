@@ -36,15 +36,6 @@ h2
               var(--column-secondary) 100%);
 }
 
-#column:hover
-{
-  background: linear-gradient(var(--hover-primary) 0%,
-                              var(--hover-primary) 50%,
-                              var(--hover-secondary) 50%,
-                              var(--hover-secondary) 100%);
-  cursor: pointer;
-}
-
 #column a
 {
   text-decoration: none;
@@ -53,6 +44,15 @@ h2
   font-size: 14px;
   display: inline-block;
   position: relative;
+}
+
+:host([sort]) #column:hover
+{
+  background: linear-gradient(var(--hover-primary) 0%,
+                              var(--hover-primary) 50%,
+                              var(--hover-secondary) 50%,
+                              var(--hover-secondary) 100%);
+  cursor: pointer;
 }
 
 :host([sort]) #column a:after

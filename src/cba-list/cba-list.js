@@ -1,5 +1,4 @@
 import {html, render} from 'lit-html';
-import {ifDefined} from 'lit-html/directives/if-defined';
 import shadowCSS from './shadow.css';
 
 class List extends HTMLElement {
@@ -89,7 +88,7 @@ class List extends HTMLElement {
     this.container = this.shadowRoot.querySelector("ul");
     this.subHeading = this.shadowRoot.querySelector("#column");
     this.draggable = this.getAttribute("draggable") == true;
-    this.sort = this.getAttribute("sortable");
+    this.sort = this.getAttribute("sort");
     this.connected = true;
 
     this.container.addEventListener("click", ({target}) => 
@@ -122,16 +121,19 @@ class List extends HTMLElement {
       }
     });
 
-    this.subHeading.addEventListener("click", (e) =>
+    if (this.sort)
     {
-      e.preventDefault();
-      if (this.sort == "desc")
-        this.setAttribute("sort", "asc");
-      else if (this.sort == "asc")
-        this.setAttribute("sort", "desc");
-      else
-        this.setAttribute("sort", "asc");
-    });
+      this.subHeading.addEventListener("click", (e) =>
+      {
+        e.preventDefault();
+        if (this.sort == "desc")
+          this.setAttribute("sort", "asc");
+        else if (this.sort == "asc")
+          this.setAttribute("sort", "desc");
+        else
+          this.setAttribute("sort", "asc");
+      });
+    }
     this._render();
   }
 
