@@ -21,7 +21,7 @@ h2
   z-index: 20;
 }
 
-h3
+#column
 {
   border: solid 1px var(--color-border);
   border-left-width: 0;
@@ -36,7 +36,7 @@ h3
               var(--column-secondary) 100%);
 }
 
-h3:hover
+#column:hover
 {
   background: linear-gradient(var(--hover-primary) 0%,
                               var(--hover-primary) 50%,
@@ -45,13 +45,37 @@ h3:hover
   cursor: pointer;
 }
 
-h3 a
+#column a
 {
   text-decoration: none;
   color: var(--column-tertiary);
   font-weight: 300;
   font-size: 14px;
-  display: block;
+  display: inline-block;
+  position: relative;
+}
+
+:host([sort]) #column a:after
+{
+  content: "";
+  display: inline-block;
+  width: 0;
+  height: 0;
+  top: 7px;
+  margin: 0 5px;
+  position: absolute;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+}
+
+:host([sort="asc"]) #column a:after
+{
+  border-bottom: 5px solid var(--column-tertiary);
+}
+
+:host([sort="desc"]) #column a:after
+{
+  border-top: 5px solid var(--column-tertiary);
 }
 
 div

@@ -1,4 +1,5 @@
 import {html, render} from 'lit-html';
+import {ifDefined} from 'lit-html/directives/if-defined';
 import shadowCSS from './shadow.css';
 
 class List extends HTMLElement {
@@ -20,7 +21,7 @@ class List extends HTMLElement {
     </style>
     <div>
       <h2>Heading</h2>
-      <h3><a href="#">Column</a></h3>
+      <h3 id="column"><a href="#">Column</a></h3>
       <ul>
         <li><span class="row">List1</span></li>
         <li class="highlight"><span class="row">List2</span>
@@ -86,8 +87,8 @@ class List extends HTMLElement {
   connectedCallback()
   {
     this.container = this.shadowRoot.querySelector("ul");
-    this.subHeading = this.shadowRoot.querySelector("h3");
-    this.draggable = this.getAttribute("draggable");
+    this.subHeading = this.shadowRoot.querySelector("#column");
+    this.draggable = this.getAttribute("draggable") == true;
     this.sort = this.getAttribute("sortable");
     this.connected = true;
 
@@ -123,6 +124,7 @@ class List extends HTMLElement {
 
     this.subHeading.addEventListener("click", (e) =>
     {
+      e.preventDefault();
       if (this.sort == "desc")
         this.setAttribute("sort", "asc");
       else if (this.sort == "asc")
@@ -340,7 +342,7 @@ class List extends HTMLElement {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="true">${text}</span>`;
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.draggable}">${text}</span>`;
     }
     const createList = ({id, selected, text}) => {
       return html`<li data-id="${id}">
