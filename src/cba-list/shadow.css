@@ -118,6 +118,11 @@ li .row:not(.highlight):hover
   cursor: pointer;
 }
 
+ul li
+{
+  position: relative;
+}
+
 li > .row.highlight
 {
   background-color: var(--color-selected);
@@ -127,4 +132,44 @@ li > .row.highlight
 li li .row
 {
   padding-left: 20px;
+}
+
+[data-subitems="true"] li .row
+{
+  padding-left: 20px;
+}
+
+[data-subitems="true"] li li .row
+{
+  padding-left: 40px;
+}
+
+li > button
+{
+  left: 8px;
+  top: 4px;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  display: inline-block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  cursor: pointer;
+}
+
+li > button.expanded
+{
+  top: 6px;
+  border-top: 5px solid var(--column-tertiary);
+  border-right: 5px solid transparent;
+  border-left: 5px solid transparent;
+}
+
+li > button.collapsed
+{
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 5px solid var(--column-tertiary);
 }

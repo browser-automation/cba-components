@@ -10,6 +10,7 @@ class List extends HTMLElement {
     this.draggable = false;
     this.sort = false;
     this.connected = false;
+    this.hasSubtiems = false;
     this._data = [
     ];
 
@@ -33,12 +34,14 @@ class List extends HTMLElement {
 
   set items(rowItems)
   {
+    this.hasSubtiems = false;
     const setId = (rowItem) =>
     {
       if (!rowItem.id)
         rowItem.id = `cba-list-id-${++ this.idCount}`;
       if (rowItem.subItems)
       {
+        this.hasSubtiems = true;
         rowItem.subItems = rowItem.subItems.map(setId);
         return rowItem;
       }
@@ -93,9 +96,17 @@ class List extends HTMLElement {
 
     this.container.addEventListener("click", ({target}) => 
     {
+      if (target.tagName === "BUTTON")
+      {
+        const item = this.getItem(target.parentElement.dataset.id);
+        this.setExpansion(item.id, !item.expanded);
+        return;
+      }
       const row = target.closest(".row");
       if (row)
+      {
         this.selectRow(row.parentElement.dataset.id);
+      }
     });
 
     if (this.draggable)
@@ -118,6 +129,24 @@ class List extends HTMLElement {
       {
         e.preventDefault();
         this.selectPreviousRow();
+      }
+      if (e.key === "ArrowRight")
+      {
+        e.preventDefault();
+        this.setExpansion(this.getSelectedItem().id, true);
+      }
+      if (e.key === "ArrowLeft")
+      {
+        e.preventDefault();
+        const selectedId = this.getSelectedItem().id;
+        const parentItem = this.getParentItem(selectedId);
+        if (parentItem)
+        {
+          this.selectRow(parentItem.id);
+          this.setExpansion(parentItem.id, false);
+        }
+        else
+          this.setExpansion(selectedId, false);
       }
     });
 
@@ -179,6 +208,12 @@ class List extends HTMLElement {
     this.dispatchEvent(new CustomEvent("select"));
   }
 
+  setExpansion(id, state)
+  {
+    this._findItem("id", id).expanded = state;
+    this._render();
+  }
+
   selectNextRow()
   {
     const item = this.getSelectedItem();
@@ -194,7 +229,7 @@ class List extends HTMLElement {
     else
     {
       let itemToSelect = this._data[index + 1] || this._data[0];
-      if (item.subItems)
+      if (item.subItems && item.expanded)
         itemToSelect = item.subItems[0];
       this.selectRow(itemToSelect.id);
     }
@@ -216,7 +251,7 @@ class List extends HTMLElement {
     {
       const previousItem = this._data[index - 1];
       let itemToSelect = this._data[index - 1] || this._data[this._data.length - 1];
-      if (previousItem && previousItem.subItems)
+      if (previousItem && previousItem.subItems && previousItem.expanded)
         itemToSelect = previousItem.subItems[previousItem.subItems.length - 1];
       this.selectRow(itemToSelect.id);
     }
@@ -329,6 +364,15 @@ class List extends HTMLElement {
     this._render();
   }
 
+  getParentItem(rowId)
+  {
+    const [index, parentIndex] = this.getIndex(rowId);
+    if (parentIndex)
+      return this.items[parentIndex];
+    else
+      return false;
+  }
+
   _focusSelected()
   {
     this.container.querySelector(".highlight").focus();
@@ -339,6 +383,7 @@ class List extends HTMLElement {
    */
   _render()
   {
+    this.container.dataset.subitems = this.hasSubtiems;
     const createRow = (text, selected) =>
     {
       const classes = ["row"];
@@ -352,12 +397,15 @@ class List extends HTMLElement {
                   </li>`;
     }
     const result = this._data.map((row) => {
-      const {id, subItems, selected, text} = row;
+      const {id, subItems, selected, text, expanded} = row;
       if (subItems)
       {
+        let subitems = "";
+        if (expanded)
+          subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        ${createRow(text, selected)}
-                        <ul>${row.subItems.map(createList)}</ul>
+                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(text, selected, subItems)}
+                        ${subitems}
                     </li>`;
       }
       else
