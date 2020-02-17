@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="/js/cba-table/cba-table.js" type="module"></script>
+  <script src="/js/cba-list/cba-list.js" type="module"></script>
+  <style>
+    div {
+      width: 350px;
+      height: 300px;
+      font-family: Verdana, Arial, sans-serif;
+      display: inline-block;
+    }
+  </style>
+  <title>Document</title>
+</head>
+<body>
+  <div>
+    <cba-table caption="Actions" droppable="true">
+      <cba-column name="data" width="33%">data</cba-column>
+      <cba-column name="event" width="33%">event</cba-column>
+      <cba-column name="value" width="33%">value</cba-column>
+    </cba-table>
+  </div>
+
+  <div>
+    <cba-list id="functions" draggable="true"></cba-list>
+  </div>
+</body>
+</html>

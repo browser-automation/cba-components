@@ -52,6 +52,11 @@ if (argv.smoke)
 {
   module.exports.plugins.push(new CopyPlugin([{from: './tests/smoke', to: "smoke", ignore: ["*.ejs"]}]));
 }
+if (argv.puppeteer)
+{
+  module.exports.plugins.push(new CopyPlugin([{flatten: true, from: './tests/puppeteer/**/*.html', to: 'puppeteer'}]));
+}
+
 if (argv.watch)
 {
   module.exports.watch = true;

@@ -4,8 +4,11 @@
   "description": "This is a repository where the components for the Chromium Browser Automation project might live.",
   "main": "index.js",
   "scripts": {
+    "test": "npm run build:puppeteer && (http-server dist -p 3001 & mocha tests/puppeteer/*/*.js)",
     "start": "npm run build:smoke:watch & http-server dist -p 3000",
+    "posttest": "kill $(lsof -t -i:3001)",
     "build": "npm run clean && webpack --config webpack.config.js",
+    "build:puppeteer": "npm run clean && webpack --config webpack.config.js --puppeteer",
     "build:smoke": "npm run clean && webpack --config webpack.config.js --smoke",
     "build:smoke:watch": "npm run clean && webpack --config webpack.config.js --smoke --watch",
     "clean": "rm -r dist || true"
@@ -27,6 +30,8 @@
   },
   "devDependencies": {
     "copy-webpack-plugin": "^5.1.1",
+    "mocha": "^7.0.1",
+    "puppeteer": "^2.1.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
