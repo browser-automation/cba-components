@@ -418,7 +418,7 @@ class List extends HTMLElement {
   getParentItem(rowId)
   {
     const [index, parentIndex] = this.getIndex(rowId);
-    if (parentIndex)
+    if (parentIndex >= 0)
       return this.items[parentIndex];
     else
       return false;
