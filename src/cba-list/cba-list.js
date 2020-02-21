@@ -32,6 +32,10 @@ class List extends HTMLElement {
     `;
   }
 
+  /**
+   * Populate and render items ensuring the ids and sorting
+   * @param {array} rowItems Items, item contains of: {id, data, text}
+   */
   set items(rowItems)
   {
     this.hasSubtiems = false;
@@ -54,6 +58,10 @@ class List extends HTMLElement {
     this._render();
   }
 
+  /**
+   * Get Items
+   * @return {array}
+   */
   get items()
   {
     return JSON.parse(JSON.stringify(this._data));
@@ -188,6 +196,10 @@ class List extends HTMLElement {
     return this._data;
   }
 
+  /**
+   * Highlight and focuses a specific item
+   * @param {string} rowId Id of if the row to focus
+   */
   selectRow(rowId)
   {
     const updateSelected = (items) =>
@@ -208,12 +220,20 @@ class List extends HTMLElement {
     this.dispatchEvent(new CustomEvent("select"));
   }
 
+  /**
+   * Expand or collapse a specific row with subitems
+   * @param {string} id Row ID
+   * @param {boolean} state expansion state (true means expanded)
+   */
   setExpansion(id, state)
   {
     this._findItem("id", id).expanded = state;
     this._render();
   }
 
+  /**
+   * Selects next row
+   */
   selectNextRow()
   {
     const item = this.getSelectedItem();
@@ -235,6 +255,9 @@ class List extends HTMLElement {
     }
   }
 
+  /**
+   * Selects previous row
+   */
   selectPreviousRow()
   {
     const item = this.getSelectedItem();
@@ -287,6 +310,11 @@ class List extends HTMLElement {
     return search(this._data);
   }
 
+  /**
+   * Get a specific row record
+   * @param {string} rowId Row id
+   * @return {object}
+   */
   getItem(rowId)
   {
     const item = this._findItem("id", rowId);
@@ -308,12 +336,21 @@ class List extends HTMLElement {
       return [this._data.indexOf(item), -1];
   }
 
+  /**
+   * Gets selected row record
+   * @return {object}
+   */
   getSelectedItem()
   {
     const item = this._findItem("selected", true);
     return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
+  /**
+   * Adds(pushes) a new row to the root or as a sub item
+   * @param {object} data Row data
+   * @param {string} parentOrSubId (optional) Id specifying parent item
+   */
   addRow(data, parentOrSubId)
   {
     const items = this.items;
@@ -339,6 +376,11 @@ class List extends HTMLElement {
     this.items = items;
   }
 
+  /**
+   * Updating a specific record in the list
+   * @param {object} data new item data
+   * @param {string} rowId Row id
+   */
   updateRow(data, rowId)
   {
     const item = this._findItem("id", rowId);
@@ -347,6 +389,10 @@ class List extends HTMLElement {
     this._render();
   }
 
+  /**
+   * Deletes a specifid row
+   * @param {string} rowId Row id
+   */
   deleteRow(rowId)
   {
     const [index, parentIndex] = this.getIndex(rowId);
@@ -364,6 +410,11 @@ class List extends HTMLElement {
     this._render();
   }
 
+  /**
+   * Gets parent item if target has one
+   * @param {string}  rowId Row id
+   * @return {object} parent item or false
+   */
   getParentItem(rowId)
   {
     const [index, parentIndex] = this.getIndex(rowId);

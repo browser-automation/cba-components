@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const {join} = require("path");
 const tests = [
   {path:"cba-list.js", name: "Testing CBA List"},
-  {path:"cba-table.js", name: "Testing CBA Table"}
+  // {path:"cba-table.js", name: "Testing CBA Table"}
 ];
 
 let browser;
@@ -25,10 +25,9 @@ function run()
       });
       after(async () =>
       {
-        await browser.close();
+        // await browser.close();
       })
     });
-
   }
 }
 
