@@ -390,7 +390,7 @@ class List extends HTMLElement {
   }
 
   /**
-   * Deletes a specifid row
+   * Deletes a specific row
    * @param {string} rowId Row id
    */
   deleteRow(rowId)

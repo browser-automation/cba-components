@@ -31,6 +31,11 @@ class Table extends HTMLElement {
     `;
   }
 
+  /**
+   * Populate and render items ensuring the ids
+   * @param {array} rowItems Items, item contains of: {id, data, text: {data,
+   *                                                   event, value}}
+   */
   set items(rowItems)
   {
     this._data = rowItems.map((rowItem) => 
@@ -42,6 +47,10 @@ class Table extends HTMLElement {
     this._renderBody();
   }
 
+  /**
+   * Get Items
+   * @return {array}
+   */
   get items()
   {
     return JSON.parse(JSON.stringify(this._data));
@@ -142,11 +151,20 @@ class Table extends HTMLElement {
     }
   }
 
+  /**
+   * Gets all cba-column elements
+   * @return {array} array of nodes
+   */
   getAllColumns()
   {
     return this.querySelectorAll("cba-column");
   }
 
+  /**
+   * Add a new row to the end or after a specific item
+   * @param {object} data   new row data
+   * @param {string} after  (optional) rowId that comes after
+   */
   addRow(data, after)
   {
     const items = this.items;
@@ -162,7 +180,7 @@ class Table extends HTMLElement {
   /**
    * Update a specific row
    * @param {object} data   row data
-   * @param {object} rowId  (optional) if not specified row ID from data is used
+   * @param {string} rowId  (optional) if not specified row ID from data is used
    */
   updateRow(data, rowId)
   {
@@ -179,6 +197,10 @@ class Table extends HTMLElement {
     this.items = items;
   }
 
+  /**
+   * Deletes a specific row
+   * @param {string} rowId Row id
+   */
   deleteRow(rowId)
   {
     const {id} = this.getSelectedItem();
@@ -187,6 +209,10 @@ class Table extends HTMLElement {
     this.items = this._data.filter(({id}) => id != rowId);
   }
 
+  /**
+   * Selects a specific row
+   * @param {string} rowId Row id
+   */
   selectRow(rowId)
   {
     for (const item of this._data)
@@ -201,6 +227,9 @@ class Table extends HTMLElement {
     this.dispatchEvent(new CustomEvent("select"));
   }
 
+  /**
+   * Selects next row
+   */
   selectNextRow()
   {
     const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
@@ -211,6 +240,9 @@ class Table extends HTMLElement {
     this.selectRow(itemToSelect.id);
   }
 
+  /**
+   * Selects previous row
+   */
   selectPreviousRow()
   {
     const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
@@ -234,6 +266,10 @@ class Table extends HTMLElement {
     return this._data.filter(item => item.id === id)[0];
   }
 
+  /**
+   * Gets selected row record
+   * @return {object}
+   */
   getSelectedItem()
   {
     return this._data.filter(item => item.selected)[0]

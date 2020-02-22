@@ -1,8 +1,8 @@
 const puppeteer = require("puppeteer");
 const {join} = require("path");
 const tests = [
-  {path:"cba-list.js", name: "Testing CBA List"},
-  // {path:"cba-table.js", name: "Testing CBA Table"}
+  // {path:"cba-list.js", name: "Testing CBA List"},
+  {path:"cba-table.js", name: "Testing CBA Table"}
 ];
 
 let browser;
