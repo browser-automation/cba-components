@@ -261,9 +261,15 @@ class Table extends HTMLElement {
         return index;
   }
 
-  _getItemById(id)
+  /**
+   * Get a specific row record
+   * @param {string} rowId Row id
+   * @return {object}
+   */
+  getItem(id)
   {
-    return this._data.filter(item => item.id === id)[0];
+    const item = this._data.filter(item => item.id === id)[0];
+    return item ? item: false;
   }
 
   /**
@@ -272,7 +278,10 @@ class Table extends HTMLElement {
    */
   getSelectedItem()
   {
-    return this._data.filter(item => item.selected)[0]
+    const selectedItem = this._data.filter(item => item.selected)[0];
+    if (!selectedItem)
+      return false;
+    return selectedItem;
   }
 
   _focusSelected()
