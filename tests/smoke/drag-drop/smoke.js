@@ -21,7 +21,6 @@ cbaTable.addEventListener("dragndrop", ({detail}) =>
 
 cbaTable.items = items;
 
-
 const cbaList = document.querySelector("cba-list");
 
 const listItems = [];

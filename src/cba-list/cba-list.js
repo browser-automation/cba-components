@@ -7,7 +7,7 @@ class List extends HTMLElement {
     this.container = null;
     this.subHeading = null;
     this.idCount = 0;
-    this.draggable = false;
+    this.drag = false;
     this.sort = false;
     this.connected = false;
     this.hasSubtiems = false;
@@ -98,7 +98,7 @@ class List extends HTMLElement {
   {
     this.container = this.shadowRoot.querySelector("ul");
     this.subHeading = this.shadowRoot.querySelector("#column");
-    this.draggable = this.getAttribute("draggable") == true;
+    this.drag = this.getAttribute("draggable") == "true";
     this.sort = this.getAttribute("sort");
     this.connected = true;
 
@@ -117,7 +117,7 @@ class List extends HTMLElement {
       }
     });
 
-    if (this.draggable)
+    if (this.drag)
     {
       this.container.addEventListener("dragstart", (e) =>
       {
@@ -440,7 +440,7 @@ class List extends HTMLElement {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.draggable}">${text}</span>`;
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}">${text}</span>`;
     }
     const createList = ({id, selected, text}) => {
       return html`<li data-id="${id}">
