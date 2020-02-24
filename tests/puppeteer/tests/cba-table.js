@@ -14,7 +14,7 @@ const pageSetup = {
   <cba-column name="event" width="33%">event</cba-column>
   <cba-column name="value" width="33%">value</cba-column>
 </cba-table>`,
-  js: "cba-table/cba-table.js"
+  js: ["cba-table/cba-table.js"]
 }
 
 const {CbaTable} = require("../classes/CbaTable");

@@ -2,7 +2,8 @@ const puppeteer = require("puppeteer");
 const {join} = require("path");
 const tests = [
   {path:"cba-list.js", name: "Testing CBA List"},
-  {path:"cba-table.js", name: "Testing CBA Table"}
+  {path:"cba-table.js", name: "Testing CBA Table"},
+  {path:"drag-drop.js", name: "Testing drag and drop"}
 ];
 
 let browser;
@@ -20,7 +21,10 @@ function run()
         page = await browser.newPage();
         await page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3419.0 Safari/537.36");
         await page.goto("http://127.0.0.1:3001/puppeteer");
-        await page.addScriptTag({url: join("/", "js", pageSetup.js), type: "module"});
+        for (const script of pageSetup.js)
+        {
+          await page.addScriptTag({url: join("/", "js", script), type: "module"});
+        }
         await page.evaluate((bodyHTML) => document.body.innerHTML = bodyHTML, pageSetup.body);
       });
       after(async () =>

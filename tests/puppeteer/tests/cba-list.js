@@ -10,7 +10,7 @@ const {page} = require("../main");
 
 const pageSetup = {
   body: `<cba-list></cba-list>`,
-  js: "cba-list/cba-list.js"
+  js: ["cba-list/cba-list.js"]
 }
 
 const {CbaList} = require("../classes/CbaList");

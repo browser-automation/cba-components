@@ -59,6 +59,10 @@ class CbaList
       return await (await rowHandle.getProperty("textContent")).jsonValue();
     return false;
   }
+  async getId()
+  {
+    return (await (await this._getHandle()).getProperty("id")).jsonValue();
+  }
   async getHighlightedLabel()
   {
     const rootHandle = await this._getShadowRoot();
