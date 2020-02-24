@@ -5,7 +5,7 @@ class List extends HTMLElement {
   constructor() {
     super();
     this.container = null;
-    this.subHeading = null;
+    this.subheading = null;
     this.idCount = 0;
     this.drag = false;
     this.sort = false;
@@ -20,14 +20,9 @@ class List extends HTMLElement {
       ${shadowCSS}
     </style>
     <div>
-      <h2>Heading</h2>
-      <h3 id="column"><a href="#">Column</a></h3>
-      <ul>
-        <li><span class="row">List1</span></li>
-        <li class="highlight"><span class="row">List2</span>
-          <ul><li><span class="row">List2-2</span></li></ul>
-        </li>
-      </ul>
+      <h2></h2>
+      <h3 id="column"><a href="#"></a></h3>
+      <ul></ul>
     </div>
     `;
   }
@@ -68,7 +63,7 @@ class List extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["sort"];
+    return ["sort", "heading", "subheading"];
   }
 
   /**
@@ -89,6 +84,10 @@ class List extends HTMLElement {
       this._sortItems();
       this._render();
     }
+    if (name === "heading" || name === "subheading")
+    {
+      this._renderHeading();
+    }
   }
 
   /**
@@ -96,8 +95,10 @@ class List extends HTMLElement {
    */
   connectedCallback()
   {
+    this.heading = this.shadowRoot.querySelector("h2");
+    this.subheading = this.shadowRoot.querySelector("h3 a");
     this.container = this.shadowRoot.querySelector("ul");
-    this.subHeading = this.shadowRoot.querySelector("#column");
+    this.subheadingContainer = this.shadowRoot.querySelector("#column");
     this.drag = this.getAttribute("draggable") == "true";
     this.sort = this.getAttribute("sort");
     this.connected = true;
@@ -160,7 +161,7 @@ class List extends HTMLElement {
 
     if (this.sort)
     {
-      this.subHeading.addEventListener("click", (e) =>
+      this.subheadingContainer.addEventListener("click", (e) =>
       {
         e.preventDefault();
         if (this.sort == "desc")
@@ -171,6 +172,7 @@ class List extends HTMLElement {
           this.setAttribute("sort", "asc");
       });
     }
+    this._renderHeading();
     this._render();
   }
 
@@ -427,6 +429,12 @@ class List extends HTMLElement {
   _focusSelected()
   {
     this.container.querySelector(".highlight").focus();
+  }
+
+  _renderHeading()
+  {
+    this.heading.textContent = this.getAttribute("heading");
+    this.subheading.textContent = this.getAttribute("subheading");
   }
 
   /**

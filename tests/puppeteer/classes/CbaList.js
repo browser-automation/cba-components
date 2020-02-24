@@ -19,6 +19,10 @@ class CbaList
     const handle = await this._getHandle();
     return handle.evaluateHandle((cbaList) => cbaList.shadowRoot);
   }
+  async _getHandleTextContent(handle)
+  {
+    return await (await handle.getProperty("textContent")).jsonValue();
+  }
   async _executeMethod()
   {
     const handle = await this._getHandle();
@@ -28,6 +32,16 @@ class CbaList
   {
     const handle = await this._getHandle();
     return handle.evaluate((cbaList, items) => cbaList.items = items, items);
+  }
+  async getHeadingText()
+  {
+    const rootHandle = await this._getShadowRoot();
+    return this._getHandleTextContent(await rootHandle.$("h2"));
+  }
+  async getSubHeadingText()
+  {
+    const rootHandle = await this._getShadowRoot();
+    return this._getHandleTextContent(await rootHandle.$("h3 a"));
   }
   async getItems()
   {
@@ -53,7 +67,7 @@ class CbaList
   {
     const rowHandle = await itemHandle.$(`.row`);
     if (rowHandle)
-      return await (await rowHandle.getProperty("textContent")).jsonValue();
+      return this._getHandleTextContent(rowHandle);
     return false;
   }
   async getDomRowText(id)
@@ -81,7 +95,7 @@ class CbaList
   async getHighlightedLabel()
   {
     const rootHandle = await this._getShadowRoot();
-    return rootHandle.evaluate((root) => root.querySelector(".highlight").textContent);
+    return this._getHandleTextContent(await rootHandle.$(".highlight"));
   }
   async isItemExpanded(id)
   {

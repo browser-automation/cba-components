@@ -9,7 +9,7 @@ const notOk = (value) => ok(!value);
 const {page} = require("../main");
 
 const pageSetup = {
-  body: `<cba-list></cba-list>`,
+  body: `<cba-list heading="Heading text" subHeading="Subheading text"></cba-list>`,
   js: ["cba-list/cba-list.js"]
 }
 
@@ -19,6 +19,12 @@ const cbaList = new CbaList("cba-list");
 beforeEach(async () =>
 {
   await cbaList.setItems([]);
+});
+
+it("heading and subHeading attributes should specify headings accordingly", async() =>
+{
+  equal(await cbaList.getHeadingText(), "Heading text");
+  equal(await cbaList.getSubHeadingText(), "Subheading text");
 });
 
 it(".list property populates, gets items and render cba-list with row items and subItems", async() =>
