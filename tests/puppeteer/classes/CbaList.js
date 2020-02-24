@@ -34,7 +34,7 @@ class CbaList
     const handle = await this._getHandle();
     return handle.evaluate((cbaList) => cbaList.items);
   }
-  async getDomItem(id)
+  async getRowHandle(id)
   {
     const rootHandle = await this._getShadowRoot();
     return rootHandle.$(`ul [data-id="${id}"]`);
@@ -49,15 +49,30 @@ class CbaList
     const rootHandle = await this._getShadowRoot();
     return rootHandle.evaluate((root, id) => root.querySelector(`ul [data-id="${id}"] button`).click(), id);
   }
-  async getDomRowText(id)
+  async _getLabelByHandle(itemHandle)
   {
-    const itemHandle = await this.getDomItem(id);
-    if (!itemHandle)
-      return false;
     const rowHandle = await itemHandle.$(`.row`);
     if (rowHandle)
       return await (await rowHandle.getProperty("textContent")).jsonValue();
     return false;
+  }
+  async getDomRowText(id)
+  {
+    const itemHandle = await this.getRowHandle(id);
+    if (itemHandle)
+      return this._getLabelByHandle(itemHandle);
+    else
+      return false;
+  }
+  async getDomRowIndexText(index)
+  {
+    const rootHandle = await this._getShadowRoot();
+    const id = await rootHandle.evaluate((root, index) => root.querySelectorAll("ul li")[index].dataset.id, index);
+    return this.getDomRowText(id);
+  }
+  async setSort(sort)
+  {
+    return (await this._getHandle()).evaluate((cbaList, sort) => cbaList.setAttribute("sort", sort), sort);
   }
   async getId()
   {

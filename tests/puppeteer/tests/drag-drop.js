@@ -89,7 +89,7 @@ async function populateCbaTable()
 
 async function triggerDrop(id, data)
 {
-  const handle = await cbaTable.getDomItem(id);
+  const handle = await cbaTable.getRowHandle(id);
   const table = await cbaTable._getHandle();
   return handle.evaluate((cbaTableRow, cbaTable, data) => {
     return new Promise((resolve) => {
@@ -111,7 +111,7 @@ async function triggerDrop(id, data)
 
 async function triggerDragStart(id)
 {
-  const handle = await cbaList.getDomItem(id);
+  const handle = await cbaList.getRowHandle(id);
   return handle.evaluate((cbaListRow) => {
     const event = new DragEvent("dragstart", {
       bubbles: true,

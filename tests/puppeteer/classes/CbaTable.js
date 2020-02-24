@@ -33,7 +33,7 @@ class CbaTable
     const handle = await this._getHandle();
     return handle.evaluate((cbaTable, methodName, ...args) => cbaTable[methodName](...args), ...arguments)
   }
-  async getDomItem(id)
+  async getRowHandle(id)
   {
     const tbody = await this._getTbody();
     return tbody.$(`tr[data-id="${id}"]`);
