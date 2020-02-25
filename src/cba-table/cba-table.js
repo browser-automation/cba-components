@@ -151,12 +151,19 @@ class Table extends HTMLElement {
         clearDragEnter(e);
         const dropRowId = e.target.closest("tr").dataset.id;
         const [dragRowId, dragId] = e.dataTransfer.getData("text/plain").split("#");
+        const draggedSource = document.getElementById(dragId);
 
         if (this.reordering)
         {
           const dragRowItem = this.getItem(dragRowId);
           this.deleteRow(dragRowId);
           this.addRow(dragRowItem, dropRowId);
+        }
+        else if(draggedSource)
+        {
+          const draggedItem = draggedSource.getItem(dragRowId);
+          if (draggedItem)
+            cbaTable.addRow(draggedItem.data, dropRowId);
         }
 
         this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
