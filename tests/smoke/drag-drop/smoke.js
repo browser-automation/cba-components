@@ -14,9 +14,12 @@ for (let index = 0; index < 10; index++) {
 
 cbaTable.addEventListener("dragndrop", ({detail}) =>
 {
-  const {dropRowId, dragRowId, dragId} = detail;
-  const {data} = document.getElementById(dragId).getItem(dragRowId);
-  cbaTable.addRow(data, dropRowId);
+  const {dropRowId, dragRowId, dragId, reordered} = detail;
+  if (!reordered)
+  {
+    const {data} = document.getElementById(dragId).getItem(dragRowId);
+    cbaTable.addRow(data, dropRowId);
+  }
 });
 
 cbaTable.items = items;

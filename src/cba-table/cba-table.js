@@ -13,6 +13,8 @@ class Table extends HTMLElement {
     this.idCount = 0;
     this.selectedId = -1;
     this.droppable = false;
+    this.reorder = false;
+    this.reordering = false;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
@@ -89,6 +91,7 @@ class Table extends HTMLElement {
     this.tableHeadElem = this.tableElem.querySelector("thead");
     this.caption = this.getAttribute("caption");
     this.droppable = this.getAttribute("droppable");
+    this.reorder = this.getAttribute("reorder");
     for (const cbaColumn of this.querySelectorAll("cba-column"))
     {
       this.columns.push(cbaColumn.getAttribute("name"));
@@ -118,7 +121,7 @@ class Table extends HTMLElement {
     });
 
     // Dropping element
-    if (this.droppable)
+    if (this.droppable || this.reorder)
     {
       const clearDragEnter = (e) =>
       {
@@ -132,7 +135,13 @@ class Table extends HTMLElement {
         if (row && !row.classList.contains("dragenter"))
           row.classList.add("dragenter");
       });
-      this.tableBodyElem.addEventListener("dragleave", (clearDragEnter));
+      this.tableBodyElem.addEventListener("dragend", (e) =>
+      {
+        clearDragEnter(e);
+        this.reordering = false;
+      });
+      
+      this.tableBodyElem.addEventListener("dragleave", clearDragEnter);
       this.tableBodyElem.addEventListener("dragover", (e) =>
       {
         e.preventDefault();
@@ -142,11 +151,30 @@ class Table extends HTMLElement {
         clearDragEnter(e);
         const dropRowId = e.target.closest("tr").dataset.id;
         const [dragRowId, dragId] = e.dataTransfer.getData("text/plain").split("#");
+
+        if (this.reordering)
+        {
+          const dragRowItem = this.getItem(dragRowId);
+          this.deleteRow(dragRowId);
+          this.addRow(dragRowItem, dropRowId);
+        }
+
         this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
           dropRowId,
           dragRowId,
-          dragId
+          dragId,
+          reordered: this.reordering
         }}));
+
+      });
+    }
+    if (this.reorder)
+    {
+      this.tableBodyElem.addEventListener("dragstart", (e) =>
+      {
+        this.reordering = true;
+        const rowId = e.target.closest("[data-id]").dataset.id;
+        e.dataTransfer.setData("text/plain", `${rowId}#${this.id}`);
       });
     }
   }
@@ -296,7 +324,7 @@ class Table extends HTMLElement {
   {
     const createRow = ({id, data, texts, selected}) => {
       const selectedClass = selected ? "highlight" : undefined;
-      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
+      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
         return html`<td data-id="${name}">${texts[name]}</td>`;
       })}</tr>`;
     };
