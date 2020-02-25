@@ -162,8 +162,8 @@ class Table extends HTMLElement {
         else if(draggedSource)
         {
           const draggedItem = draggedSource.getItem(dragRowId);
-          if (draggedItem)
-            cbaTable.addRow(draggedItem.data, dropRowId);
+          if (draggedItem && draggedItem.data)
+            this.addRow(draggedItem.data, dropRowId);
         }
 
         this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
@@ -329,7 +329,7 @@ class Table extends HTMLElement {
    */
   _renderBody()
   {
-    const createRow = ({id, data, texts, selected}) => {
+    const createRow = ({id, texts, selected}) => {
       const selectedClass = selected ? "highlight" : undefined;
       return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
         return html`<td data-id="${name}">${texts[name]}</td>`;

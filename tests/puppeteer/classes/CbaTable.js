@@ -79,6 +79,12 @@ class CbaTable
     const tbody = await this._getTbody();
     return this._getRowtexts(await tbody.$(`tr[data-id="${id}"]`));
   }
+  async getDomRowIndexText(index)
+  {
+    const rootHandle = await this._getTbody();
+    const id = await rootHandle.evaluate((root, index) => root.querySelectorAll("tr")[index].dataset.id, index);
+    return this.getDomRowTexts(id);
+  }
   async isItemExpanded(id)
   {
     const item = await this.getItem(id);

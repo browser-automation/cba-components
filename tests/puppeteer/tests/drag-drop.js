@@ -16,7 +16,7 @@ const cbaTable = new CbaTable("cba-table");
 
 const pageSetup = {
   body: `
-  <cba-table caption="Actions" droppable="true">
+  <cba-table caption="Actions" droppable="true" reorder="true">
     <cba-column name="data" width="33%">data</cba-column>
     <cba-column name="event" width="33%">event</cba-column>
     <cba-column name="value" width="33%">value</cba-column>
@@ -31,18 +31,39 @@ beforeEach(async () =>
   await cbaTable.setItems([]);
 });
 
-it("Dragging cba-list and dropping to cba-table trigger's 'dragndrop' event with info", async function()
+it("Dragging cba-list and dropping to cba-table add item and trigger's 'dragndrop' event with info", async function()
 {
   const cbaListItems = await populateCbaList();
   const cbaTableItems = await populateCbaTable();
   const cbaListId = await cbaList.getId();
-  const data = await triggerDragStart(cbaListItems[0].id);
+  const handle = await cbaList.getRowHandle(cbaListItems[0].id);
+  const data = await triggerDragStart(handle);
   equal(data, `${cbaTableItems[0].id}#${cbaListId}`);
 
-  const {dropRowId, dragRowId, dragId} = await triggerDrop(cbaTableItems[1].id, data);
+  const {dropRowId, dragRowId, dragId, reordered} = await triggerDrop(cbaTableItems[1].id, data);
   equal(dragRowId, cbaListItems[0].id);
   equal(dropRowId, cbaTableItems[1].id);
   equal(dragId, cbaListId);
+  notOk(reordered)
+
+  const texts = await cbaTable.getDomRowIndexText(2);
+  deepEqual(texts, cbaListItems[0].data.texts);
+});
+
+it("Reordering cba-table row reorders and trigger's 'dragndrop' event with info", async function()
+{
+  const cbaTableItems = await populateCbaTable();
+  const handle = await cbaTable.getRowHandle(cbaTableItems[2].id);
+  const data = await triggerDragStart(handle);
+  equal(data, `${cbaTableItems[2].id}#`);
+
+  const {dropRowId, dragRowId, reordered} = await triggerDrop(cbaTableItems[0].id, data);
+  equal(dragRowId, cbaTableItems[2].id);
+  equal(dropRowId, cbaTableItems[0].id);
+  ok(reordered)
+
+  deepEqual(await cbaTable.getDomRowIndexText(1), cbaTableItems[2].texts);
+  deepEqual(await cbaTable.getDomRowIndexText(2), cbaTableItems[1].texts);
 });
 
 async function populateCbaList()
@@ -52,9 +73,11 @@ async function populateCbaList()
     const item = {
       id: "row" + index,
       data: {
-        data: `List Data${index}`,
-        event: `List Event${index}`,
-        value: `List Value${index}`
+        texts: {
+          data: `List Data${index}`,
+          event: `List Event${index}`,
+          value: `List Value${index}`
+        }
       },
       text: `row${index}`
     };
@@ -69,7 +92,7 @@ async function populateCbaList()
 async function populateCbaTable()
 {
   const items = [];
-  for (let index = 1; index <= 3; index++) {
+  for (let index = 1; index <= 4; index++) {
     const item = {
       id: `row${index}`,
       data: "Info",
@@ -79,7 +102,7 @@ async function populateCbaTable()
         value: `Value${index}`
       }
     };
-    if (index == 3)
+    if (index == 4)
       delete item.id;
     items.push(item);
   }
@@ -109,15 +132,14 @@ async function triggerDrop(id, data)
   }, table, data);
 }
 
-async function triggerDragStart(id)
+async function triggerDragStart(handle)
 {
-  const handle = await cbaList.getRowHandle(id);
-  return handle.evaluate((cbaListRow) => {
+  return handle.evaluate((row) => {
     const event = new DragEvent("dragstart", {
       bubbles: true,
       dataTransfer: new DataTransfer()
     });
-    cbaListRow.dispatchEvent(event);
+    row.dispatchEvent(event);
 
     return event.dataTransfer.getData("text/plain");
   });
