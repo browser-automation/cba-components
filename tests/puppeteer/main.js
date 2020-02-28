@@ -18,8 +18,7 @@ function run()
     describe(name, () => {
       before(async () =>
       {
-        browser = await puppeteer.launch({headless: true, args: ["--allow-file-access-from-files"]});
-        page = await browser.newPage();
+        await somePromise();
       });
       it("testing", () =>
       {
@@ -27,10 +26,19 @@ function run()
       })
       after(async () =>
       {
-        await browser.close();
+        await somePromise();
       })
     });
   }
+}
+
+function somePromise()
+{
+  return new Promise((resolve, reject) => {
+    setTimeout( function() {
+      resolve("Success!");
+    }, 250) 
+  })
 }
 
 module.exports = {page: () => page, run};
