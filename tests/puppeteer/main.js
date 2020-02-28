@@ -11,26 +11,20 @@ const tests = [
 let browser;
 let page;
 
-function run()
-{
-  for (const {path, name} of tests)
+describe("Test", () => {
+  before(async () =>
   {
-    describe(name, () => {
-      before(async () =>
-      {
-        browser = await puppeteer.launch({headless: false});
-      });
-      it("testing", () =>
-      {
-        assert.equal(true, true);
-      })
-      after(async () =>
-      {
-        await browser.close();
-      })
-    });
-  }
-}
+    browser = await puppeteer.launch({headless: false});
+  });
+  it("testing", () =>
+  {
+    assert.equal(true, true);
+  })
+  after(async () =>
+  {
+    await browser.close();
+  })
+});
 
 function somePromise()
 {
