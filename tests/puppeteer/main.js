@@ -18,7 +18,7 @@ function run()
     describe(name, () => {
       before(async () =>
       {
-        browser = await puppeteer.launch({headless: true});
+        browser = await puppeteer.launch({headless: false});
       });
       it("testing", () =>
       {
