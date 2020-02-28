@@ -18,7 +18,7 @@ function run()
     describe(name, () => {
       before(async () =>
       {
-        browser = await puppeteer.launch({headless: true, args: ["--allow-file-access-from-files"]});
+        browser = await puppeteer.launch({headless: true});
       });
       it("testing", () =>
       {
