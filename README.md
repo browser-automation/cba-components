@@ -1,5 +1,13 @@
 # Web components for chromium browser automation
 
+[![Build Status](https://travis-ci.com/browser-automation/cba-components.svg?branch=master)](https://travis-ci.com/browser-automation/cba-components)
+
+Collection of web components to be used in the [CBA](http://chrome-automation.com/):
+
+- [cba-list](https://cba-components.netlify.app/smoke/cba-list) - Single column list.
+- [cba-table](https://cba-components.netlify.app/smoke/cba-table) - Multi column table.
+- [drag-drop](https://cba-components.netlify.app/smoke/drag-drop) - Drag and dropping cba-list to cba-table example.
+
 ## Development
 
 ```
@@ -20,6 +28,6 @@ cba-components --output dirname // Specifies output folder
 
 ## Structure
 
-- [src/components](src/components) - Source codes
+- [src](src) - Source codes
 - [tests/smoke](tests/smoke) - Smoke tests
 - [tests/puppeteer](tests/puppeteer) - Automated tests
