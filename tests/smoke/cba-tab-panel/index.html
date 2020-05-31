@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Tabs</title>
+  <script src="/js/cba-tab-panel/cba-tab-panel.js" defer></script>
+  <link rel="stylesheet" href="cba-tab-panel.css">
+  <style>
+    body
+    {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <cba-tabs>
+      <cba-tab id="import-tab">Import/export</cba-tab>
+      <cba-tab id="cba-tab">CBA</cba-tab>
+      <cba-tab id="functions-tab">funcions</cba-tab>
+    </cba-tabs>
+  </nav>
+  <main>
+    <cba-panel aria-labelledby="import-tab">
+      <h2>Import/Export</h2>
+    </cba-panel>
+    <cba-panel aria-labelledby="cba-tab">
+      <h2>CBA</h2>
+    </cba-panel>
+    <cba-panel aria-labelledby="functions-tab">
+      <h2>Functions</h2>
+    </cba-panel>
+  </main>
+  <script src="smoke.js"></script>
+</body>
+</html>

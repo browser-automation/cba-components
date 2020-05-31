@@ -1,0 +1,47 @@
+body {
+  display: flex;
+}
+
+nav {
+  width: 200px;
+}
+
+cba-tabs
+{
+  color: #878787;
+  width: 200px;
+  padding: 0 15px;
+}
+
+cba-tab
+{
+  display: block;
+  cursor: pointer;
+  padding: 3px 5px;
+}
+
+cba-tab[aria-selected]
+{
+  color: #000000;
+  background-color: #E6E6E6;
+}
+
+main
+{
+  padding: 0 15px;
+  display: block;
+  width: 100%;
+}
+
+main h2
+{
+  margin: 0px;
+}
+
+main h2::after
+{
+  content: "";
+  display: block;
+  border-bottom: 1px solid #a8a8a8;
+  margin-top: 10px;
+}
