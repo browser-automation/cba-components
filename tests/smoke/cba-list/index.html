@@ -6,11 +6,12 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="/js/cba-list/cba-list.js" type="module"></script>
+  <script src="/smoke/res/highlight.js"></script>
   <script src="smoke.js" defer></script>
+  <link rel="stylesheet" href="/smoke/res/highlight.css">
   <style>
     div
     {
-      vertical-align: top;
       display: inline-block;
       width: 350px;
       height: 300px;
@@ -19,6 +20,7 @@
   </style>
 </head>
 <body>
+  <h1>cba-table</h1>
   <div>
     <cba-list heading="Heading" subheading="Column"></cba-list>
     <button id="add-item">Add Item</button>
@@ -28,8 +30,105 @@
     <br>
     <input type="text" name="data"><br>
   </div>
-  <div>
+  <div style="vertical-align: top;">
     <cba-list sort="true" id="sortable" heading="Heading" subheading="Column"></cba-list>
   </div>
+
+  <h2>Documentation</h2>
+  <h3>Markup</h3>
+  <pre>
+    <code>
+<!-- Basic -->
+&lt;cba-list heading="Heading" subheading="Column"&gt;&lt;/cba-list&gt;
+<!-- Sortable -->
+&lt;cba-list sort="true" id="sortable" heading="Heading" subheading="Column"&gt;&lt;/cba-list&gt;
+    </code>
+  </pre>
+  <h3>Add items</h3>
+  <pre>
+    <code>
+const cbaList = document.querySelector("cba-list");
+
+cbaList.items = [
+  {
+    id: "row1",
+    data: "Info",
+    text: "List1"
+  },
+  {
+    id: "row2",
+    data: "Info",
+    text: "List2",
+    subItems: [
+      {
+        id: "subrow1",
+        data: "Info",
+        text: "Sub List1"
+      },
+      {
+        data: "Info",
+        text: "Sub List2"
+      }
+    ]
+  },
+  {
+    id: "row3",
+    data: "Info",
+    text: "List3"
+  },
+];
+    </code>
+  </pre>
+
+  <h3>Add row - addRow()</h3>
+  <pre>
+    <code>
+cbaList.addRow({
+  data: "Info",
+  text: "List item1",
+  id: "optional_id"
+});
+    </code>
+  </pre>
+
+  <h3>Add subitem - addRow()</h3>
+  <pre>
+    <code>
+const {id} = cbaList.getSelectedItem();
+cbaList.addRow({
+  data: "Sub Info",
+  text: "Sub List item",
+  id: "optional_sub_id"
+}, id);
+    </code>
+  </pre>
+
+  <h3>Delete row - deleteRow()</h3>
+  <pre>
+    <code>
+const item = cbaList.getSelectedItem();
+cbaList.deleteRow(item.id);
+    </code>
+  </pre>
+
+  <h3>Update row - updateRow()</h3>
+  <pre>
+    <code>
+const item = cbaList.getSelectedItem();
+item.text = "New value";
+cbaList.updateRow(item, item.id);
+    </code>
+  </pre>
+
+  <h3>onSelect</h3>
+  <pre>
+    <code>
+cbaList.addEventListener("select", () =>
+{
+  const {info, test} = cbaList.getSelectedItem();
+});
+    </code>
+  </pre>
+  <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

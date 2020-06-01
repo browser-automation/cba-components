@@ -5,7 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Tabs</title>
+  <script src="/smoke/res/highlight.js"></script>
   <script src="/js/cba-tabs/cba-tabs.js" defer></script>
+  <link rel="stylesheet" href="/smoke/res/highlight.css">
   <link rel="stylesheet" href="cba-tab-panel.css">
   <style>
     body
@@ -15,24 +17,71 @@
   </style>
 </head>
 <body>
-  <nav>
-    <cba-tabs>
-      <cba-tab id="import-tab">Import/export</cba-tab>
-      <cba-tab id="cba-tab">CBA</cba-tab>
-      <cba-tab id="functions-tab">funcions</cba-tab>
-    </cba-tabs>
-  </nav>
-  <main>
-    <cba-panel aria-labelledby="import-tab">
-      <h2>Import/Export</h2>
-    </cba-panel>
-    <cba-panel aria-labelledby="cba-tab">
-      <h2>CBA</h2>
-    </cba-panel>
-    <cba-panel aria-labelledby="functions-tab">
-      <h2>Functions</h2>
-    </cba-panel>
-  </main>
+  <div style="display: flex;">
+    <nav>
+      <cba-tabs>
+        <cba-tab id="import-tab">Import/export</cba-tab>
+        <cba-tab id="cba-tab">CBA</cba-tab>
+        <cba-tab id="functions-tab">funcions</cba-tab>
+      </cba-tabs>
+    </nav>
+    <main>
+      <cba-panel aria-labelledby="import-tab">
+        <h2>Import/Export</h2>
+      </cba-panel>
+      <cba-panel aria-labelledby="cba-tab">
+        <h2>CBA</h2>
+      </cba-panel>
+      <cba-panel aria-labelledby="functions-tab">
+        <h2>Functions</h2>
+      </cba-panel>
+    </main>
+  </div>
+
+  <h2>Documentation</h2>
+  <h3>Markup</h3>
+  <pre>
+    <code>
+&lt;nav&gt;
+  &lt;cba-tabs&gt;
+    &lt;cba-tab id="import-tab"&gt;Import/export&lt;/cba-tab&gt;
+    &lt;cba-tab id="cba-tab"&gt;CBA&lt;/cba-tab&gt;
+    &lt;cba-tab id="functions-tab"&gt;funcions&lt;/cba-tab&gt;
+  &lt;/cba-tabs&gt;
+&lt;/nav&gt;
+&lt;main&gt;
+  &lt;cba-panel aria-labelledby="import-tab"&gt;
+    &lt;h2&gt;Import/Export&lt;/h2&gt;
+  &lt;/cba-panel&gt;
+  &lt;cba-panel aria-labelledby="cba-tab"&gt;
+    &lt;h2&gt;CBA&lt;/h2&gt;
+  &lt;/cba-panel&gt;
+  &lt;cba-panel aria-labelledby="functions-tab"&gt;
+    &lt;h2&gt;Functions&lt;/h2&gt;
+  &lt;/cba-panel&gt;
+&lt;/main&gt;
+    </code>
+  </pre>
+
+  <h3>select event</h3>
+  <pre>
+    <code>
+const cbaTabs = document.querySelector("cba-tabs");
+cbaTabs.select("import-tab");
+    </code>
+  </pre>
+
+  <h3>tabChange event</h3>
+  <pre>
+    <code>
+cbaTabs.addEventListener("tabChange", ({detail}) =>
+{
+  console.log(detail);
+});
+    </code>
+  </pre>
+
   <script src="smoke.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

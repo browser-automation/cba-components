@@ -6,7 +6,9 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="/js/cba-table/cba-table.js" type="module"></script>
   <script src="/js/cba-list/cba-list.js" type="module"></script>
+  <script src="/smoke/res/highlight.js"></script>
   <script src="smoke.js" defer></script>
+  <link rel="stylesheet" href="/smoke/res/highlight.css">
   <style>
     div {
       width: 350px;
@@ -29,5 +31,35 @@
   <div>
     <cba-list id="functions" draggable="true"></cba-list>
   </div>
+
+  <h2>Documentation</h2>
+  <h3>Markup</h3>
+  <pre>
+    <code>
+&lt;div&gt;
+  &lt;cba-table caption="Actions" droppable="true" reorder="true"&gt;
+    &lt;cba-column name="data" width="33%"&gt;data&lt;/cba-column&gt;
+    &lt;cba-column name="event" width="33%"&gt;event&lt;/cba-column&gt;
+    &lt;cba-column name="value" width="33%"&gt;value&lt;/cba-column&gt;
+  &lt;/cba-table&gt;
+&lt;/div&gt;
+
+&lt;div&gt;
+  &lt;cba-list id="functions" draggable="true"&gt;&lt;/cba-list&gt;
+&lt;/div&gt;
+    </code>
+  </pre>
+
+  <h3>dragndrop event</h3>
+  <pre>
+    <code>
+cbaTable.addEventListener("dragndrop", ({detail}) =>
+{
+  console.log(detail);
+});
+    </code>
+  </pre>
+
+  <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>

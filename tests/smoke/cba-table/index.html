@@ -5,10 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <script src="/js/cba-table/cba-table.js" type="module"></script>
+  <script src="/smoke/res/highlight.js"></script>
   <script src="smoke.js" defer></script>
+  <link rel="stylesheet" href="/smoke/res/highlight.css">
   <title>Document</title>
 </head>
 <body>
+  <h1>cba-table</h1>
   <div style="width: 350px; height: 300px; font-family: Verdana, Arial, sans-serif;">
     <cba-table caption="Actions">
       <cba-column name="data" width="33%">data</cba-column>
@@ -23,5 +26,69 @@
   <input type="text" name="data"><br>
   <input type="text" name="event"><br>
   <input type="text" name="value">
+
+  <h2>Documentation</h2>
+  <h3>Markup</h3>
+  <pre>
+    <code>
+&lt;cba-table caption="Actions"&gt;
+  &lt;cba-column name="data" width="33%"&gt;data&lt;/cba-column&gt;
+  &lt;cba-column name="event" width="33%"&gt;event&lt;/cba-column&gt;
+  &lt;cba-column name="value" width="33%"&gt;value&lt;/cba-column&gt;
+&lt;/cba-table&gt;
+    </code>
+  </pre>
+  <h3>Add items</h3>
+  <pre>
+    <code>
+const cbaTable = document.querySelector("cba-table");
+const items = [];
+for (let index = 0; index < 30; index++) {
+  items.push({
+    id: "row" + index,
+    data: "Info",
+    texts: {
+      data: "Data" + index,
+      event: "Event" + index,
+      value: "Value" + index
+    }
+  });
+}
+
+cbaTable.items = items;
+cbaTable.selectRow("row0"); // select row
+    </code>
+  </pre>
+  <h3>Add row - addRow()</h3>
+  <pre>
+    <code>
+cbaTable.addRow({
+  data: "Info",
+  texts: {
+    data: `Data${num}`,
+    event: `Event${num}`,
+    value: `Value${num}`
+  }
+});
+    </code>
+  </pre>
+  <h3>Delete row - deleteRow()</h3>
+  <pre>
+    <code>
+cbaTable.deleteRow("rowId");
+
+const selectedItem = cbaTable.getSelectedItem();
+cbaTable.deleteRow(selectedItem.id);
+    </code>
+  </pre>
+  <h3>Update row - updateRow()</h3>
+  <pre>
+    <code>
+const row = cbaTable.getSelectedItem();
+row.texts.value = "New value";
+cbaTable.updateRow(row);
+    </code>
+  </pre>
+  <script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
