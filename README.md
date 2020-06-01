@@ -7,6 +7,8 @@ Collection of web components to be used in the [CBA](http://chrome-automation.co
 - [cba-list](https://cba-components.netlify.app/smoke/cba-list) - Single column list.
 - [cba-table](https://cba-components.netlify.app/smoke/cba-table) - Multi column table.
 - [drag-drop](https://cba-components.netlify.app/smoke/drag-drop) - Drag and dropping cba-list to cba-table example.
+- [cba-tabs](https://cba-components.netlify.app/smoke/cba-tabs) - Tabs component for switching between different panels.
+- [cba-button](https://cba-components.netlify.app/smoke/cba-button) - A regular styled button.
 
 ## Development
 
