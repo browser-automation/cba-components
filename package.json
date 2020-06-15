@@ -1,6 +1,6 @@
 {
   "name": "cba-components",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is a repository where the components for the Chromium Browser Automation project might live.",
   "main": "index.js",
   "bin": {
