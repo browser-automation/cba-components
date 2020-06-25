@@ -117,6 +117,7 @@ tbody tr.highlight
 tbody tr
 {
   outline: none;
+  height: 14px;
 }
 
 tbody tr:focus

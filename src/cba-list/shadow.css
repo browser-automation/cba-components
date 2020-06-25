@@ -175,8 +175,8 @@ li > button::after
   display: inline-block;
   content: "";
   width: 10px;
-  height: 10px;
-  vertical-align: bottom;
+  height: 5px;
+  vertical-align: middle;
 }
 
 li > button.expanded::after
