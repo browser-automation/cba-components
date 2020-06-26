@@ -231,6 +231,7 @@ class List extends HTMLElement {
   {
     this._findItem("id", id).expanded = state;
     this._render();
+    this.dispatchEvent(new CustomEvent("expand"));
   }
 
   /**
