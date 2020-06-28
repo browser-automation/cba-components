@@ -37,7 +37,10 @@ class List extends HTMLElement {
     const setId = (rowItem) =>
     {
       if (!rowItem.id)
-        rowItem.id = `cba-list-id-${++ this.idCount}`;
+      {
+        while (this.getItem(`cba-list-id-${++this.idCount}`)) {}
+        rowItem.id = `cba-list-id-${this.idCount}`;
+      }
       if (rowItem.subItems)
       {
         this.hasSubtiems = true;

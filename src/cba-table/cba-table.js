@@ -43,7 +43,10 @@ class Table extends HTMLElement {
     this._data = rowItems.map((rowItem) => 
     {
       if (!rowItem.id)
-        rowItem.id = `cba-table-id-${++ this.idCount}`;
+      {
+        while (this.getItem(`cba-table-id-${++this.idCount}`)) {}
+        rowItem.id = `cba-table-id-${this.idCount}`;
+      }
       return rowItem;
     });
     this._renderBody();
