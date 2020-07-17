@@ -432,7 +432,9 @@ class List extends HTMLElement {
 
   _focusSelected()
   {
-    this.container.querySelector(".highlight").focus();
+    const selectedItem = this.container.querySelector(".highlight");
+    if (selectedItem)
+      selectedItem.focus();
   }
 
   _renderHeading()

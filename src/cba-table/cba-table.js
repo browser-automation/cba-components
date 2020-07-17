@@ -324,7 +324,9 @@ class Table extends HTMLElement {
 
   _focusSelected()
   {
-    this.tableBodyElem.querySelector(".highlight").focus();
+    const selectedItem = this.tableBodyElem.querySelector(".highlight");
+    if (selectedItem)
+      selectedItem.focus();
   }
 
   /**
