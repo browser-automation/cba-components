@@ -12,12 +12,19 @@ class CbaTabs extends HTMLElement {
       this.select(e.target.id);
     });
 
-    this.addEventListener("keydown", ({key}) =>
+    this.addEventListener("keydown", (e) =>
     {
+      const {key} = e;
       if (key === "ArrowDown" || key === "ArrowRight")
+      {
+        e.preventDefault();
         this.selectNextTab();
+      }
       if (key === "ArrowUp" || key === "ArrowLeft")
+      {
+        e.preventDefault();
         this.selectPrevTab();
+      }
     });
   }
 
