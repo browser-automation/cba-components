@@ -1,6 +1,9 @@
 import {html, render} from 'lit-html';
 import {ifDefined} from 'lit-html/directives/if-defined';
 import shadowCSS from './shadow.css';
+import ConstructableCSS from '../ConstructableCSS';
+
+const constructableCSS = new ConstructableCSS(shadowCSS);
 
 class Table extends HTMLElement {
   constructor() {
@@ -18,9 +21,6 @@ class Table extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-    <style>
-      ${shadowCSS}
-    </style>
     <div>
       <h2></h2>
       <table>
@@ -31,6 +31,7 @@ class Table extends HTMLElement {
       </table>
     </div>
     `;
+    constructableCSS.load(this.shadowRoot);
   }
 
   /**

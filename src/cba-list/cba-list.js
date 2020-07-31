@@ -1,5 +1,8 @@
 import {html, render} from 'lit-html';
 import shadowCSS from './shadow.css';
+import ConstructableCSS from '../ConstructableCSS';
+
+const constructableCSS = new ConstructableCSS(shadowCSS);
 
 class List extends HTMLElement {
   constructor() {
@@ -16,15 +19,13 @@ class List extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-    <style>
-      ${shadowCSS}
-    </style>
     <div>
       <h2></h2>
       <h3 id="column"><a href="#"></a></h3>
       <ul></ul>
     </div>
     `;
+    constructableCSS.load(this.shadowRoot);
   }
 
   /**
