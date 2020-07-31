@@ -95,6 +95,21 @@ it("deleteRow should delete specific row", async() =>
   equal(await cbaList.getDomRowText(items[1].subItems[0].id), false);
 });
 
+it("setEditable should make row editable, saveEditables save changes", async() =>
+{
+  const items = await prepopulatedItems();
+  await cbaList.setEditable(items[0].id, true);
+  equal(await cbaList.isDomRowEditable(items[0].id), "true");
+  const prefix = "Prefix";
+  const postfix = "Postfix";
+  await page().keyboard.type(prefix);
+  await page().keyboard.press("ArrowDown");
+  await page().keyboard.type(postfix);
+  await cbaList.saveEditables();
+  const item = await cbaList.getItem(items[0].id);
+  equal(item.text, `${prefix}${items[0].text}${postfix}`);
+});
+
 it("getParentItem should get parent item", async() =>
 {
   const items = await prepopulatedItems();

@@ -2,7 +2,8 @@ const {page} = require("../main");
 
 const cbaListMethods = ["addRow", "updateRow", "deleteRow", "getItem",
   "getIndex", "getParentItem", "getSelectedItem", "selectRow", "_findItem",
-  "setExpansion", "selectPreviousRow", "selectNextRow"];
+  "setExpansion", "selectPreviousRow", "selectNextRow", "setEditable",
+  "saveEditables"];
 
 class CbaList
 {
@@ -83,6 +84,11 @@ class CbaList
     const rootHandle = await this._getShadowRoot();
     const id = await rootHandle.evaluate((root, index) => root.querySelectorAll("ul li")[index].dataset.id, index);
     return this.getDomRowText(id);
+  }
+  async isDomRowEditable(id)
+  {
+    const itemHandle = await this.getRowHandle(id);
+    return itemHandle.evaluate((row) => row.querySelector(".row").getAttribute("contenteditable"))
   }
   async setSort(sort)
   {

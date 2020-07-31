@@ -132,22 +132,23 @@ class List extends HTMLElement {
 
     this.container.addEventListener("keydown", (e) =>
     {
-      if (e.key === "ArrowDown")
+      const {editable} = this.getSelectedItem();
+      if (e.key === "ArrowDown" && !editable)
       {
         e.preventDefault();
         this.selectNextRow();
       }
-      if (e.key === "ArrowUp")
+      if (e.key === "ArrowUp" && !editable)
       {
         e.preventDefault();
         this.selectPreviousRow();
       }
-      if (e.key === "ArrowRight")
+      if (e.key === "ArrowRight" && !editable)
       {
         e.preventDefault();
         this.setExpansion(this.getSelectedItem().id, true);
       }
-      if (e.key === "ArrowLeft")
+      if (e.key === "ArrowLeft" && !editable)
       {
         e.preventDefault();
         const selectedId = this.getSelectedItem().id;
@@ -235,6 +236,42 @@ class List extends HTMLElement {
     this._findItem("id", id).expanded = state;
     this._render();
     this.dispatchEvent(new CustomEvent("expand"));
+  }
+
+  /**
+   * Get textContent of the row element
+   * @param {string} id Row ID 
+   * @return {string} row's textContent
+   */
+  _getRowContent(id)
+  {
+    const rowElement = this.container.querySelector(`[data-id="${id}"] .row`);
+    return rowElement ? rowElement.textContent : "";
+  }
+
+  /**
+   * Updates all editable items with modified content and unset all editables
+   */
+  saveEditables()
+  {
+    while (this._findItem("editable", true)) {
+      const item = this._findItem("editable", true);
+      item.text = this._getRowContent(item.id);
+      item.editable = false;
+    }
+    this._render();
+  }
+
+  /**
+   * Make specific item editable
+   * @param {string} id Row ID  
+   * @param {boolean} state editable state (true means editable)
+   */
+  setEditable(id, state)
+  {
+    this._findItem("id", id).editable = state;
+    this._render();
+    this.selectRow(id);
   }
 
   /**
@@ -449,27 +486,27 @@ class List extends HTMLElement {
   _render()
   {
     this.container.dataset.subitems = this.hasSubtiems;
-    const createRow = (text, selected) =>
+    const createRow = (text, selected, editable = false) =>
     {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}">${text}</span>`;
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}">${text}</span>`;
     }
-    const createList = ({id, selected, text}) => {
+    const createList = ({id, selected, text, editable}) => {
       return html`<li data-id="${id}">
-                      ${createRow(text, selected)}
+                      ${createRow(text, selected, editable)}
                   </li>`;
     }
     const result = this._data.map((row) => {
-      const {id, subItems, selected, text, expanded} = row;
+      const {id, subItems, selected, text, expanded, editable} = row;
       if (subItems)
       {
         let subitems = "";
         if (expanded)
           subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(text, selected, subItems)}
+                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(text, selected, editable)}
                         ${subitems}
                     </li>`;
       }

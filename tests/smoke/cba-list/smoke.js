@@ -65,6 +65,17 @@ document.querySelector("#add-item").addEventListener("click", () =>
   });
 });
 
+document.querySelector("#rename").addEventListener("click", () =>
+{
+  const {id} = cbaList.getSelectedItem();
+  cbaList.setEditable(id, true);
+});
+
+document.querySelector("#save").addEventListener("click", () =>
+{
+  cbaList.saveEditables();
+});
+
 document.querySelector("#add-subitem").addEventListener("click", () =>
 {
   count++;
