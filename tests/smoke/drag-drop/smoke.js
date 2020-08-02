@@ -17,6 +17,11 @@ cbaTable.addEventListener("dragndrop", ({detail}) =>
   console.log(detail);
 });
 
+document.querySelector("#delete-row").addEventListener("click", () =>
+{
+  cbaTable.deleteRow(cbaTable.getSelectedItem().id);
+});
+
 cbaTable.items = items;
 
 const cbaList = document.querySelector("cba-list");

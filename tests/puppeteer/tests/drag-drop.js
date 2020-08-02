@@ -62,7 +62,8 @@ it("Reordering cba-table row reorders and trigger's 'dragndrop' event with info"
   equal(dropRowId, cbaTableItems[0].id);
   ok(reordered)
 
-  deepEqual(await cbaTable.getDomRowIndexText(1), cbaTableItems[2].texts);
+  deepEqual(await cbaTable.getDomRowIndexText(0), cbaTableItems[2].texts);
+  deepEqual(await cbaTable.getDomRowIndexText(1), cbaTableItems[0].texts);
   deepEqual(await cbaTable.getDomRowIndexText(2), cbaTableItems[1].texts);
 });
 

@@ -21,7 +21,7 @@ class Table extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-    <div>
+    <div id="container">
       <h2></h2>
       <table>
         <thead>
@@ -93,6 +93,7 @@ class Table extends HTMLElement {
     this.tableElem = this.shadowRoot.querySelector("table");
     this.tableBodyElem = this.tableElem.querySelector("tbody");
     this.tableHeadElem = this.tableElem.querySelector("thead");
+    this.containerElem = this.shadowRoot.querySelector("#container");
     this.caption = this.getAttribute("caption");
     this.droppable = this.getAttribute("droppable");
     this.reorder = this.getAttribute("reorder");
@@ -153,17 +154,26 @@ class Table extends HTMLElement {
       this.tableBodyElem.addEventListener("drop", (e) =>
       {
         clearDragEnter(e);
-        const dropRowId = e.target.closest("tr").dataset.id;
+        this.containerElem.classList.remove("dragenter");
         const [dragRowId, dragId] = e.dataTransfer.getData("text/plain").split("#");
         const draggedSource = document.getElementById(dragId);
+        let dropRowId = null;
+        if (e.target.tagName !== "TBODY")
+          dropRowId = e.target.closest("tr").dataset.id;
 
         if (this.reordering)
         {
           const dragRowItem = this.getItem(dragRowId);
+          const dropIndex = this._getItemIndex(dropRowId);
+          const itemBefore = this._data[dropIndex - 1];
+
           this.deleteRow(dragRowId);
-          this.addRow(dragRowItem, dropRowId);
+          if (dropIndex > 0)
+            this.addRow(dragRowItem, itemBefore.id);
+          else
+            this.addFirstRow(dragRowItem);
         }
-        else if(draggedSource)
+        else if (draggedSource)
         {
           const draggedItem = draggedSource.getItem(dragRowId);
           if (draggedItem && draggedItem.data)
@@ -177,6 +187,24 @@ class Table extends HTMLElement {
           reordered: this.reordering
         }}));
 
+      });
+
+      // drag-n-drop when empty
+      let dragCounter = 0;
+      this.containerElem.addEventListener("dragenter", (e) =>
+      {
+        dragCounter++;
+        if (e.target.id === "container")
+        {
+          this.containerElem.classList.add("dragenter");
+        }
+      });
+
+      this.containerElem.addEventListener("dragleave", () =>
+      {
+        dragCounter--;
+        if (dragCounter === 0)
+          this.containerElem.classList.remove("dragenter");
       });
     }
     if (this.reorder)
@@ -213,6 +241,17 @@ class Table extends HTMLElement {
     else
       items.push(data);
 
+    this.items = items;
+  }
+
+  /**
+   * Unshifts a new row to items
+   * @param {object} data  new row data 
+   */
+  addFirstRow(data)
+  {
+    const items = this.items;
+    items.unshift(data);
     this.items = items;
   }
 
