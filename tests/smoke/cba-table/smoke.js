@@ -1,5 +1,15 @@
 const cbaTable = document.querySelector("cba-table");
 const items = [];
+
+items.push({
+  id: "first-item",
+  texts: {
+    data: "Please enter a long text here",
+    event: "Event",
+    value: "Value"
+  }
+});
+
 for (let index = 0; index < 30; index++) {
   items.push({
     id: "row" + index,

@@ -32,6 +32,7 @@ h2
 }
 table
 {
+  table-layout: fixed;
   --head-columns-offset: 0px;
   width: 100%;
   border-spacing: 0;
@@ -47,6 +48,8 @@ th, td
 }
 td
 {
+  overflow: hidden;
+  white-space: pre;
   border-top-width: 0;
   padding: 0 2px;
   color: var(--color-primary);

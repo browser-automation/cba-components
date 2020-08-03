@@ -377,7 +377,7 @@ class Table extends HTMLElement {
     const createRow = ({id, texts, selected}) => {
       const selectedClass = selected ? "highlight" : undefined;
       return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
-        return html`<td data-id="${name}">${texts[name]}</td>`;
+        return html`<td data-id="${name}" title="${texts[name]}">${texts[name]}</td>`;
       })}</tr>`;
     };
     render(html`${this._data.map(createRow)}`, this.tableBodyElem);
