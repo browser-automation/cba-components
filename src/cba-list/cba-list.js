@@ -492,7 +492,7 @@ class List extends HTMLElement {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}">${text}</span>`;
+      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
     }
     const createList = ({id, selected, text, editable}) => {
       return html`<li data-id="${id}">

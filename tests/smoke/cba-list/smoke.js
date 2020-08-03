@@ -32,7 +32,7 @@ cbaList.items = [
 const cbaSortableList = document.querySelector("#sortable");
 cbaSortableList.items = [
   {
-    text: "List1"
+    text: "A longer List1 to test wrap"
   },
   {
     text: "List3"
