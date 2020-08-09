@@ -10,9 +10,9 @@ const {page} = require("../main");
 
 const pageSetup = {
   body: `<cba-table caption="Actions">
-  <cba-column name="data" width="33%">data</cba-column>
-  <cba-column name="event" width="33%">event</cba-column>
-  <cba-column name="value" width="33%">value</cba-column>
+  <cba-column text="texts$0" width="33%">data</cba-column>
+  <cba-column text="event.name" width="33%">event</cba-column>
+  <cba-column text="value" width="33%">value</cba-column>
 </cba-table>`,
   js: ["cba-table/cba-table.js"]
 }
@@ -30,11 +30,18 @@ it(".list property populates, gets items and render cba-table with row items", a
   const items = await prepopulatedItems();
   const populatedItems = await cbaTable.getItems();
   deepEqual(populatedItems[0], items[0]);
-  deepEqual(await cbaTable.getDomRowTexts(items[0].id), items[0].texts);
+  await itemIsRendered(items[0]);
   deepEqual(populatedItems[1], items[1]);
-  deepEqual(await cbaTable.getDomRowTexts(items[1].id), items[1].texts);
+  await itemIsRendered(items[1]);
   notDeepEqual(populatedItems[2], items[2], "Sets missing ID");
-  deepEqual(await cbaTable.getDomRowTexts(populatedItems[2].id), items[2].texts);
+  await itemIsRendered(populatedItems[2]);
+});
+
+it("Items with non matching 'text' attrbutes in cba-column add empty rows", async() =>
+{
+  const item = {id: "first-item-id"};
+  await cbaTable.setItems([item]);
+  deepEqual(await cbaTable.getDomRowTexts(item.id), ["", "", ""]);
 });
 
 it("getItem should get a specific row record", async() =>
@@ -47,43 +54,37 @@ it("addRow method ads new row item", async() =>
 {
   const newRow = {
     data: "Info",
-    texts: {
-      data: "Added Data",
-      event: "Added Event",
-      value: "Added Value"
-    },
+    texts: ["Added Data"],
+    event: {name: "Added Event"},
+    value: "Added Value",
     id: "addedRow1"
   };
   await cbaTable.addRow(newRow);
   const populatedItems = await cbaTable.getItems();
   deepEqual(populatedItems[0], newRow);
-  deepEqual(await cbaTable.getDomRowTexts(newRow.id), newRow.texts);
+  await itemIsRendered(newRow);
 });
 
 it("updateRow should update a specific row record", async() =>
 {
   const oldRow = {
     data: "Info",
-    texts: {
-      data: "Old Data",
-      event: "Old Event",
-      value: "Old Value"
-    },
+    texts: ["Old Data"],
+    event: {name: "Old Event"},
+    value: "Old Value",
     id: "addedRow1"
   };
   const newRow = {
     data: "Info",
-    texts: {
-      data: "New Data",
-      event: "New Event",
-      value: "New Value"
-    },
+    texts: ["New Data"],
+    event: {name: "New Event"},
+    value: "New Value",
     id: "newRow1"
   };
   await cbaTable.addRow(oldRow);
   await cbaTable.updateRow(newRow, oldRow.id);
   notOk(await cbaTable.getDomRowTexts(oldRow.id));
-  deepEqual(await cbaTable.getDomRowTexts(newRow.id), newRow.texts);
+  await itemIsRendered(newRow);
   const items = await cbaTable.getItems();
   deepEqual(items[0], newRow);
 });
@@ -100,7 +101,7 @@ it("selectRow should Highlight a specific item ", async() =>
 {
   const items = await prepopulatedItems();
   await cbaTable.selectRow(items[0].id);
-  deepEqual(await cbaTable.getHighlightedTexts(), items[0].texts);
+  await itemIsHighlighted(items[0]);
   equal((await cbaTable.getItem(items[0].id)).selected, true);
 });
 
@@ -108,29 +109,39 @@ it("selectNextRow and selectPreviousRow should switch highlighting accordingly",
 {
   const items = await prepopulatedItems();
   await cbaTable.selectRow(items[0].id);
-  deepEqual(await cbaTable.getHighlightedTexts(), items[0].texts);
+  await itemIsHighlighted(items[0]);
   await cbaTable.selectNextRow();
-  deepEqual(await cbaTable.getHighlightedTexts(), items[1].texts);
+  await itemIsHighlighted(items[1]);
   await cbaTable.selectNextRow();
-  deepEqual(await cbaTable.getHighlightedTexts(), items[2].texts);
+  await itemIsHighlighted(items[2]);
   await cbaTable.selectNextRow();
-  deepEqual(await cbaTable.getHighlightedTexts(), items[0].texts);
+  await itemIsHighlighted(items[0]);
   await cbaTable.selectPreviousRow();
-  deepEqual(await cbaTable.getHighlightedTexts(), items[2].texts);
+  await itemIsHighlighted(items[2]);
   await cbaTable.selectPreviousRow();
-  deepEqual(await cbaTable.getHighlightedTexts(), items[1].texts);
+  await itemIsHighlighted(items[1]);
 });
 
 it("Keyboard navigation should change highlighted rows accordingly", async() =>
 {
   const items = await prepopulatedItems();
   await cbaTable.clickItem(items[0].id);
-  deepEqual(await cbaTable.getHighlightedTexts(), items[0].texts);
+  await itemIsHighlighted(items[0]);
   await page().keyboard.press("ArrowDown");
-  deepEqual(await cbaTable.getHighlightedTexts(), items[1].texts);
+  await itemIsHighlighted(items[1]);
   await page().keyboard.press("ArrowUp");
-  deepEqual(await cbaTable.getHighlightedTexts(), items[0].texts);
+  await itemIsHighlighted(items[0]);
 });
+
+async function itemIsRendered(item)
+{
+  deepEqual(await cbaTable.getDomRowTexts(item.id), [item.texts[0], item.event.name, item.value]);
+}
+
+async function itemIsHighlighted(item)
+{
+  deepEqual(await cbaTable.getHighlightedTexts(), [item.texts[0], item.event.name, item.value]);
+}
 
 async function prepopulatedItems()
 {
@@ -139,11 +150,9 @@ async function prepopulatedItems()
     const item = {
       id: "row" + index,
       data: "Info",
-      texts: {
-        data: "Data" + index,
-        event: "Event" + index,
-        value: "Value" + index
-      }
+      texts: ["Data" + index],
+      event: {name: "Event" + index},
+      value: "Value" + index
     };
     if (index == 3)
       delete item.id;

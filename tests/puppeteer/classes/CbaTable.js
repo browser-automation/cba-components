@@ -69,9 +69,9 @@ class CbaTable
       if (!cells.length)
         return false;
       return [...cells].reduce((acc, cell) => {
-        acc[cell.dataset.id] = cell.textContent;
+        acc.push(cell.textContent);
         return acc;
-      }, {});
+      }, []);
     }, rowHandle);
   }
   async getDomRowTexts(id)

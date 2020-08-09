@@ -99,7 +99,7 @@ class Table extends HTMLElement {
     this.reorder = this.getAttribute("reorder");
     for (const cbaColumn of this.querySelectorAll("cba-column"))
     {
-      this.columns.push(cbaColumn.getAttribute("name"));
+      this.columns.push(cbaColumn.getAttribute("text"));
     }
     this._renderCaption();
     this._renderHead();
@@ -370,14 +370,39 @@ class Table extends HTMLElement {
   }
 
   /**
+   * Get cell value to be used as it's textContent
+   * @param {object} item row item object
+   * @param {string} colText "text" attribute value of current cba-column
+   */
+  _getText(item, colText)
+  {
+    if (colText.includes("."))
+    {
+      return colText.split(".").reduce((acc, prop) => acc[prop] || "" , item);
+    }
+    else if (colText.includes("$"))
+    {
+      return colText.split("$").reduce((acc, prop, index, {length}) => {
+        if (index -1 === length)
+          return acc[parseInt(prop, 10)] || "";
+        else
+          return acc[prop] || "";
+      }, item);
+    }
+    return item[colText] || "";
+  }
+
+  /**
    * Render method to be called after each state change
    */
   _renderBody()
   {
-    const createRow = ({id, texts, selected}) => {
+    const createRow = (rowData) => {
+      const {id, selected} = rowData;
       const selectedClass = selected ? "highlight" : undefined;
       return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
-        return html`<td data-id="${name}" title="${texts[name]}">${texts[name]}</td>`;
+        const text = this._getText(rowData, name);
+        return html`<td data-id="${name}" title="${text}">${text}</td>`;
       })}</tr>`;
     };
     render(html`${this._data.map(createRow)}`, this.tableBodyElem);
@@ -420,7 +445,7 @@ class Column extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["name", "width"];
+    return ["text", "width"];
   }
 
   /**
@@ -435,7 +460,7 @@ class Column extends HTMLElement {
     {
       return;
     }
-    if (name === "name")
+    if (name === "text")
     {
       this.columnName = newValue;
       const column = this._getColumnById(oldValue);
@@ -457,7 +482,7 @@ class Column extends HTMLElement {
     this.connected = true;
     this.table = this.closest("cba-table")
     this.tableElem = this.table.shadowRoot.querySelector("table");
-    this.columnName = this.getAttribute("name");
+    this.columnName = this.getAttribute("text");
     this.columnWidth = this.getAttribute("width");
     document.addEventListener("mousemove", this._onMouseMove.bind(this));
     document.addEventListener("mouseup", this._onMouseUp.bind(this));

@@ -17,9 +17,9 @@ const cbaTable = new CbaTable("cba-table");
 const pageSetup = {
   body: `
   <cba-table caption="Actions" droppable="true" reorder="true">
-    <cba-column name="data" width="33%">data</cba-column>
-    <cba-column name="event" width="33%">event</cba-column>
-    <cba-column name="value" width="33%">value</cba-column>
+    <cba-column text="texts.data" width="33%">data</cba-column>
+    <cba-column text="texts.event" width="33%">event</cba-column>
+    <cba-column text="texts.value" width="33%">value</cba-column>
   </cba-table>
   <cba-list id="dnd-list" draggable="true"></cba-list>
 `,
@@ -46,8 +46,7 @@ it("Dragging cba-list and dropping to cba-table add item and trigger's 'dragndro
   equal(dragId, cbaListId);
   notOk(reordered)
 
-  const texts = await cbaTable.getDomRowIndexText(2);
-  deepEqual(texts, cbaListItems[0].data.texts);
+  await itemIsRenderedOnRowIndex(cbaListItems[0].data, 2);
 });
 
 it("Reordering cba-table row reorders and trigger's 'dragndrop' event with info", async function()
@@ -62,9 +61,9 @@ it("Reordering cba-table row reorders and trigger's 'dragndrop' event with info"
   equal(dropRowId, cbaTableItems[0].id);
   ok(reordered)
 
-  deepEqual(await cbaTable.getDomRowIndexText(0), cbaTableItems[2].texts);
-  deepEqual(await cbaTable.getDomRowIndexText(1), cbaTableItems[0].texts);
-  deepEqual(await cbaTable.getDomRowIndexText(2), cbaTableItems[1].texts);
+  await itemIsRenderedOnRowIndex(cbaTableItems[2], 0);
+  await itemIsRenderedOnRowIndex(cbaTableItems[0], 1);
+  await itemIsRenderedOnRowIndex(cbaTableItems[1], 2);
 });
 
 async function populateCbaList()
@@ -144,6 +143,11 @@ async function triggerDragStart(handle)
 
     return event.dataTransfer.getData("text/plain");
   });
+}
+
+async function itemIsRenderedOnRowIndex({texts}, index)
+{
+  deepEqual(await cbaTable.getDomRowIndexText(index), [texts.data, texts.event, texts.value]);
 }
 
 function wait(milliseconds = 200)
