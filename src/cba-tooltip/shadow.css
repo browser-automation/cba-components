@@ -13,6 +13,7 @@
   --tooltip-offset-y: 5px;
   --arrow-adjust-x: calc(0px - var(--arrow-size) / 2 - var(--border-size));
   --arrow-adjust-y: calc(var(--arrow-adjust-x) + var(--tooltip-offset-y) + var(--content-height) / 2);
+  position: relative;
 }
 
 #tooltip::before {
