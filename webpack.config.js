@@ -9,7 +9,7 @@ const srcFolder = "./src";
 const destinationFolder = "dist";
 // Components, to be used from srcFolder, corresponding to
 // `./[srcFolder]/[component]/[component].js` format
-let components = ["cba-table", "cba-list", "cba-button", "cba-tabs"];
+let components = ["cba-table", "cba-list", "cba-button", "cba-tabs", "cba-tooltip"];
 // Single bundle path in destination directory if `--single-bundle` flag is used
 const singleBundle = "js/cba-components.js";
 const assetsPath = "img";

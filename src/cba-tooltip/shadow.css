@@ -1,0 +1,106 @@
+:host
+{
+  --color-background: #e4e4e4;
+  --color-foreground: #222222;
+  --color-border: #222222;
+  --border-size: 1px;
+  --tooltip-width: max-content;
+  --tooltip-max-width: 200px;
+  --content-width: 0px;
+  --content-height: 0px;
+  --arrow-size: 8px;
+  --tooltip-offset-x: 10px;
+  --tooltip-offset-y: 5px;
+  --arrow-adjust-x: calc(0px - var(--arrow-size) / 2 - var(--border-size));
+  --arrow-adjust-y: calc(var(--arrow-adjust-x) + var(--tooltip-offset-y) + var(--content-height) / 2);
+}
+
+#tooltip::before {
+  content: "";
+  width: 0;
+  height: 0;
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  width: var(--arrow-size);
+  height: var(--arrow-size);
+  background-color: var(--color-background);
+  border: var(--border-size) solid var(--color-border);
+  transform: rotate(45deg);
+}
+
+#tooltip {
+  border: var(--border-size) solid var(--color-border);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  padding: 10px;
+  position: absolute;
+  width: var(--tooltip-width);
+  max-width: var(--tooltip-max-width);
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.3s, opacity 0.3s linear;
+}
+
+:host(:not(:hover)) #tooltip
+{
+  opacity: 0;
+  visibility: hidden;
+}
+
+#tooltip p {
+  margin: 0;
+}
+
+#tooltip a {
+  float: right;
+}
+
+:host([data-placement="right-bottom"]) #tooltip {
+  left: calc(var(--content-width) + var(--tooltip-offset-x));
+  top: calc(var(--tooltip-offset-y) * -1);
+}
+
+:host([data-placement="right-bottom"]) #tooltip::before {
+  top: var(--arrow-adjust-y);
+  left: var(--arrow-adjust-x);
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
+:host([data-placement="left-bottom"]) #tooltip {
+  right: calc(var(--content-width) +  var(--tooltip-offset-x));
+  top: calc(var(--tooltip-offset-y) * -1);
+}
+
+:host([data-placement="left-bottom"]) #tooltip::before {
+  top: var(--arrow-adjust-y);
+  right: var(--arrow-adjust-x);
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+:host([data-placement="right-top"]) #tooltip {
+  left: calc(var(--content-width) +  var(--tooltip-offset-x));
+  bottom: calc(var(--tooltip-offset-y) * -1);
+}
+
+:host([data-placement="right-top"]) #tooltip::before {
+  left: var(--arrow-adjust-x);
+  bottom: var(--arrow-adjust-y);
+  border-right-color: transparent;
+  border-top-color: transparent;
+}
+
+
+:host([data-placement="left-top"]) #tooltip {
+  right: calc(var(--content-width) +  var(--tooltip-offset-x));
+  bottom: calc(var(--tooltip-offset-y) * -1);
+}
+
+:host([data-placement="left-top"]) #tooltip::before {
+  right: var(--arrow-adjust-x);
+  bottom: var(--arrow-adjust-y);
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
