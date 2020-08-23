@@ -22,12 +22,11 @@ class List extends HTMLElement {
   connectedCallback()
   {
     this._setContentSizeCss();
-    this._setDirection();
     this.tooltipElem = this.shadowRoot.querySelector("#tooltip");
     this.text = this.getAttribute("text");
     this.link = this.getAttribute("link");
     this.linkText = this.getAttribute("link-text");
-    this._render();
+    this.addEventListener("mouseover", this._render);
   }
 
   setData(text, link, linkText) {
@@ -53,11 +52,11 @@ class List extends HTMLElement {
     const distanceBottom = viewportHeight - clientRect.bottom;
     const placementX = distanceLeft - distanceRight > 0 ? "left" : "right";
     const placementY = distanceTop - distanceBottom > 0 ? "top" : "bottom";
-    this.dataset.placement = `${placementX}-${placementY}`;
+    this.tooltipElem.dataset.placement = `${placementX}-${placementY}`;
   }
 
   /**
-   * Sets --content-width and --content-height to be in CSS.
+   * Sets --content-width and --content-height to be used in CSS.
    */
   _setContentSizeCss()
   {
@@ -71,6 +70,7 @@ class List extends HTMLElement {
    */
   _render()
   {
+    this._setDirection();
     const paragraph = html`<p>${this.text}</p>`;
     let anchor = "";
     if (this.link && this.linkText)
