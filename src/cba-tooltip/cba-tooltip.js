@@ -21,12 +21,35 @@ class List extends HTMLElement {
    */
   connectedCallback()
   {
-    this._setContentSizeCss();
     this.tooltipElem = this.shadowRoot.querySelector("#tooltip");
     this.text = this.getAttribute("text");
     this.link = this.getAttribute("link");
     this.linkText = this.getAttribute("link-text");
     this.addEventListener("mouseover", this._render);
+    this._setAxis();
+    this._render();
+  }
+
+  static get observedAttributes() {
+    return ["arrow"];
+  }
+
+  /**
+   * Called each time an attribute on the custom element is changed
+   * @param {String} name attribute name
+   * @param {String} oldValue Old value of the attribute
+   * @param {String} newValue New value of the attribute
+   */
+  attributeChangedCallback(name, oldValue, newValue)
+  {
+    if (oldValue === newValue || !this.connected)
+    {
+      return;
+    }
+    if (name === "arrow")
+    {
+      this._setAxis();
+    }
   }
 
   setData(text, link, linkText) {
@@ -36,6 +59,11 @@ class List extends HTMLElement {
       this.link = link;
     if (linkText)
       this.linkText = linkText;
+  }
+
+  _setAxis() {
+    this.arrow = this.getAttribute("arrow") === "y" ? "y" : "x";
+    this.tooltipElem.dataset.arrow = this.arrow;
   }
 
   /**
@@ -52,7 +80,7 @@ class List extends HTMLElement {
     const distanceBottom = viewportHeight - clientRect.bottom;
     const placementX = distanceLeft - distanceRight > 0 ? "left" : "right";
     const placementY = distanceTop - distanceBottom > 0 ? "top" : "bottom";
-    this.tooltipElem.dataset.placement = `${placementX}-${placementY}`;
+    this.tooltipElem.dataset.tooltip = `${placementX}-${placementY}`;
   }
 
   /**
@@ -70,6 +98,7 @@ class List extends HTMLElement {
    */
   _render()
   {
+    this._setContentSizeCss();
     this._setDirection();
     const paragraph = html`<p>${this.text}</p>`;
     let anchor = "";
