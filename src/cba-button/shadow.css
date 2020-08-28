@@ -8,7 +8,6 @@ button
   box-shadow: 0px 1px 3px #6c6c6c, inset 0px 0px 2px #d1d1d1;
   width: inherit;
   height: inherit;
-  padding: inherit;
 }
 
 button:hover
