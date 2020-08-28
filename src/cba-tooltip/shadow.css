@@ -55,7 +55,8 @@
   transition: visibility 0.3s, opacity 0.3s linear;
 }
 
-:host(:not(:hover)) #tooltip
+:host(:not(:hover)) #tooltip,
+:host([disabled]) #tooltip
 {
   opacity: 0;
   visibility: hidden;

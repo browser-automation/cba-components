@@ -83,6 +83,18 @@ class List extends HTMLElement {
     this.tooltipElem.dataset.tooltip = `${placementX}-${placementY}`;
   }
 
+  disable() {
+    this.setAttribute("disabled", true);
+  }
+
+  enable() {
+    this.removeAttribute("disabled");
+  }
+
+  isDisabled() {
+    return this.getAttribute("disabled");
+  }
+
   /**
    * Sets --content-width and --content-height to be used in CSS.
    */
@@ -98,6 +110,9 @@ class List extends HTMLElement {
    */
   _render()
   {
+    if (this.isDisabled())
+      return;
+
     this._setContentSizeCss();
     this._setDirection();
     const paragraph = html`<p>${this.text}</p>`;

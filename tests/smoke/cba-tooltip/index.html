@@ -11,7 +11,11 @@
         height: 300px;
         border: 1px solid black;
       }
+      #controls {
+        margin-top: 10px;
+      }
     </style>
+    <script src="smoke.js" defer></script>
   </head>
   <body>
     <div>
@@ -25,6 +29,15 @@
       <iframe src="iframes/axis-y/right-top.html" frameborder="0"></iframe>
       <iframe src="iframes/axis-y/left-bottom.html" frameborder="0"></iframe>
       <iframe src="iframes/axis-y/right-bottom.html" frameborder="0"></iframe>
+    </div>
+
+    <cba-tooltip arrow="y"><button>Hover</button></cba-tooltip>
+    <div id="controls">
+      <input type="text" id="textData" placeholder="Text"></br>
+      <input type="text" id="linkData" placeholder="Link"></br>
+      <input type="text" id="linkTextData" placeholder="Link Text"></br>
+      <button id="disableTooltip">Disable</button>
+      <button id="enableTooltip">Enable</button>
     </div>
   </body>
 </html>
