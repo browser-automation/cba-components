@@ -105,7 +105,9 @@ class List extends HTMLElement {
     this.subheadingContainer = this.shadowRoot.querySelector("#column");
     this.drag = this.getAttribute("draggable") == "true";
     this.sort = this.getAttribute("sort");
-    this.tooltip = this.getAttribute("tooltip");
+    this.tooltipText = this.getAttribute("tooltip-text");
+    this.tooltipLink = this.getAttribute("tooltip-link");
+    this.tooltipLinkText = "Learn more";
     this.connected = true;
 
     this.container.addEventListener("click", ({target}) => 
@@ -518,10 +520,11 @@ class List extends HTMLElement {
       if (selected)
         classes.push("highlight");
       const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
-      if (this.tooltip)
+      if (this.tooltipText)
       {
-        const infoText = this._getText(item, this.tooltip);
-        const tooltip = html`<cba-tooltip text="${infoText}"><span class="${infoText ? "hasInfo" : ""}"></span></cba-tooltip>`;
+        const infoText = this._getText(item, this.tooltipText);
+        const infoLink = this._getText(item, this.tooltipLink);
+        const tooltip = html`<cba-tooltip text="${infoText}" link="${infoLink}" link-text="${this.tooltipLinkText}"><span class="${infoText ? "hasInfo" : ""}"></span></cba-tooltip>`;
         return html`${tooltip}${row}`;
       }
       else

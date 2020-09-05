@@ -41,8 +41,11 @@ const listItems = [
   },
   {
     id: `subrow2`,
+    tooltip: {
+      text: "Tooltip text used in the cba-list with the link to a resource",
+      link: "https://example.com"
+    },
     data: {
-      tooltip: "Tooltip text 2",
       data: `Info2`,
       texts: {
         data: `List Data2`,
@@ -55,8 +58,10 @@ const listItems = [
   {
     id: `subrow3`,
     info: "Hello World",
+    tooltip: {
+      text: "Tooltip text 3"
+    },
     data: {
-      tooltip: "Tooltip text 3",
       data: `Info3`,
       texts: {
         data: `List Data3`,
