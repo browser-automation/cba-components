@@ -9,6 +9,7 @@
   --column-primary: #f1f1f1;
   --column-secondary: #ededed;
   --column-tertiary: #555555;
+  --tooltip-icon: "";
   --icon-group: "";
   --icon-project: "";
 }
@@ -80,11 +81,9 @@ h2
   border-top: 5px solid var(--column-tertiary);
 }
 
-div
+#container
 {
   border: solid 1px var(--color-border);
-  overflow-y: auto;
-  overflow-x: hidden;
   border-radius: 5px;
   position: relative;
   font-weight: 300;
@@ -137,6 +136,29 @@ li > .row.highlight
 li li .row
 {
   padding-left: 20px;
+}
+
+li cba-tooltip
+{
+  width: 15px;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  position: absolute;
+}
+
+li cba-tooltip .hasInfo
+{
+  width: 10px;
+  height: 10px;
+  background: no-repeat var(--tooltip-icon);
+  display: inline-block;
+}
+
+li cba-tooltip+.row
+{
+  padding-left: 15px;
 }
 
 [data-subitems="true"] li .row

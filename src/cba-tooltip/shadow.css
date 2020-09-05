@@ -12,6 +12,7 @@
   --tooltip-offset-x: 0px;
   --tooltip-offset-y: 0px;
   position: relative;
+  display: inline-block;
 }
 
 #tooltip[data-arrow="x"]
@@ -53,6 +54,7 @@
   visibility: visible;
   opacity: 1;
   transition: visibility 0.3s, opacity 0.3s linear;
+  z-index: 1;
 }
 
 :host(:not(:hover)) #tooltip,

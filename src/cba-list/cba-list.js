@@ -19,7 +19,7 @@ class List extends HTMLElement {
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
-    <div>
+    <div id="container">
       <h2></h2>
       <h3 id="column"><a href="#"></a></h3>
       <ul></ul>
@@ -105,6 +105,7 @@ class List extends HTMLElement {
     this.subheadingContainer = this.shadowRoot.querySelector("#column");
     this.drag = this.getAttribute("draggable") == "true";
     this.sort = this.getAttribute("sort");
+    this.tooltip = this.getAttribute("tooltip");
     this.connected = true;
 
     this.container.addEventListener("click", ({target}) => 
@@ -482,32 +483,67 @@ class List extends HTMLElement {
   }
 
   /**
+   * Get tooltip text from the item
+   * @param {object} item row item object
+   * @param {string} tooltip "tooltip" attribute value
+   */
+  _getText(item, tooltip)
+  {
+    if (tooltip.includes("."))
+    {
+      return tooltip.split(".").reduce((acc, prop) => acc[prop] || "" , item);
+    }
+    else if (tooltip.includes("$"))
+    {
+      return tooltip.split("$").reduce((acc, prop, index, {length}) => {
+        if (index -1 === length)
+          return acc[parseInt(prop, 10)] || "";
+        else
+          return acc[prop] || "";
+      }, item);
+    }
+    return item[tooltip] || "";
+  }
+
+  /**
    * Render method to be called after each state change
    */
   _render()
   {
     this.container.dataset.subitems = this.hasSubtiems;
-    const createRow = (text, selected, editable = false) =>
+    const createRow = (item) =>
     {
+      const {text, selected, editable = false} = item;
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      return html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
+      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
+      if (this.tooltip)
+      {
+        const infoText = this._getText(item, this.tooltip);
+        const tooltip = html`<cba-tooltip text="${infoText}"><span class="${infoText ? "hasInfo" : ""}"></span></cba-tooltip>`;
+        return html`${tooltip}${row}`;
+      }
+      else
+      {
+        return row;
+      }
     }
-    const createList = ({id, selected, text, editable}) => {
+    const createList = (item) => {
+      const {id} = item;
       return html`<li data-id="${id}">
-                      ${createRow(text, selected, editable)}
+                      ${createRow(item)}
                   </li>`;
     }
     const result = this._data.map((row) => {
-      const {id, subItems, selected, text, expanded, editable} = row;
+      const {id, subItems, expanded} = row;
       if (subItems)
       {
         let subitems = "";
         if (expanded)
           subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(text, selected, editable)}
+                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(row)}
                         ${subitems}
                     </li>`;
       }
