@@ -54,7 +54,6 @@ class List extends HTMLElement {
   }
 
   setData(data) {
-    console.log(data);
     const {text, link, linkText, heading} = data;
     if (text)
       this.text = text;
