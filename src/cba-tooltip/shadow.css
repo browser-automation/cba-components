@@ -64,6 +64,14 @@
   visibility: hidden;
 }
 
+#tooltip {
+  font-size: 1em;
+}
+
+#tooltip h4 {
+  margin: 0;
+}
+
 #tooltip p {
   margin: 0;
 }

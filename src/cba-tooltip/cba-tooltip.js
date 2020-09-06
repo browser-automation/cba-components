@@ -25,6 +25,7 @@ class List extends HTMLElement {
     this.text = this.getAttribute("text");
     this.link = this.getAttribute("link");
     this.linkText = this.getAttribute("link-text");
+    this.heading = this.getAttribute("heading");
     this.addEventListener("mouseover", this._render);
     this._setAxis();
     this._render();
@@ -52,13 +53,17 @@ class List extends HTMLElement {
     }
   }
 
-  setData(text, link, linkText) {
+  setData(data) {
+    console.log(data);
+    const {text, link, linkText, heading} = data;
     if (text)
       this.text = text;
     if (link)
       this.link = link;
     if (linkText)
       this.linkText = linkText;
+    if (heading)
+      this.heading = heading;
   }
 
   _setAxis() {
@@ -119,8 +124,11 @@ class List extends HTMLElement {
     let anchor = "";
     if (this.link && this.linkText)
       anchor = html`<a href="${this.link}" target="_blank">${this.linkText}</a>`;
+    let heading = "";
+    if (this.heading)
+      heading = html`<h4>${this.heading}</h4>`;
 
-    render(html`${paragraph}${anchor}`, this.tooltipElem);
+    render(html`${heading}${paragraph}${anchor}`, this.tooltipElem);
   }
 }
 
