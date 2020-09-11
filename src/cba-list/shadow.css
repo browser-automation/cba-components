@@ -156,7 +156,7 @@ li cba-tooltip .hasInfo
   display: inline-block;
 }
 
-li cba-tooltip+.row
+:host([tooltip-text]) li .row
 {
   padding-left: 15px;
 }

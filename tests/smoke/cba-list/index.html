@@ -25,7 +25,7 @@
   </style>
 </head>
 <body>
-  <h1>cba-table</h1>
+  <h1>cba-list</h1>
   <div>
     <cba-list heading="Heading" subheading="Column"></cba-list>
     <button id="add-item">Add Item</button>
@@ -45,10 +45,12 @@
   <h3>Markup</h3>
   <pre>
     <code>
-<!-- Basic -->
+&lt;!-- Basic -->
 &lt;cba-list heading="Heading" subheading="Column"&gt;&lt;/cba-list&gt;
-<!-- Sortable -->
+&lt;!-- Sortable -->
 &lt;cba-list sort="true" id="sortable" heading="Heading" subheading="Column"&gt;&lt;/cba-list&gt;
+&lt;!-- Rows with tooltip -->
+&lt;cba-list id="functions" heading="Functions" draggable="true" tooltip-text="tooltip.text" tooltip-link="tooltip.link">&lt;/cba-list>
     </code>
   </pre>
   <h3>Add items</h3>

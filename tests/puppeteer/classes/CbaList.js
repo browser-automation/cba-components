@@ -54,6 +54,41 @@ class CbaList
     const rootHandle = await this._getShadowRoot();
     return rootHandle.$(`ul [data-id="${id}"]`);
   }
+  async _getAttribute(handle, attribute)
+  {
+    return handle.evaluate((node, attribute) => node.getAttribute(attribute), attribute)
+  }
+  async _getTooltipHandle(id)
+  {
+    const rowHandle = await this.getRowHandle(id);
+    return rowHandle.$("cba-tooltip");
+  }
+  async _getTooltipShadowHandle(id)
+  {
+    const handle = await this._getTooltipHandle(id);
+    return handle.evaluateHandle((cbaTooltip) => cbaTooltip.shadowRoot);
+  }
+  async getTooltipAttribute(id, attribute)
+  {
+    const handle = await this._getTooltipHandle(id);
+    return handle.evaluate((node, attribute) => node.getAttribute(attribute), attribute)
+  }
+  async hasRowTooltip(id)
+  {
+    return this._getTooltipHandle(id);
+  }
+  async getTooltipHeadingText(id)
+  {
+    const shadowRootHandle = await this._getTooltipShadowHandle(id);
+    const handle = await shadowRootHandle.$("#tooltip p");
+    return await (await handle.getProperty("textContent")).jsonValue();
+  }
+  async getTooltipLink(id)
+  {
+    const shadowRoot = await this._getTooltipShadowHandle(id);
+    const handle = await shadowRoot.$("#tooltip a");
+    return this._getAttribute(handle, "href");
+  }
   async clickItem(id)
   {
     const rootHandle = await this._getShadowRoot();

@@ -3,8 +3,10 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/js/cba-tooltip/cba-tooltip.js" type="module"></script>
     <title>Document</title>
+    <script src="/smoke/res/highlight.js"></script>
+    <script src="/js/cba-tooltip/cba-tooltip.js" type="module"></script>
+    <link rel="stylesheet" href="/smoke/res/highlight.css">
     <style>
       iframe {
         width: 400px;
@@ -18,6 +20,7 @@
     <script src="smoke.js" defer></script>
   </head>
   <body>
+    <h1>cba-tooltip</h1>
     <div>
       <iframe src="iframes/axis-x/left-top.html" frameborder="0"></iframe>
       <iframe src="iframes/axis-x/right-top.html" frameborder="0"></iframe>
@@ -40,5 +43,27 @@
       <button id="disableTooltip">Disable</button>
       <button id="enableTooltip">Enable</button>
     </div>
+
+    <h2>Documentation</h2>
+    <h3>Markup</h3>
+    <pre>
+      <code>
+  &lt;!-- Preset data -->
+  &lt;cba-tooltip heading="Tooltip heading" text="Click 'Learn more' button below" link="https://example.com" link-text="Learn more">&lt;button>Hover&lt;/button>&lt;/cba-tooltip>
+  &lt;!-- Open tooltip vertically -->
+  &lt;cba-tooltip arrow="y">&lt;button>Hover&lt;/button>&lt;/cba-tooltip>
+      </code>
+    </pre>
+    <h3>Set data</h3>
+    <pre>
+      <code>
+  const heading = "Test Heading";
+  const text = "Test text";
+  const link = "http://example.com";
+  const linkText = "Text link text"; 
+  await cbaTooltip.setData({heading, text, link, linkText});
+      </code>
+    </pre>
+    <script>hljs.initHighlightingOnLoad();</script>
   </body>
 </html>

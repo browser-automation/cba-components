@@ -34,7 +34,7 @@
   "devDependencies": {
     "copy-webpack-plugin": "^5.1.1",
     "mocha": "^7.0.1",
-    "puppeteer": "^2.1.1",
+    "puppeteer": "^5.2.1",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }

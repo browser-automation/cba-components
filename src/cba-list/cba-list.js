@@ -491,6 +491,10 @@ class List extends HTMLElement {
    */
   _getText(item, tooltip)
   {
+    if (!tooltip || !item)
+    {
+      return "";
+    }
     if (tooltip.includes("."))
     {
       return tooltip.split(".").reduce((acc, prop) => acc[prop] || "" , item);
@@ -520,9 +524,9 @@ class List extends HTMLElement {
       if (selected)
         classes.push("highlight");
       const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
-      if (this.tooltipText)
+      const infoText = this._getText(item, this.tooltipText);
+      if (infoText)
       {
-        const infoText = this._getText(item, this.tooltipText);
         const infoLink = this._getText(item, this.tooltipLink);
         const tooltip = html`<cba-tooltip text="${infoText}" link="${infoLink}" link-text="${this.tooltipLinkText}"><span class="${infoText ? "hasInfo" : ""}"></span></cba-tooltip>`;
         return html`${tooltip}${row}`;
