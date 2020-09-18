@@ -9,7 +9,8 @@ const notOk = (value) => ok(!value);
 const {page} = require("../main");
 
 const pageSetup = {
-  body: `<cba-list heading="Heading text" subHeading="Subheading text" tooltip-text="tooltip.text" tooltip-link="tooltip.link" tooltip-link-text="tooltip.linkText"></cba-list>`
+  body: `<cba-list heading="Heading text" subHeading="Subheading text" tooltip-text="tooltip.text" tooltip-link="tooltip.link" tooltip-link-text="tooltip.linkText"></cba-list>`,
+  js: ["cba-list/cba-list.js"]
 }
 
 const {CbaList} = require("../classes/CbaList");
