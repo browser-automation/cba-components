@@ -20,7 +20,6 @@
   --tooltip-icon: "";
   --icon-group: "";
   --icon-project: "";
-  height: inherit;
 }
 
 h2
@@ -96,8 +95,8 @@ h2
   position: relative;
   font-weight: 300;
   font-size: 14px;
-  height: inherit;
   flex-flow: column;
+  height: 100%;
   display: flex;
 }
 

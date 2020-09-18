@@ -10,9 +10,14 @@
   <script src="smoke.js" defer></script>
   <link rel="stylesheet" href="/smoke/res/highlight.css">
   <style>
-    div
+    #main
     {
-      display: inline-block;
+      display: flex;
+    }
+    .wrapper
+    {
+      display: flex;
+      flex-direction: column;
       width: 350px;
       height: 300px;
       font-family: Verdana, Arial, sans-serif;
@@ -22,23 +27,35 @@
       --icon-group: no-repeat url("/smoke/res/icon-group.svg");
       --icon-project: no-repeat url("/smoke/res/icon-project.svg");
     }
+    #sortable
+    {
+      height: 100%;
+    }
+    #subItemList
+    {
+      height: 80%;
+    }
   </style>
 </head>
 <body>
   <h1>cba-list</h1>
-  <div>
-    <cba-list heading="Heading" subheading="Column"></cba-list>
-    <button id="add-item">Add Item</button>
-    <button id="add-subitem">Add Subitem</button>
-    <button id="update-row">Update row</button>
-    <button id="delete-row">Delete row</button>
-    <button id="rename">Rename</button>
-    <button id="save">Save</button>
-    <br>
-    <input type="text" name="data"><br>
-  </div>
-  <div style="vertical-align: top; width: 150px">
-    <cba-list sort="true" id="sortable" heading="Heading" subheading="Column"></cba-list>
+  <div id="main">
+    <div class="wrapper">
+      <cba-list id="subItemList" heading="Heading" subheading="Column"></cba-list>
+      <div class="control">
+        <button id="add-item">Add Item</button>
+        <button id="add-subitem">Add Subitem</button>
+        <button id="update-row">Update row</button>
+        <button id="delete-row">Delete row</button>
+        <button id="rename">Rename</button>
+        <button id="save">Save</button>
+        <br>
+        <input type="text" name="data"><br>
+      </div>
+    </div>
+    <div class="wrapper" style="vertical-align: top; width: 150px">
+      <cba-list sort="true" id="sortable" heading="Heading" subheading="Column"></cba-list>
+    </div>
   </div>
 
   <h2>Documentation</h2>

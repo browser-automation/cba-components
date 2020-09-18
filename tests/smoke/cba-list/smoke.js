@@ -1,6 +1,5 @@
 const cbaList = document.querySelector("cba-list");
-
-cbaList.items = [
+const items = [
   {
     id: "row1",
     data: "Info",
@@ -28,6 +27,15 @@ cbaList.items = [
     text: "List3"
   },
 ];
+
+for (let i = 4; i < 20; i++) {
+  items.push({
+    id: `row${i}`,
+    data: `Info`,
+    text: `List${i}`
+  });
+}
+cbaList.items = items;
 
 const cbaSortableList = document.querySelector("#sortable");
 cbaSortableList.items = [
