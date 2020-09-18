@@ -22,7 +22,10 @@ class List extends HTMLElement {
     <div id="container">
       <h2></h2>
       <h3 id="column"><a href="#"></a></h3>
-      <ul></ul>
+      <div id="list-body">
+        <ul></ul>
+      </div>
+      <div id="tooltip"></div>
     </div>
     `;
     constructableCSS.load(this.shadowRoot);
@@ -102,12 +105,14 @@ class List extends HTMLElement {
     this.heading = this.shadowRoot.querySelector("h2");
     this.subheading = this.shadowRoot.querySelector("h3 a");
     this.container = this.shadowRoot.querySelector("ul");
+    this.tooltip = this.shadowRoot.querySelector("#tooltip");
     this.subheadingContainer = this.shadowRoot.querySelector("#column");
     this.drag = this.getAttribute("draggable") == "true";
     this.sort = this.getAttribute("sort");
     this.tooltipText = this.getAttribute("tooltip-text");
     this.tooltipLink = this.getAttribute("tooltip-link");
-    this.tooltipLinkText = "Learn more";
+    this.tooltipLinkText = this.getAttribute("tooltip-link-text");
+    this.tooltipLinkTextDefault = "Learn more";
     this.connected = true;
 
     this.container.addEventListener("click", ({target}) => 
@@ -511,6 +516,31 @@ class List extends HTMLElement {
     return item[tooltip] || "";
   }
 
+  showTooltip({target})
+  {
+    const itemId =  target.closest("li").dataset.id;
+    const item = this.getItem(itemId);
+    const infoText = this._getText(item, this.tooltipText);
+    if (infoText)
+    {
+      const infoLink = this._getText(item, this.tooltipLink);
+      const infoLinkText = this._getText(item, this.tooltipLinkText) ||
+                           this.tooltipLinkTextDefault;
+      const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
+      render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
+      const infoRect = target.getBoundingClientRect();
+      const tooltipRect = this.tooltip.getBoundingClientRect();
+      this.style.setProperty("--tooltip-offset-y", `${infoRect.top}px`);
+      this.style.setProperty("--tooltip-offset-x", `${tooltipRect.width}px`);
+      this.tooltip.classList.add("visible")
+    }
+  }
+
+  hideTooltip()
+  {
+    this.tooltip.classList.remove("visible")
+  }
+
   /**
    * Render method to be called after each state change
    */
@@ -527,8 +557,7 @@ class List extends HTMLElement {
       const infoText = this._getText(item, this.tooltipText);
       if (infoText)
       {
-        const infoLink = this._getText(item, this.tooltipLink);
-        const tooltip = html`<cba-tooltip text="${infoText}" link="${infoLink}" link-text="${this.tooltipLinkText}"><span class="${infoText ? "hasInfo" : ""}"></span></cba-tooltip>`;
+        const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}"></span>`;
         return html`${tooltip}${row}`;
       }
       else

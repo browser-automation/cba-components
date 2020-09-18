@@ -53,24 +53,27 @@ const listItems = [
         value: `List Value2`
       }
     },
-    text: `List3`
-  },
-  {
-    id: `subrow3`,
+    text: `List2`
+  }
+];
+
+for (let i = 3; i < 20; i++) {
+  listItems.push({
+    id: `subrow${i}`,
+    text: `List${i}`,
     info: "Hello World",
     tooltip: {
-      text: "Tooltip text 3"
+      text: `Tooltip text ${i}`
     },
     data: {
-      data: `Info3`,
+      data: `Info${i}`,
       texts: {
-        data: `List Data3`,
-        event: `List Event3`,
-        value: `List Value3`
+        data: `List Data${i}`,
+        event: `List Event${i}`,
+        value: `List Value${i}`
       }
-    },
-    text: `List3`
-  },
-];
+    }
+  })
+}
 
 cbaList.items = listItems;

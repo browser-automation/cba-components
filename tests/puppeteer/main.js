@@ -4,7 +4,9 @@ const tests = [
   {path:"cba-list.js", name: "Testing CBA List"},
   {path:"cba-table.js", name: "Testing CBA Table"},
   {path:"drag-drop.js", name: "Testing drag and drop"},
-  {path:"cba-list-sorting.js", name: "Testing CBA List sorting"}
+  {path:"cba-list-sorting.js", name: "Testing CBA List sorting"},
+  {path:"cba-tooltip.js", name: "Testing CBA Tooltip"},
+  {path:"cba-list-tooltip.js", name: "Testing CBA Tooltip inside cba-list"},
 ];
 
 let browser;

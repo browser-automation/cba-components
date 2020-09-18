@@ -9,9 +9,18 @@
   --column-primary: #f1f1f1;
   --column-secondary: #ededed;
   --column-tertiary: #555555;
+  --tooltip-offset-x: 0;
+  --tooltip-offset-y: 0;
+  --tooltip-color-background: #e4e4e4;
+  --toolip-color-foreground: #222222;
+  --tooltip-border-color: #222222;
+  --tooltip-max-width: 200px;
+  --tooltip-border-size: 1px;
+  --tooltip-arrow-size: 8px;
   --tooltip-icon: "";
   --icon-group: "";
   --icon-project: "";
+  height: inherit;
 }
 
 h2
@@ -66,7 +75,6 @@ h2
   height: 0;
   top: 7px;
   margin: 0 5px;
-  position: absolute;
   border-left: 5px solid transparent;
   border-right: 5px solid transparent;
 }
@@ -87,8 +95,17 @@ h2
   border-radius: 5px;
   position: relative;
   font-weight: 300;
-  height: 100%;
   font-size: 14px;
+  height: inherit;
+  flex-flow: column;
+  display: flex;
+}
+
+#list-body
+{
+  overflow-y: auto;	
+  overflow-x: hidden;
+  height: 100%;
 }
 
 ul
@@ -138,18 +155,19 @@ li li .row
   padding-left: 20px;
 }
 
-li cba-tooltip
+li .hasInfo
 {
+  position: absolute;
   width: 15px;
   height: 100%;
   justify-content: center;
   display: flex;
   align-items: center;
-  position: absolute;
 }
 
-li cba-tooltip .hasInfo
+li .hasInfo::after
 {
+  content: "";
   width: 10px;
   height: 10px;
   background: no-repeat var(--tooltip-icon);
@@ -217,4 +235,63 @@ li > button.collapsed::after
 li > button.collapsed
 {
   transform: rotate(270deg);
+}
+
+#tooltip
+{
+  --arrow-adjust-x: calc(0px - var(--tooltip-arrow-size) / 2 - var(--tooltip-border-size));
+  --arrow-adjust-y: calc(var(--arrow-adjust-x) + var(--tooltip-arrow-size));
+  --tooltip-adjust-x: calc((var(--tooltip-offset-x) * -1) - var(--tooltip-arrow-size));
+  --tooltip-adjust-y: calc(var(--tooltip-offset-y) - var(--tooltip-arrow-size));
+
+  border: var(--tooltip-border-size) solid var(--tooltip-border-color);
+  background-color: var(--tooltip-color-background);
+  color: var(--toolip-color-foreground);
+  padding: 10px;
+  position: absolute;
+  max-width: var(--tooltip-max-width);
+  visibility: visible;
+  opacity: 1;
+  transition: visibility 0.3s, opacity 0.3s linear;
+  font-size: 1em;
+  z-index: 21;
+}
+
+#tooltip::before {
+  content: "";
+  font-size: 0;
+  line-height: 0;
+  position: absolute;
+  width: var(--tooltip-arrow-size);
+  height: var(--tooltip-arrow-size);
+  background-color: var(--tooltip-color-background);
+  border: var(--tooltip-border-size) solid var(--tooltip-border-color);
+  transform: rotate(45deg);
+  top: var(--arrow-adjust-y);
+  right: var(--arrow-adjust-x);
+  border-bottom-color: transparent;
+  border-left-color: transparent;
+}
+
+#tooltip:not(.visible):not(:hover)
+{
+  opacity: 0;
+  visibility: hidden;
+}
+
+#tooltip h4 {
+  margin: 0;
+}
+
+#tooltip p {
+  margin: 0;
+}
+
+#tooltip a {
+  float: right;
+}
+
+#tooltip {
+  top: var(--tooltip-adjust-y);
+  left: var(--tooltip-adjust-x);
 }

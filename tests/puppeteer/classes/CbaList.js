@@ -58,36 +58,52 @@ class CbaList
   {
     return handle.evaluate((node, attribute) => node.getAttribute(attribute), attribute)
   }
-  async _getTooltipHandle(id)
+  async _getTooltipHandle()
   {
-    const rowHandle = await this.getRowHandle(id);
-    return rowHandle.$("cba-tooltip");
+    const rootHandle = await this._getShadowRoot();
+    return rootHandle.$("#tooltip");
   }
-  async _getTooltipShadowHandle(id)
+  async getRowInfoHandle(id)
   {
-    const handle = await this._getTooltipHandle(id);
-    return handle.evaluateHandle((cbaTooltip) => cbaTooltip.shadowRoot);
+    const rowHandel = await this.getRowHandle(id);
+    return rowHandel.$(".hasInfo");
   }
-  async getTooltipAttribute(id, attribute)
+  async getTooltipAttribute(attribute)
   {
-    const handle = await this._getTooltipHandle(id);
+    const handle = await this._getTooltipHandle();
     return handle.evaluate((node, attribute) => node.getAttribute(attribute), attribute)
   }
   async hasRowTooltip(id)
   {
-    return this._getTooltipHandle(id);
+    return this.getRowInfoHandle(id);
   }
-  async getTooltipHeadingText(id)
+  async hoverRowInfo(id)
   {
-    const shadowRootHandle = await this._getTooltipShadowHandle(id);
-    const handle = await shadowRootHandle.$("#tooltip p");
+    const handle = await this.getRowInfoHandle(id);
+    return handle.hover();
+  }
+  async hoverRow(id)
+  {
+    const handle = await this.getRowHandle(id);
+    return handle.hover();
+  }
+  async getTooltipHeadingText()
+  {
+    const shadowRootHandle = await this._getTooltipHandle();
+    const handle = await shadowRootHandle.$("p");
     return await (await handle.getProperty("textContent")).jsonValue();
   }
-  async getTooltipLink(id)
+  async getTooltipLink()
   {
-    const shadowRoot = await this._getTooltipShadowHandle(id);
+    const shadowRoot = await this._getTooltipHandle();
     const handle = await shadowRoot.$("#tooltip a");
     return this._getAttribute(handle, "href");
+  }
+  async getTooltipLinkText()
+  {
+    const shadowRoot = await this._getTooltipHandle();
+    const handle = await shadowRoot.$("#tooltip a");
+    return await (await handle.getProperty("textContent")).jsonValue();
   }
   async clickItem(id)
   {
