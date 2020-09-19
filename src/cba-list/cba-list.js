@@ -523,17 +523,27 @@ class List extends HTMLElement {
     const infoText = this._getText(item, this.tooltipText);
     if (infoText)
     {
-      const infoLink = this._getText(item, this.tooltipLink);
-      const infoLinkText = this._getText(item, this.tooltipLinkText) ||
-                           this.tooltipLinkTextDefault;
-      const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
-      render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
-      const infoRect = target.getBoundingClientRect();
-      const tooltipRect = this.tooltip.getBoundingClientRect();
-      this.style.setProperty("--tooltip-offset-y", `${infoRect.top}px`);
-      this.style.setProperty("--tooltip-offset-x", `${tooltipRect.width}px`);
-      this.tooltip.classList.add("visible")
+      // On first tooltip render when cba-list is placed inside of flexbox the
+      // tooltip location is calculated wrongly, recalculation fixes that.
+      if (!this.tooltip.querySelector("p"))
+        this._renderTooltip(target, item);
+      this._renderTooltip(target, item);
     }
+  }
+
+  _renderTooltip(infoElem, item)
+  {
+    const infoText = this._getText(item, this.tooltipText);
+    const infoLink = this._getText(item, this.tooltipLink);
+    const infoLinkText = this._getText(item, this.tooltipLinkText) ||
+                          this.tooltipLinkTextDefault;
+    const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
+    render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
+    const infoRect = infoElem.getBoundingClientRect();
+    const tooltipRect = this.tooltip.getBoundingClientRect();
+    this.style.setProperty("--tooltip-offset-y", `${infoRect.top}px`);
+    this.style.setProperty("--tooltip-offset-x", `${tooltipRect.width}px`);
+    this.tooltip.classList.add("visible");
   }
 
   hideTooltip()
