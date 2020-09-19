@@ -525,7 +525,7 @@ class List extends HTMLElement {
     {
       // On first tooltip render when cba-list is placed inside of flexbox the
       // tooltip location is calculated wrongly, recalculation fixes that.
-      if (this.tooltip.querySelector("p"))
+      if (!this.tooltip.querySelector("p"))
         this._renderTooltip(target, item);
       this._renderTooltip(target, item);
     }
