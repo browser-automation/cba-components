@@ -1,6 +1,6 @@
 const cbaTable = document.querySelector("cba-table");
 const items = [];
-for (let index = 0; index < 10; index++) {
+for (let index = 0; index < 50; index++) {
   items.push({
     id: "row" + index,
     data: "Info",

@@ -134,6 +134,18 @@ class Table extends HTMLElement {
         if (row && row.classList.contains("dragenter"))
           row.classList.remove("dragenter");
       };
+      this.tableBodyElem.addEventListener("drag", (e) =>
+      {
+        // Unless the dragged item is hovered over top of the container the
+        // scrolling doesn't work. This way we force scroll on top item.
+        if (e.clientY < 50)
+        {
+          this.containerElem.scroll({
+            top: this.containerElem.scrollTop - 100, 
+            behavior: "smooth"
+          });
+        }
+      });
       this.tableBodyElem.addEventListener("dragenter", (e) =>
       {
         const row = e.target.closest("tr");
