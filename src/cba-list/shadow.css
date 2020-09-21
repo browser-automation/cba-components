@@ -125,11 +125,11 @@ li .row
   font-weight: 300;
   padding-left: 5px;
   overflow: hidden;
-  white-space: pre;
 }
 
 li .row:not([contenteditable="true"])
 {
+  white-space: pre;
   text-overflow: ellipsis;
 }
 
