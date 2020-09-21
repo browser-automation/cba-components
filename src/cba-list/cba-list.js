@@ -107,7 +107,7 @@ class List extends HTMLElement {
     this.container = this.shadowRoot.querySelector("ul");
     this.tooltip = this.shadowRoot.querySelector("#tooltip");
     this.subheadingContainer = this.shadowRoot.querySelector("#column");
-    this.drag = this.getAttribute("draggable") == "true";
+    this.drag = this.getAttribute("drag") == "true";
     this.sort = this.getAttribute("sort");
     this.tooltipText = this.getAttribute("tooltip-text");
     this.tooltipLink = this.getAttribute("tooltip-link");

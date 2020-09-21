@@ -21,7 +21,7 @@ const pageSetup = {
     <cba-column text="texts.event" width="33%">event</cba-column>
     <cba-column text="texts.value" width="33%">value</cba-column>
   </cba-table>
-  <cba-list id="dnd-list" draggable="true"></cba-list>
+  <cba-list id="dnd-list" drag="true"></cba-list>
 `,
   js: ["cba-table/cba-table.js", "cba-list/cba-list.js"]
 }
