@@ -301,9 +301,10 @@ class Table extends HTMLElement {
 
   /**
    * Selects a specific row
-   * @param {string} rowId Row id
+   * @param {string}  rowId Row id
+   * @param {boolean} focus trigger row focus
    */
-  selectRow(rowId)
+  selectRow(rowId, focus = true)
   {
     for (const item of this._data)
     {
@@ -313,7 +314,9 @@ class Table extends HTMLElement {
         item.selected = true;
     }
     this._renderBody();
-    this._focusSelected();
+    if (focus)
+      this._focusSelected();
+
     this.dispatchEvent(new CustomEvent("select"));
   }
 
