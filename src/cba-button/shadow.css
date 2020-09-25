@@ -7,7 +7,9 @@ button
   text-shadow: 0px -1px 0px #6c6c6c;
   box-shadow: 0px 1px 3px #6c6c6c, inset 0px 0px 2px #d1d1d1;
   width: inherit;
+  min-width: inherit;
   height: inherit;
+  min-height: inherit;
 }
 
 button:hover
