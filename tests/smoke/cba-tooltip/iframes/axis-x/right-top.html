@@ -12,10 +12,22 @@
         top: 10px;
       }
     </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(){
+        const tooltip = document.querySelector("cba-tooltip");
+        const text = "Hello world A longer text here! Hello world A longer text here!";
+        const link = "https://google.com";
+        const linkText = "Learn more";
+        const heading = "Heading";
+        const action = () => alert("link clicked");
+        const actionText = "Custom action";
+        tooltip.setData({text, link, linkText, heading, action, actionText});
+      });
+    </script>
   </head>
   <body>
     <div id="wrapper">
-      <cba-tooltip text="Hello world A longer text here! Hello world A longer text here!"><button>Hover</button></cba-tooltip>
+      <cba-tooltip><button>Hover</button></cba-tooltip>
     </div>
   </body>
 </html>

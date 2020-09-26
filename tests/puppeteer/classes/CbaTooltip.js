@@ -59,11 +59,21 @@ class CbaTooltip
   {
     return this._getTooltipTextContent("a");
   }
+  async getActionContent()
+  {
+    return this._getTooltipTextContent("a:nth-of-type(2)");
+  }
   async getLink()
   {
     const tooltipHandle = await this._getTooltipHandle();
     const handle = await tooltipHandle.$("a");
     return this._getAttribute(handle, "href");
+  }
+  async clickAction()
+  {
+    const tooltipHandle = await this._getTooltipHandle();
+    const handle = await tooltipHandle.$("a:nth-of-type(2)");
+    return handle.click();
   }
 };
 

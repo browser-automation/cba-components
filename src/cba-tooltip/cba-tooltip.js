@@ -54,7 +54,7 @@ class List extends HTMLElement {
   }
 
   setData(data) {
-    const {text, link, linkText, heading} = data;
+    const {text, link, linkText, heading, action, actionText} = data;
     if (text)
       this.text = text;
     if (link)
@@ -63,6 +63,10 @@ class List extends HTMLElement {
       this.linkText = linkText;
     if (heading)
       this.heading = heading;
+    if (action)
+      this.action = action;
+    if (actionText)
+      this.actionText = actionText;
   }
 
   _setAxis() {
@@ -121,13 +125,16 @@ class List extends HTMLElement {
     this._setDirection();
     const paragraph = html`<p>${this.text}</p>`;
     let anchor = "";
+    let action = "";
     if (this.link && this.linkText)
       anchor = html`<a href="${this.link}" target="_blank">${this.linkText}</a>`;
+    if (this.action && this.actionText)
+      action = html`${anchor ? " | " : ""}<a href="javascript:void(0)" @click=${this.action}>${this.actionText}</a>`;
     let heading = "";
     if (this.heading)
       heading = html`<h4>${this.heading}</h4>`;
 
-    render(html`${heading}${paragraph}${anchor}`, this.tooltipElem);
+    render(html`${heading}${paragraph}<div id="links">${anchor}${action}</div>`, this.tooltipElem);
   }
 }
 

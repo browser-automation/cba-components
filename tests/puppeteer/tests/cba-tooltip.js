@@ -62,19 +62,27 @@ it("heading, text, link, link-text attributes populate the tooltip accoridngly",
   equal(link, await cbaTooltip.getLink());
 });
 
-it("Passing object with heading, text, link, linkText properties to setData populate the tooltip accoridngly", async() =>
+it("Passing object with heading, text, link, linkText, action, actionText properties to setData populate the tooltip accoridngly", async() =>
 {
   const heading = "Test Heading";
   const text = "Test text";
   const link = "http://example.com";
-  const linkText = "Text link text"; 
-  await cbaTooltip.setData({heading, text, link, linkText});
+  const linkText = "Text link text";
+  const actionText = "Add class";
+  const handle = await cbaTooltip._getHandle();
+  await handle.evaluate((tooltip, heading, text, link, linkText, actionText) => 
+  {
+    const action = () => document.body.classList.add("action");
+    tooltip.setData({heading, text, link, linkText, action, actionText});
+  }, heading, text, link, linkText, actionText);
   await hoverTooltip();
-
   equal(heading, await cbaTooltip.getHeadingContent());
   equal(text, await cbaTooltip.getParagraphContent());
   equal(linkText, await cbaTooltip.getLinkContent());
   equal(link, await cbaTooltip.getLink());
+  equal(actionText, await cbaTooltip.getActionContent());
+  await cbaTooltip.clickAction();
+  ok(await page().evaluate(() => document.body.classList.contains("action")));
 });
 
 it("arrow attribute with 'x' and 'y' values updates tooltip data-arrow attribute accordingly", async() =>
@@ -83,7 +91,7 @@ it("arrow attribute with 'x' and 'y' values updates tooltip data-arrow attribute
   const tooltipY = `<cba-tooltip arrow="y"><button>Hover</button></cba-tooltip>`;
   await setPageBody(tooltipY);
   equal(await cbaTooltip.getTooltipDataArrow(), "y");
-})
+});
 
 async function moveTooltip(vertical, horizontal) {
   const handle = await cbaTooltip._getHandle();
