@@ -49,7 +49,7 @@ th, td
 td
 {
   overflow: hidden;
-  white-space: pre;
+  white-space: nowrap;
   border-top-width: 0;
   padding: 0 2px;
   color: var(--color-primary);

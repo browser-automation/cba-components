@@ -3,7 +3,8 @@ const items = [];
 
 items.push({
   id: "first-item",
-  values: ["Please enter a long text here", "Value"],
+  values: [`Please enter a long
+  multilne text here`, "Value"],
   type: "Event"
 });
 
