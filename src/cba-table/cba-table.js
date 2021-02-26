@@ -132,7 +132,10 @@ class Table extends HTMLElement {
       {
         const row = e.target.closest("tr");
         if (row && row.classList.contains("dragenter"))
+        {
           row.classList.remove("dragenter");
+          this.containerElem.classList.add("dragenter");
+        }
       };
       this.tableBodyElem.addEventListener("drag", (e) =>
       {
@@ -163,7 +166,11 @@ class Table extends HTMLElement {
       this.tableBodyElem.addEventListener("dragleave", clearDragEnter);
       this.tableBodyElem.addEventListener("dragover", (e) =>
       {
+        e.preventDefault();
         const row = e.target.closest("tr");
+        if (!row)
+          return;
+
         const {y, height} = row.getBoundingClientRect();
         if ((e.y) - (y) > height/2)
         {
@@ -177,7 +184,6 @@ class Table extends HTMLElement {
             row.classList.remove("add-below");
           row.classList.add("add-above");
         }
-        e.preventDefault();
       });
       this.tableBodyElem.addEventListener("drop", (e) =>
       {
@@ -195,24 +201,31 @@ class Table extends HTMLElement {
           dropAfter = row.classList.contains("add-below");
         }
 
-        if (this.reordering)
+        const drop = (item) =>
         {
-          const dragRowItem = this.getItem(dragRowId);
           const dropIndex = this._getItemIndex(dropRowId);
           const itemBefore = dropAfter ? this._data[dropIndex] :
                                          this._data[dropIndex - 1];
 
-          this.deleteRow(dragRowId);
           if (dropIndex == 0 && !dropAfter)
-            this.addFirstRow(dragRowItem);
+            this.addFirstRow(item);
+          else if (!itemBefore)
+            this.addRow(item);
           else
-            this.addRow(dragRowItem, itemBefore.id);
+            this.addRow(item, itemBefore.id);
+        };
+
+        if (this.reordering)
+        {
+          const dragRowItem = this.getItem(dragRowId);
+          this.deleteRow(dragRowId);
+          drop(dragRowItem);
         }
         else if (draggedSource)
         {
           const draggedItem = draggedSource.getItem(dragRowId);
           if (draggedItem && draggedItem.data)
-            this.addRow(draggedItem.data, dropRowId);
+            drop(draggedItem.data);
         }
 
         this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
