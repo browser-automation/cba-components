@@ -150,6 +150,23 @@ tbody tr.dragenter
                               var(--hover-secondary) 100%);
 }
 
+tbody tr.dragenter td
+{
+  transition: border 0.05s linear;
+}
+
+tbody tr.dragenter.add-above td
+{
+  border-top-color: white;
+  border-top-width: 20px;
+}
+
+tbody tr.dragenter.add-below td
+{
+  border-bottom-color: white;
+  border-bottom-width: 20px;
+}
+
 thead tr:after
 {
   content: "";

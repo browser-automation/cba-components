@@ -154,36 +154,59 @@ class Table extends HTMLElement {
       });
       this.tableBodyElem.addEventListener("dragend", (e) =>
       {
+        const row = e.target;
+        row.style.display = "table-row";
         clearDragEnter(e);
         this.reordering = false;
       });
-      
+
       this.tableBodyElem.addEventListener("dragleave", clearDragEnter);
       this.tableBodyElem.addEventListener("dragover", (e) =>
       {
+        const row = e.target.closest("tr");
+        const {y, height} = row.getBoundingClientRect();
+        if ((e.y) - (y) > height/2)
+        {
+          if (row.classList.contains("add-above"))
+            row.classList.remove("add-above");
+          row.classList.add("add-below");
+        }
+        else
+        {
+          if (row.classList.contains("add-below"))
+            row.classList.remove("add-below");
+          row.classList.add("add-above");
+        }
         e.preventDefault();
       });
       this.tableBodyElem.addEventListener("drop", (e) =>
       {
+        e.preventDefault();
         clearDragEnter(e);
         this.containerElem.classList.remove("dragenter");
         const [dragRowId, dragId] = e.dataTransfer.getData("text/plain").split("#");
         const draggedSource = document.getElementById(dragId);
         let dropRowId = null;
-        if (e.target.tagName !== "TBODY")
-          dropRowId = e.target.closest("tr").dataset.id;
+        let dropAfter = false;
+        const row = e.target.closest("tr");
+        if (e.target.tagName !== "TBODY" && row)
+        {
+          dropRowId = row.dataset.id;
+          dropAfter = row.classList.contains("add-below");
+        }
 
         if (this.reordering)
         {
           const dragRowItem = this.getItem(dragRowId);
           const dropIndex = this._getItemIndex(dropRowId);
-          const itemBefore = this._data[dropIndex - 1];
+          const itemBefore = dropAfter ? this._data[dropIndex] :
+                                         this._data[dropIndex - 1];
 
           this.deleteRow(dragRowId);
-          if (dropIndex > 0)
-            this.addRow(dragRowItem, itemBefore.id);
-          else
+          if (dropIndex == 0 && !dropAfter)
             this.addFirstRow(dragRowItem);
+          else
+            this.addRow(dragRowItem, itemBefore.id);
         }
         else if (draggedSource)
         {
@@ -196,9 +219,9 @@ class Table extends HTMLElement {
           dropRowId,
           dragRowId,
           dragId,
+          dropAfter,
           reordered: this.reordering
         }}));
-
       });
 
       // drag-n-drop when empty
@@ -224,7 +247,14 @@ class Table extends HTMLElement {
       this.tableBodyElem.addEventListener("dragstart", (e) =>
       {
         this.reordering = true;
-        const rowId = e.target.closest("[data-id]").dataset.id;
+        const row = e.target.closest("[data-id]");
+        
+        // Hiding dragged row
+        window.requestAnimationFrame(()=>
+        {
+          row.style.display = "none";
+        });
+        const rowId = row.dataset.id;
         e.dataTransfer.setData("text/plain", `${rowId}#${this.id}`);
       });
     }
