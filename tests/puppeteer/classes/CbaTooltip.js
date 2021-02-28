@@ -1,22 +1,10 @@
 const {page} = require("../main");
+const {Common} = require("./Common");
 
 const cbaTooltipMethods = ["setData", "disable", "enable", "isDisabled"];
 
-class CbaTooltip
+class CbaTooltip extends Common
 {
-  constructor(selector)
-  {
-    this._selector = selector;
-  }
-  async _getHandle()
-  {
-    return page().$(this._selector);
-  }
-  async _getShadowRoot()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluateHandle((cbaTooltip) => cbaTooltip.shadowRoot);
-  }
   async _getTooltipHandle()
   {
     const rootHandle = await this._getShadowRoot();
@@ -31,11 +19,6 @@ class CbaTooltip
     const tooltipHandle = await this._getTooltipHandle();
     const handle = await tooltipHandle.$(query);
     return await (await handle.getProperty("textContent")).jsonValue();
-  }
-  async _executeMethod()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluate((cbaTooltip, methodName, ...args) => cbaTooltip[methodName](...args), ...arguments)
   }
   async getTooltipDirection()
   {

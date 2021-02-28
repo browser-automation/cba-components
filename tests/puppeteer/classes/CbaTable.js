@@ -1,23 +1,11 @@
 const {page} = require("../main");
+const {Common} = require("./Common");
 
 const cbaTableMethods = ["addRow", "updateRow", "deleteRow", "getItem",
                          "selectRow", "selectNextRow", "selectPreviousRow"];
 
-class CbaTable
+class CbaTable extends Common
 {
-  constructor(selector)
-  {
-    this._selector = selector;
-  }
-  async _getHandle()
-  {
-    return page().$(this._selector);
-  }
-  async _getShadowRoot()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluateHandle((cbaTable) => cbaTable.shadowRoot);
-  }
   async _getTbody()
   {
     const root = await this._getShadowRoot();
@@ -27,11 +15,6 @@ class CbaTable
   {
     const root = await this._getShadowRoot();
     return root.$("thead");
-  }
-  async _executeMethod()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluate((cbaTable, methodName, ...args) => cbaTable[methodName](...args), ...arguments)
   }
   async getRowHandle(id)
   {

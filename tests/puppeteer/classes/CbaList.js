@@ -1,34 +1,13 @@
 const {page} = require("../main");
+const {Common} = require("./Common");
 
 const cbaListMethods = ["addRow", "updateRow", "deleteRow", "getItem",
   "getIndex", "getParentItem", "getSelectedItem", "selectRow", "_findItem",
   "setExpansion", "selectPreviousRow", "selectNextRow", "setEditable",
   "saveEditables"];
 
-class CbaList
+class CbaList extends Common
 {
-  constructor(selector)
-  {
-    this._selector = selector;
-  }
-  async _getHandle()
-  {
-    return page().$(this._selector);
-  }
-  async _getShadowRoot()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluateHandle((cbaList) => cbaList.shadowRoot);
-  }
-  async _getHandleTextContent(handle)
-  {
-    return await (await handle.getProperty("textContent")).jsonValue();
-  }
-  async _executeMethod()
-  {
-    const handle = await this._getHandle();
-    return handle.evaluate((cbaList, methodName, ...args) => cbaList[methodName](...args), ...arguments)
-  }
   async setItems(items)
   {
     const handle = await this._getHandle();
