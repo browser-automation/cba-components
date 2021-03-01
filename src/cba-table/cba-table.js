@@ -227,7 +227,6 @@ class Table extends HTMLElement {
           if (draggedItem && draggedItem.data)
             drop(draggedItem.data);
         }
-
         this.dispatchEvent(new CustomEvent("dragndrop", {"detail": {
           dropRowId,
           dragRowId,
@@ -235,24 +234,42 @@ class Table extends HTMLElement {
           dropAfter,
           reordered: this.reordering
         }}));
+        dragCounter = 0;
       });
 
       // drag-n-drop when empty
       let dragCounter = 0;
+      let isOnAfter = false;
       this.containerElem.addEventListener("dragenter", (e) =>
       {
-        dragCounter++;
+        isOnAfter = false;
         if (e.target.id === "container")
         {
           this.containerElem.classList.add("dragenter");
         }
+        else
+        {
+          dragCounter++;
+        }
+        if (e.target.tagName === "TBODY")
+        {
+          dragCounter++;
+          isOnAfter = true;
+        }
       });
 
-      this.containerElem.addEventListener("dragleave", () =>
+      this.containerElem.addEventListener("dragleave", (e) =>
       {
-        dragCounter--;
-        if (dragCounter === 0)
+        if (e.target.id === "container" && !isOnAfter)
+        {
           this.containerElem.classList.remove("dragenter");
+        }
+        else
+        {
+          dragCounter--;
+          if (dragCounter === 0)
+            this.containerElem.classList.add("dragenter");
+        }
       });
     }
     if (this.reorder)
