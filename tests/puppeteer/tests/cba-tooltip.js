@@ -124,7 +124,7 @@ async function hoverTooltip() {
 
 function wait(milliseconds = 200)
 {
-  page().waitFor(milliseconds);
+  return page().waitForTimeout(milliseconds);
 }
 
 module.exports = {pageSetup};
