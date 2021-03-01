@@ -24,18 +24,22 @@ beforeEach(async () =>
 it("Tooltip opening direction is calculated automatically depending on the item position", async() =>
 {
   await moveTooltip("top", "right");
+  await wait(30);
   await hoverTooltip();
   equal(await cbaTooltip.getTooltipDirection(), "left-bottom");
 
   await moveTooltip("top", "left");
+  await wait(30);
   await hoverTooltip();
   equal(await cbaTooltip.getTooltipDirection(), "right-bottom");
 
   await moveTooltip("bottom", "left");
+  await wait(30);
   await hoverTooltip();
   equal(await cbaTooltip.getTooltipDirection(), "right-top");
 
   await moveTooltip("bottom", "right");
+  await wait(30);
   await hoverTooltip();
   equal(await cbaTooltip.getTooltipDirection(), "left-top");
 });
