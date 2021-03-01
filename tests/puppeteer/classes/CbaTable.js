@@ -73,6 +73,30 @@ class CbaTable extends Common
     const item = await this.getItem(id);
     return item.expanded === true;
   }
+  async triggerRowEvent(id, event, data)
+  {
+    const handle = await this.getRowHandle(id);
+    return this._triggerEvent(handle, event, data);
+  }
+  async getRowBoundingClientRect(id)
+  {
+    const handle = await this.getRowHandle(id);
+    return handle.evaluate((cbaTableRow) => {
+      const {top, left, bottom, right} = cbaTableRow.getBoundingClientRect();
+      return {top, left, bottom, right};
+    });
+  }
+  async triggerDragOverRow(id, offset)
+  {
+    const handle = await this.getRowHandle(id);
+    const {top} = await this.getRowBoundingClientRect(id);
+    return this._triggerEvent(handle, "dragover", {clientY: top + offset});
+  }
+  async hoverRow(id)
+  {
+    const handle = await this.getRowHandle(id);
+    return handle.hover();
+  }
 };
 
 cbaTableMethods.forEach((methodName) => {

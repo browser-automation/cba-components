@@ -31,39 +31,100 @@ beforeEach(async () =>
   await cbaTable.setItems([]);
 });
 
-it("Dragging cba-list and dropping to cba-table add item and trigger's 'dragndrop' event with info", async function()
+it("Reordering to top of the element drop item above and trigger's 'dragndrop' event with info", async function()
+{
+  const cbaTableItems = await populateCbaTable();
+  const rowHandle1 = await cbaTable.getRowHandle(cbaTableItems[0].id);
+  const data = await triggerDragStart(rowHandle1);
+  equal(data, `${cbaTableItems[0].id}#`);
+  await wait(30);
+  ok(await isCbaTableRowHidden(cbaTableItems[0].id));
+
+  await cbaTable.hoverRow(cbaTableItems[2].id);
+  await cbaTable.triggerRowEvent(cbaTableItems[2].id, "dragenter");
+  await cbaTable.triggerDragOverRow(cbaTableItems[2].id, 5);
+  await cbaTable.triggerRowEvent(cbaTableItems[0].id, "dragleave");
+  const {dropRowId, dragRowId, reordered, dropAfter} = await triggerDrop(cbaTableItems[2].id, data);
+  await cbaTable._triggerEvent(rowHandle1, "dragend");
+
+  notOk(await isCbaTableRowHidden(cbaTableItems[0].id));
+  equal(dragRowId, cbaTableItems[0].id);
+  equal(dropRowId, cbaTableItems[2].id);
+  ok(reordered);
+  notOk(dropAfter);
+
+  await itemIsRenderedOnRowIndex(cbaTableItems[1], 0);
+  await itemIsRenderedOnRowIndex(cbaTableItems[0], 1);
+  await itemIsRenderedOnRowIndex(cbaTableItems[2], 2);
+});
+
+it("Reordering to bottom of the element drop item below and trigger's 'dragndrop' event with info", async function()
+{
+  const cbaTableItems = await populateCbaTable();
+  const rowHandle1 = await cbaTable.getRowHandle(cbaTableItems[0].id);
+  const data = await triggerDragStart(rowHandle1);
+  equal(data, `${cbaTableItems[0].id}#`);
+  await wait(30);
+  ok(await isCbaTableRowHidden(cbaTableItems[0].id));
+
+  await cbaTable.hoverRow(cbaTableItems[2].id);
+  await cbaTable.triggerRowEvent(cbaTableItems[2].id, "dragenter");
+  await cbaTable.triggerDragOverRow(cbaTableItems[2].id, 30);
+  await cbaTable.triggerRowEvent(cbaTableItems[0].id, "dragleave");
+  const {dropRowId, dragRowId, reordered, dropAfter} = await triggerDrop(cbaTableItems[2].id, data);
+  await cbaTable._triggerEvent(rowHandle1, "dragend");
+
+  notOk(await isCbaTableRowHidden(cbaTableItems[0].id));
+  equal(dragRowId, cbaTableItems[0].id);
+  equal(dropRowId, cbaTableItems[2].id);
+  ok(reordered);
+  ok(dropAfter);
+
+  await itemIsRenderedOnRowIndex(cbaTableItems[1], 0);
+  await itemIsRenderedOnRowIndex(cbaTableItems[2], 1);
+  await itemIsRenderedOnRowIndex(cbaTableItems[0], 2);
+});
+
+it("Dragging cba-list item and dropping to cba-table row top adds item above and trigger's 'dragndrop' event with info", async function()
 {
   const cbaListItems = await populateCbaList();
   const cbaTableItems = await populateCbaTable();
   const cbaListId = await cbaList.getId();
-  const handle = await cbaList.getRowHandle(cbaListItems[0].id);
-  const data = await triggerDragStart(handle);
+  const data = await triggerDragStart(await cbaList.getRowHandle(cbaListItems[0].id));
   equal(data, `${cbaTableItems[0].id}#${cbaListId}`);
 
-  const {dropRowId, dragRowId, dragId, reordered} = await triggerDrop(cbaTableItems[1].id, data);
+  await cbaTable.triggerDragOverRow(cbaTableItems[1].id, 5);
+  const {dropRowId, dragRowId, dragId, reordered, dropAfter} = await triggerDrop(cbaTableItems[1].id, data);
   equal(dragRowId, cbaListItems[0].id);
   equal(dropRowId, cbaTableItems[1].id);
   equal(dragId, cbaListId);
-  notOk(reordered)
+  notOk(reordered);
+  notOk(dropAfter);
 
-  await itemIsRenderedOnRowIndex(cbaListItems[0].data, 2);
+  await itemIsRenderedOnRowIndex(cbaListItems[0].data, 1);
 });
 
-it("Reordering cba-table row reorders and trigger's 'dragndrop' event with info", async function()
+it("Dragging cba-list item and dropping to cba-table row bottom adds item below and trigger's 'dragndrop' event with info", async function()
 {
+  const cbaListItems = await populateCbaList();
   const cbaTableItems = await populateCbaTable();
-  const handle = await cbaTable.getRowHandle(cbaTableItems[2].id);
-  const data = await triggerDragStart(handle);
-  equal(data, `${cbaTableItems[2].id}#`);
+  const cbaListId = await cbaList.getId();
+  const listRowHandle = await cbaList.getRowHandle(cbaListItems[0].id);
+  const data = await triggerDragStart(listRowHandle);
+  equal(data, `${cbaTableItems[0].id}#${cbaListId}`);
 
-  const {dropRowId, dragRowId, reordered} = await triggerDrop(cbaTableItems[0].id, data);
-  equal(dragRowId, cbaTableItems[2].id);
-  equal(dropRowId, cbaTableItems[0].id);
-  ok(reordered)
+  await cbaTable.hoverRow(cbaTableItems[2].id);
+  await cbaTable.triggerRowEvent(cbaTableItems[2].id, "dragenter");
+  await cbaTable.triggerDragOverRow(cbaTableItems[2].id, 30);
+  const {dropRowId, dragRowId, dragId, reordered, dropAfter} = await triggerDrop(cbaTableItems[2].id, data);
+  await cbaTable._triggerEvent(listRowHandle, "dragend");
+  equal(dragRowId, cbaListItems[0].id);
+  equal(dropRowId, cbaTableItems[2].id);
+  equal(dragId, cbaListId);
+  notOk(reordered);
+  ok(dropAfter);
 
-  await itemIsRenderedOnRowIndex(cbaTableItems[2], 0);
-  await itemIsRenderedOnRowIndex(cbaTableItems[0], 1);
-  await itemIsRenderedOnRowIndex(cbaTableItems[1], 2);
+  await itemIsRenderedOnRowIndex(cbaListItems[0].data, 3);
 });
 
 async function populateCbaList()
@@ -92,7 +153,7 @@ async function populateCbaList()
 async function populateCbaTable()
 {
   const items = [];
-  for (let index = 1; index <= 4; index++) {
+  for (let index = 1; index <= 5; index++) {
     const item = {
       id: `row${index}`,
       data: "Info",
@@ -102,7 +163,7 @@ async function populateCbaTable()
         value: `Value${index}`
       }
     };
-    if (index == 4)
+    if (index == 5)
       delete item.id;
     items.push(item);
   }
@@ -150,9 +211,17 @@ async function itemIsRenderedOnRowIndex({texts}, index)
   deepEqual(await cbaTable.getDomRowIndexText(index), [texts.data, texts.event, texts.value]);
 }
 
+async function isCbaTableRowHidden(id)
+{
+  const handle = await cbaTable.getRowHandle(id);
+  return handle.evaluate((cbaTableRow) => {
+    return window.getComputedStyle(cbaTableRow).getPropertyValue("display") === "none";
+  });
+}
+
 function wait(milliseconds = 200)
 {
-  return page().waitFor(milliseconds);
+  return page().waitForTimeout(milliseconds);
 }
 
 module.exports = {pageSetup};
