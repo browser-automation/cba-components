@@ -134,8 +134,8 @@ class Table extends HTMLElement {
         if (row && row.classList.contains("dragenter"))
         {
           row.classList.remove("dragenter");
-          this.containerElem.classList.add("dragenter");
         }
+        this.containerElem.classList.remove("dragenter");
       };
       this.tableBodyElem.addEventListener("drag", (e) =>
       {
