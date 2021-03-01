@@ -25,18 +25,22 @@ it("Tooltip opening direction is calculated automatically depending on the item 
 {
   await moveTooltip("top", "right");
   await hoverTooltip();
+  await wait(30);
   equal(await cbaTooltip.getTooltipDirection(), "left-bottom");
 
   await moveTooltip("top", "left");
   await hoverTooltip();
+  await wait(30);
   equal(await cbaTooltip.getTooltipDirection(), "right-bottom");
 
   await moveTooltip("bottom", "left");
   await hoverTooltip();
+  await wait(30);
   equal(await cbaTooltip.getTooltipDirection(), "right-top");
 
   await moveTooltip("bottom", "right");
   await hoverTooltip();
+  await wait(30);
   equal(await cbaTooltip.getTooltipDirection(), "left-top");
 });
 
@@ -124,7 +128,7 @@ async function hoverTooltip() {
 
 function wait(milliseconds = 200)
 {
-  page().waitFor(milliseconds);
+  return page().waitForTimeout(milliseconds);
 }
 
 module.exports = {pageSetup};
