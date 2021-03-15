@@ -92,6 +92,21 @@ class CbaTable extends Common
     const {top} = await this.getRowBoundingClientRect(id);
     return this._triggerEvent(handle, "dragover", {clientY: top + offset});
   }
+  async dispatchExpectRowEvent(rowId, dispatch, expect)
+  {
+    const rowHandle = await this.getRowHandle(rowId);
+    const cbaTableHandle = await this._getHandle();
+    return cbaTableHandle.evaluate((cbaTable, row, dispatch, expect) => {
+      return new Promise((resolve) => {
+        cbaTable.addEventListener(expect, ({detail}) =>
+        {
+          return resolve(detail);
+        });
+        const mouseoverEvent = new MouseEvent(dispatch, {bubbles: true});
+        row.dispatchEvent(mouseoverEvent);
+      });
+    }, rowHandle, dispatch, expect);
+  }
   async hoverRow(id)
   {
     const handle = await this.getRowHandle(id);

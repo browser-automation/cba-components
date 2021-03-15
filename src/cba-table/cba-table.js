@@ -18,6 +18,7 @@ class Table extends HTMLElement {
     this.droppable = false;
     this.reorder = false;
     this.reordering = false;
+    this.rowLastHoverId = null;
 
     this.attachShadow({ mode: "open" });
     this.shadowRoot.innerHTML = `
@@ -116,13 +117,26 @@ class Table extends HTMLElement {
         this.selectRow(row.dataset.id);
     });
 
-    this.tableBodyElem.addEventListener("mouseover", ({target}) => 
+    this.tableBodyElem.addEventListener("mouseover", ({target})=>
     {
       const row = target.closest("tr");
-      if (row)
+      if (row && row.dataset.id != this.rowLastHoverId)
       {
-        const rowId = row.dataset.id;
-        this.dispatchEvent(new CustomEvent("rowhover", {"detail": {rowId}}));
+        this.rowLastHoverId = row.dataset.id;
+        const detail = {"rowId": this.rowLastHoverId};
+        this.dispatchEvent(new CustomEvent("rowmouseover", {detail}));
+      }
+    });
+
+    this.tableBodyElem.addEventListener("mouseout", ({target}) => 
+    {
+      const row = target.closest("tr");
+      if (row && row.dataset.id === this.rowLastHoverId)
+      {
+        this.rowLastHoverId = row.dataset.id;
+        const detail = {"rowId": this.rowLastHoverId};
+        this.dispatchEvent(new CustomEvent("rowmouseout", {detail}));
+        this.rowLastHoverId = null;
       }
     });
 

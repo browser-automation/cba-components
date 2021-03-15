@@ -105,21 +105,19 @@ it("selectRow should Highlight a specific item ", async() =>
   equal((await cbaTable.getItem(items[0].id)).selected, true);
 });
 
-it("Hovering table row dispatches rowhover event with the rowId in details", async() =>
+it("Hovering table row dispatches rowmouseover event with the rowId in details", async() =>
 {
   const items = await prepopulatedItems();
-  const rowHandle = await cbaTable.getRowHandle(items[0].id);
-  const cbaTableHandle = await cbaTable._getHandle();
-  const detail = await cbaTableHandle.evaluate((cbaTable, row) => {
-    return new Promise((resolve) => {
-      cbaTable.addEventListener("rowhover", ({detail}) =>
-      {
-        return resolve(detail);
-      });
-      const mouseoverEvent = new MouseEvent("mouseover", {bubbles: true});
-      row.dispatchEvent(mouseoverEvent);
-    });
-  }, rowHandle);
+  const detail = await cbaTable.dispatchExpectRowEvent(items[0].id, "mouseover",
+                                                       "rowmouseover");
+  equal(detail.rowId, items[0].id);
+});
+
+it("Hovering out table row dispatches rowmouseout event with the rowId in details", async() =>
+{
+  const items = await prepopulatedItems();
+  const detail = await cbaTable.dispatchExpectRowEvent(items[0].id, "mouseout",
+                                                       "rowmouseout");
   equal(detail.rowId, items[0].id);
 });
 
