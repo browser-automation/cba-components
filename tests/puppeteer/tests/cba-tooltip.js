@@ -86,6 +86,7 @@ it("Passing object with heading, text, link, linkText, action, actionText proper
   equal(link, await cbaTooltip.getLink());
   equal(actionText, await cbaTooltip.getActionContent());
   await cbaTooltip.clickAction();
+  await wait(30);
   ok(await page().evaluate(() => document.body.classList.contains("action")));
 });
 
