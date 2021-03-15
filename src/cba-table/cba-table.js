@@ -116,6 +116,16 @@ class Table extends HTMLElement {
         this.selectRow(row.dataset.id);
     });
 
+    this.tableBodyElem.addEventListener("mouseover", ({target}) => 
+    {
+      const row = target.closest("tr");
+      if (row)
+      {
+        const rowId = row.dataset.id;
+        this.dispatchEvent(new CustomEvent("rowhover", {"detail": {rowId}}));
+      }
+    });
+
     this.tableBodyElem.addEventListener("keydown", (e) =>
     {
       e.preventDefault();
