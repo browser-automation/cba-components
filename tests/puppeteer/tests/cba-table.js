@@ -105,7 +105,7 @@ it("selectRow should Highlight a specific item ", async() =>
   equal((await cbaTable.getItem(items[0].id)).selected, true);
 });
 
-it("Hovering table row dispatches rowhover event with the rowId in details", async()=>
+it("Hovering table row dispatches rowhover event with the rowId in details", async() =>
 {
   const items = await prepopulatedItems();
   const rowHandle = await cbaTable.getRowHandle(items[0].id);
