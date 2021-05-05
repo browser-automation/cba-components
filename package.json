@@ -9,6 +9,7 @@
   "scripts": {
     "test": "npm run build:puppeteer && (http-server dist -s -p 3001 & mocha tests/puppeteer/mocha.js)",
     "start": "npm run build:smoke:watch & http-server dist -p 3000",
+    "server": " http-server dist -p 3000",
     "posttest": "kill $(lsof -t -i:3001)",
     "build": "npm run clean && webpack --config webpack.config.js",
     "build:puppeteer": "npm run clean && webpack --config webpack.config.js --puppeteer",
