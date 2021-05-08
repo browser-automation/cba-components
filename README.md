@@ -13,24 +13,49 @@ Collection of web components to be used in the [CBA](http://chrome-automation.co
 
 ## Development
 
+The code for the components can be found in the [src](src) directory.
+
+### Installation
+
+```bash
+npm install
 ```
-npm start // Starts server
-npm test // Launch puppeteer tests
+
+### Smoke tests
+
+```bash
+npm start # Starts development server
 ```
+
+After launching command above navigate to
+[http://localhost:3000/smoke/](http://localhost:3000/smoke) and select a
+component for smoke testing, for example if you are looking for smoke testing
+`cba-list` then
+[http://localhost:3000/smoke/cba-list/](http://localhost:3000/smoke/cba-list/)
+is the page you are looking for, various smoke test implementations can be found
+at [tests/smoke](tests/smoke) directory.
+
+**Note:** currently smoke tests are also used for documenation purpose. 
+
+### Automated tests
+
+```bash
+npm test # Launch puppeteer tests
+```
+
+The implementation for the puppeteer tests can be found at:
+- [tests/puppeteer](tests/puppeteer) - Main directory.
+- [tests/puppeteer/classes](tests/puppeteer/classes) - Abstractions and helpers.
+- [tests/puppeteer/tests](tests/puppeteer/tests) - Actual tests.
+- [tests/puppeteer/main.js](tests/puppeteer/main.js) - Various configurations.
 
 ## Import
 
-```
+```bash
 npm install privacy-manager-components
-cba-components // Build and import components
-cba-components --single-bundle // Build and import components into single file
-// Specify components to import
+cba-components # Build and import components
+cba-components --single-bundle # Build and import components into single file
+# Specify components to import
 cba-components --comp pm-table --comp pm-toggle
-cba-components --output dirname // Specifies output folder
+cba-components --output dirname # Specifies output folder
 ```
-
-## Structure
-
-- [src](src) - Source codes
-- [tests/smoke](tests/smoke) - Smoke tests
-- [tests/puppeteer](tests/puppeteer) - Automated tests
