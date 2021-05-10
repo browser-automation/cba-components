@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "npm run build:puppeteer && npm run test:run",
-    "test:run": "concurrently -r -k -s=all 'http-server dist -s -p 3001' 'mocha tests/puppeteer/mocha.js'",
+    "test:run": "concurrently -r -k -s=last 'http-server dist -s -p 3001' 'mocha tests/puppeteer/mocha.js'",
     "start": "concurrently -r -k 'npm run build:smoke:watch' 'http-server dist -p 3000'",
     "build": "npm run clean && webpack --config webpack.config.js",
     "build:puppeteer": "npm run clean && webpack --config webpack.config.js --puppeteer",
