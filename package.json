@@ -7,10 +7,9 @@
     "cba-components": "./bin/cba-components.js"
   },
   "scripts": {
-    "test": "npm run build:puppeteer && (http-server dist -s -p 3001 & mocha tests/puppeteer/mocha.js)",
-    "start": "npm run build:smoke:watch & http-server dist -p 3000",
-    "server": " http-server dist -p 3000",
-    "posttest": "kill $(lsof -t -i:3001)",
+    "test": "npm run build:puppeteer && npm run test:run",
+    "test:run": "concurrently -r -k -s=all 'http-server dist -s -p 3001' 'mocha tests/puppeteer/mocha.js'",
+    "start": "concurrently -r -k 'npm run build:smoke:watch' 'http-server dist -p 3000'",
     "build": "npm run clean && webpack --config webpack.config.js",
     "build:puppeteer": "npm run clean && webpack --config webpack.config.js --puppeteer",
     "build:smoke": "npm run clean && webpack --config webpack.config.js --smoke",
@@ -33,9 +32,11 @@
     "raw-loader": "^4.0.0"
   },
   "devDependencies": {
+    "concurrently": "^6.1.0",
     "copy-webpack-plugin": "^5.1.1",
     "mocha": "^7.0.1",
     "puppeteer": "^8.0.0",
+    "rimraf": "^3.0.2",
     "webpack": "^4.41.5",
     "webpack-cli": "^3.3.10"
   }
