@@ -117,7 +117,7 @@ class List extends HTMLElement {
 
     this.container.addEventListener("click", ({target}) => 
     {
-      if (target.tagName === "BUTTON")
+      if (target.classList.contains("collapsed") || target.classList.contains("expanded"))
       {
         const item = this.getItem(target.parentElement.dataset.id);
         this.setExpansion(item.id, !item.expanded);
@@ -551,6 +551,12 @@ class List extends HTMLElement {
     this.tooltip.classList.remove("visible")
   }
 
+  _addSubitemsHandler({target})
+  {
+    const {id} = target.closest("[data-id]").dataset;
+    this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}));
+  }
+
   /**
    * Render method to be called after each state change
    */
@@ -563,7 +569,10 @@ class List extends HTMLElement {
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
+
+      const addSubitemsButton = html`<button @click=${this._addSubitemsHandler.bind(this)}>+</button>`;
+      const menu = html`<button>:</button>`;
+      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}${menu}</span>`;
       const infoText = this._getText(item, this.tooltipText);
       if (infoText)
       {

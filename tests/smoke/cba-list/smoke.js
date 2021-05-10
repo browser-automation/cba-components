@@ -100,5 +100,14 @@ cbaList.addEventListener("select", () =>
   document.querySelector("input").value = text;
 });
 
+cbaList.addEventListener("addSubitem", (e) =>
+{
+  count++;
+  cbaList.addRow({
+    data: `Info${count}`,
+    text: `List${count}`
+  }, e.detail.id);
+});
+
 cbaList.selectRow("row2");
 
