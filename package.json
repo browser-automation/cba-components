@@ -16,7 +16,8 @@
     "build:puppeteer": "npm run clean && webpack --config webpack.config.js --puppeteer",
     "build:smoke": "npm run clean && webpack --config webpack.config.js --smoke",
     "build:smoke:watch": "npm run clean && webpack --config webpack.config.js --smoke --watch",
-    "clean": "rm -r dist || true"
+    "clean": "rm -r dist || true",
+    "server": " http-server dist -p 3000"
   },
   "repository": {
     "type": "git",

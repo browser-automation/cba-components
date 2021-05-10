@@ -36,6 +36,7 @@ for (let i = 4; i < 20; i++) {
     text: `List${i}`
   });
 }
+console.log("string");
 cbaList.items = items;
 
 const cbaSortableList = document.querySelector("#sortable");
@@ -52,21 +53,48 @@ cbaSortableList.items = [
 ];
 
 
-document.querySelector("#update-row").addEventListener("click", () =>
-{
+document.querySelector("#update-row").addEventListener("click", () => {
   const item = cbaList.getSelectedItem();
   item.text = document.querySelector("input").value;
   cbaList.updateRow(item, item.id);
 });
 
-document.querySelector("#delete-row").addEventListener("click", () =>
-{
+document.querySelector("#delete-row").addEventListener("click", () => {
   const item = cbaList.getSelectedItem();
   cbaList.deleteRow(item.id);
 });
 let count = 4;
-document.querySelector("#add-item").addEventListener("click", () =>
-{
+document.querySelector("#add-item").addEventListener("click", () => {
+  count++;
+  cbaList.addRow({
+    data: `Info${count}`,
+    text: `List${count}`
+  });
+});
+// add item
+
+
+
+
+document.querySelector("#rename").addEventListener("click", () => {
+  const { id } = cbaList.getSelectedItem();
+  cbaList.setEditable(id, true);
+});
+
+document.querySelector("#save").addEventListener("click", () => {
+  cbaList.saveEditables();
+});
+
+cbaList.addEventListener("addSubitem", (e) => {
+  count++;
+  const { id } = cbaList.getSelectedItem();
+  cbaList.addRow({
+    data: `Info${count}`,
+    text: `List${count}`
+  }, id);
+});
+cbaList.addEventListener("addItem", (e) => {
+  console.log("smoke");
   count++;
   cbaList.addRow({
     data: `Info${count}`,
@@ -74,32 +102,13 @@ document.querySelector("#add-item").addEventListener("click", () =>
   });
 });
 
-document.querySelector("#rename").addEventListener("click", () =>
-{
-  const {id} = cbaList.getSelectedItem();
-  cbaList.setEditable(id, true);
-});
 
-document.querySelector("#save").addEventListener("click", () =>
-{
-  cbaList.saveEditables();
-});
 
-document.querySelector("#add-subitem").addEventListener("click", () =>
-{
-  count++;
-  const {id} = cbaList.getSelectedItem();
-  cbaList.addRow({
-    data: `Info${count}`,
-    text: `List${count}`
-  }, id);
-});
-
-cbaList.addEventListener("select", () =>
-{
-  const {text} = cbaList.getSelectedItem();
+cbaList.addEventListener("select", () => {
+  const { text } = cbaList.getSelectedItem();
   document.querySelector("input").value = text;
 });
+
 
 cbaList.selectRow("row2");
 

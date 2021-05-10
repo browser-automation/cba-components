@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,33 +11,36 @@
   <script src="smoke.js" defer></script>
   <link rel="stylesheet" href="/smoke/res/highlight.css">
   <style>
-    #main
-    {
+    #main {
       display: flex;
     }
-    .wrapper
-    {
+
+    .wrapper {
       display: flex;
       flex-direction: column;
       width: 350px;
       height: 300px;
       font-family: Verdana, Arial, sans-serif;
     }
-    cba-list-new
-    {
+
+    cba-list-new {
       --icon-group: no-repeat url("/smoke/res/icon-group.svg");
       --icon-project: no-repeat url("/smoke/res/icon-project.svg");
+      --icon-group-btn: no-repeat url("/smoke/res/btn-group.svg");
+      --icon-subitem-btn: no-repeat url("/smoke/res/btn-subgroup.svg");
+      --icon-kebab-btn: no-repeat url("/smoke/res/btn-kebab.svg");
     }
-    #sortable
-    {
+
+    #sortable {
       height: 100%;
     }
-    #subItemList
-    {
+
+    #subItemList {
       height: 80%;
     }
   </style>
 </head>
+
 <body>
   <h1>cba-list</h1>
   <div id="main">
@@ -157,4 +161,5 @@ cbaList.addEventListener("select", () =>
   </pre>
   <script>hljs.initHighlightingOnLoad();</script>
 </body>
+
 </html>
