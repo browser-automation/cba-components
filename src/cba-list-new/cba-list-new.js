@@ -16,7 +16,9 @@ class List extends HTMLElement
     this.sort = false;
     this.connected = false;
     this.hasSubtiems = false;
-    this._data = [
+    this._data =
+    [
+
     ];
 
     this.attachShadow({mode: "open"});
@@ -25,6 +27,7 @@ class List extends HTMLElement
       <h2></h2>
       <h3 id="column"><a href="#"></a></h3>
       <div id="list-body">
+        <div id="group"></div>
         <ul></ul>
       </div>
       <div id="tooltip"></div>
@@ -32,6 +35,15 @@ class List extends HTMLElement
     `;
     constructableCSS.load(this.shadowRoot);
   }
+
+  // add-item
+  _addItemsHandler({target})
+  {
+    // console.log("list");
+    // Addrow
+    this.dispatchEvent(new CustomEvent("addItem"))
+  }
+
 
   /**
    * Populate and render items ensuring the ids and sorting
@@ -118,10 +130,11 @@ class List extends HTMLElement
     this.tooltipLinkText = this.getAttribute("tooltip-link-text");
     this.tooltipLinkTextDefault = "Learn more";
     this.connected = true;
+    this.group = this.shadowRoot.querySelector("#group");
 
     this.container.addEventListener("click", ({target}) =>
     {
-      if (target.tagName === "BUTTON")
+      if (target.classList.contains("collapsed") || target.classList.contains("expanded"))
       {
         const item = this.getItem(target.parentElement.dataset.id);
         this.setExpansion(item.id, !item.expanded);
@@ -174,7 +187,8 @@ class List extends HTMLElement
         else
           this.setExpansion(selectedId, false);
       }
-    });
+    }
+    );
 
     if (this.sort)
     {
@@ -189,8 +203,15 @@ class List extends HTMLElement
           this.setAttribute("sort", "asc");
       });
     }
+    this._renderGroup();
     this._renderHeading();
     this._render();
+  }
+
+  _renderGroup()
+  {
+    const result = html`<span>Group</span><button @click=${this._addItemsHandler.bind(this)} class="add-item"></button>`;
+    render(result, this.group);
   }
 
   _sortItems()
@@ -299,8 +320,8 @@ class List extends HTMLElement
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index + 1] ||
-                           this._data[parentIndex + 1] ||
-                           this._data[0];
+        this._data[parentIndex + 1] ||
+        this._data[0];
       this.selectRow(itemToSelect.id);
     }
     else
@@ -323,8 +344,8 @@ class List extends HTMLElement
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index - 1] ||
-                           this._data[parentIndex] ||
-                           this._data[this._data.length - 1];
+        this._data[parentIndex] ||
+        this._data[this._data.length - 1];
       this.selectRow(itemToSelect.id);
     }
     else
@@ -507,7 +528,7 @@ class List extends HTMLElement
     }
     if (tooltip.includes("."))
     {
-      return tooltip.split(".").reduce((acc, prop) => acc[prop] || "" , item);
+      return tooltip.split(".").reduce((acc, prop) => acc[prop] || "", item);
     }
     else if (tooltip.includes("$"))
     {
@@ -524,7 +545,7 @@ class List extends HTMLElement
 
   showTooltip({target})
   {
-    const itemId =  target.closest("li").dataset.id;
+    const itemId = target.closest("li").dataset.id;
     const item = this.getItem(itemId);
     const infoText = this._getText(item, this.tooltipText);
     if (infoText)
@@ -542,7 +563,7 @@ class List extends HTMLElement
     const infoText = this._getText(item, this.tooltipText);
     const infoLink = this._getText(item, this.tooltipLink);
     const infoLinkText = this._getText(item, this.tooltipLinkText) ||
-                          this.tooltipLinkTextDefault;
+      this.tooltipLinkTextDefault;
     const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
     render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
     const infoRect = infoElem.getBoundingClientRect();
@@ -557,6 +578,14 @@ class List extends HTMLElement
     this.tooltip.classList.remove("visible")
   }
 
+  _addSubitemsHandler({target})
+  {
+    const {id} = target.closest("[data-id]").dataset;
+    this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
+  }
+
+
+
   /**
    * Render method to be called after each state change
    */
@@ -569,7 +598,13 @@ class List extends HTMLElement
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}</span>`;
+      const addSubitemsButton = html`
+      <div class="subitem__wrapper">
+        <button class="subitem-btn" @click=${this._addSubitemsHandler.bind(this)}></button>
+        <button class="kebab-btn" ></button>
+      </div>
+      `;
+      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</div>`;
       const infoText = this._getText(item, this.tooltipText);
       if (infoText)
       {
