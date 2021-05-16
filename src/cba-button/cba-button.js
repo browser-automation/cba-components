@@ -1,10 +1,12 @@
 import shadowCSS from './shadow.css';
 
-class CbaButton extends HTMLElement {
-  constructor() {
+class CbaButton extends HTMLElement
+{
+  constructor()
+  {
     super();
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
       <style>
         ${shadowCSS}

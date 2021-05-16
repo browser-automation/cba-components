@@ -17,7 +17,8 @@ function run()
 {
   for (const {path, name} of tests)
   {
-    describe(name, () => {
+    describe(name, () =>
+    {
       const {pageSetup} = require(`./tests/${path}`);
       before(async () =>
       {

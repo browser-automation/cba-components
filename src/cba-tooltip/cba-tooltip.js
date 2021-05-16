@@ -4,11 +4,13 @@ import ConstructableCSS from '../ConstructableCSS';
 
 const constructableCSS = new ConstructableCSS(shadowCSS);
 
-class List extends HTMLElement {
-  constructor() {
+class List extends HTMLElement
+{
+  constructor()
+  {
     super();
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <slot></slot>
     <div id="tooltip" role="tooltip"></div>
@@ -31,7 +33,8 @@ class List extends HTMLElement {
     this._render();
   }
 
-  static get observedAttributes() {
+  static get observedAttributes()
+  {
     return ["arrow"];
   }
 
@@ -53,7 +56,8 @@ class List extends HTMLElement {
     }
   }
 
-  setData(data) {
+  setData(data)
+  {
     const {text, link, linkText, heading, action, actionText} = data;
     if (text)
       this.text = text;
@@ -69,7 +73,8 @@ class List extends HTMLElement {
       this.actionText = actionText;
   }
 
-  _setAxis() {
+  _setAxis()
+  {
     this.arrow = this.getAttribute("arrow") === "y" ? "y" : "x";
     this.tooltipElem.dataset.arrow = this.arrow;
   }
@@ -91,15 +96,18 @@ class List extends HTMLElement {
     this.tooltipElem.dataset.tooltip = `${placementX}-${placementY}`;
   }
 
-  disable() {
+  disable()
+  {
     this.setAttribute("disabled", true);
   }
 
-  enable() {
+  enable()
+  {
     this.removeAttribute("disabled");
   }
 
-  isDisabled() {
+  isDisabled()
+  {
     return this.getAttribute("disabled");
   }
 

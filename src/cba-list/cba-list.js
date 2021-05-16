@@ -4,8 +4,10 @@ import ConstructableCSS from '../ConstructableCSS';
 
 const constructableCSS = new ConstructableCSS(shadowCSS);
 
-class List extends HTMLElement {
-  constructor() {
+class List extends HTMLElement
+{
+  constructor()
+  {
     super();
     this.container = null;
     this.subheading = null;
@@ -17,7 +19,7 @@ class List extends HTMLElement {
     this._data = [
     ];
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <div id="container">
       <h2></h2>
@@ -42,7 +44,8 @@ class List extends HTMLElement {
     {
       if (!rowItem.id)
       {
-        while (this.getItem(`cba-list-id-${++this.idCount}`)) {}
+        while (this.getItem(`cba-list-id-${++this.idCount}`))
+        {}
         rowItem.id = `cba-list-id-${this.idCount}`;
       }
       if (rowItem.subItems)
@@ -69,7 +72,8 @@ class List extends HTMLElement {
     return JSON.parse(JSON.stringify(this._data));
   }
 
-  static get observedAttributes() {
+  static get observedAttributes()
+  {
     return ["sort", "heading", "subheading"];
   }
 
@@ -115,7 +119,7 @@ class List extends HTMLElement {
     this.tooltipLinkTextDefault = "Learn more";
     this.connected = true;
 
-    this.container.addEventListener("click", ({target}) => 
+    this.container.addEventListener("click", ({target}) =>
     {
       if (target.tagName === "BUTTON")
       {
@@ -249,7 +253,7 @@ class List extends HTMLElement {
 
   /**
    * Get textContent of the row element
-   * @param {string} id Row ID 
+   * @param {string} id Row ID
    * @return {string} row's textContent
    */
   _getRowContent(id)
@@ -263,7 +267,8 @@ class List extends HTMLElement {
    */
   saveEditables()
   {
-    while (this._findItem("editable", true)) {
+    while (this._findItem("editable", true))
+    {
       const item = this._findItem("editable", true);
       item.text = this._getRowContent(item.id);
       item.editable = false;
@@ -273,7 +278,7 @@ class List extends HTMLElement {
 
   /**
    * Make specific item editable
-   * @param {string} id Row ID  
+   * @param {string} id Row ID
    * @param {boolean} state editable state (true means editable)
    */
   setEditable(id, state)
@@ -469,7 +474,7 @@ class List extends HTMLElement {
    */
   getParentItem(rowId)
   {
-    const [index, parentIndex] = this.getIndex(rowId);
+    const [, parentIndex] = this.getIndex(rowId);
     if (parentIndex >= 0)
       return this.items[parentIndex];
     else
@@ -506,7 +511,8 @@ class List extends HTMLElement {
     }
     else if (tooltip.includes("$"))
     {
-      return tooltip.split("$").reduce((acc, prop, index, {length}) => {
+      return tooltip.split("$").reduce((acc, prop, index, {length}) =>
+      {
         if (index -1 === length)
           return acc[parseInt(prop, 10)] || "";
         else
@@ -575,13 +581,15 @@ class List extends HTMLElement {
         return row;
       }
     }
-    const createList = (item) => {
+    const createList = (item) =>
+    {
       const {id} = item;
       return html`<li data-id="${id}">
                       ${createRow(item)}
                   </li>`;
     }
-    const result = this._data.map((row) => {
+    const result = this._data.map((row) =>
+    {
       const {id, subItems, expanded} = row;
       if (subItems)
       {

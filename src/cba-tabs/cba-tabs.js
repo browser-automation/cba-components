@@ -1,5 +1,7 @@
-class CbaTabs extends HTMLElement {
-  constructor() {
+class CbaTabs extends HTMLElement
+{
+  constructor()
+  {
     super();
     this.tabs = [];
     this.selectedTab = null;
@@ -61,8 +63,10 @@ class CbaTabs extends HTMLElement {
   }
 }
 
-class CbaTab extends HTMLElement {
-  constructor() {
+class CbaTab extends HTMLElement
+{
+  constructor()
+  {
     super();
     this.panel = null;
     this.tabs = null;
@@ -99,8 +103,10 @@ class CbaTab extends HTMLElement {
   }
 }
 
-class CbaPanel extends HTMLElement {
-  constructor() {
+class CbaPanel extends HTMLElement
+{
+  constructor()
+  {
     super();
   }
 
