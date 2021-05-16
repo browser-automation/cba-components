@@ -26,8 +26,10 @@ class Common
   }
   async _triggerEvent(handle, eventName, eventData = {})
   {
-    return handle.evaluate((elem, eventName, eventData) => {
-      return new Promise((resolve) => {
+    return handle.evaluate((elem, eventName, eventData) =>
+    {
+      return new Promise((resolve) =>
+      {
         elem.addEventListener(eventName, (e) =>
         {
           resolve(e);
@@ -36,9 +38,9 @@ class Common
         const event = new DragEvent(eventName, Object.assign(data, eventData));
         elem.dispatchEvent(event);
       });
-      
+
     }, eventName, eventData);
   }
-};
+}
 
 module.exports = {Common};

@@ -1,9 +1,6 @@
 const assert = require("assert");
 const equal = assert.strictEqual;
-const deepEqual = assert.deepStrictEqual;
-const notDeepEqual = assert.notDeepStrictEqual;
 const ok = assert.ok;
-const notOk = (value) => ok(!value);
 
 // page is only accessible in it() functions, as those are called after before()
 const {page} = require("../main");
@@ -53,7 +50,8 @@ it("heading, text, link, link-text attributes populate the tooltip accoridngly",
   const attributesObj = {heading, text, link, "link-text": linkText};
 
   let attributes = "";
-  for (const attribute in attributesObj) {
+  for (const attribute in attributesObj)
+  {
     attributes += ` ${attribute}="${attributesObj[attribute]}"`;
   }
 
@@ -74,7 +72,7 @@ it("Passing object with heading, text, link, linkText, action, actionText proper
   const linkText = "Text link text";
   const actionText = "Add class";
   const handle = await cbaTooltip._getHandle();
-  await handle.evaluate((tooltip, heading, text, link, linkText, actionText) => 
+  await handle.evaluate((tooltip, heading, text, link, linkText, actionText) =>
   {
     const action = () => document.body.classList.add("action");
     tooltip.setData({heading, text, link, linkText, action, actionText});
@@ -97,9 +95,10 @@ it("arrow attribute with 'x' and 'y' values updates tooltip data-arrow attribute
   equal(await cbaTooltip.getTooltipDataArrow(), "y");
 });
 
-async function moveTooltip(vertical, horizontal) {
+async function moveTooltip(vertical, horizontal)
+{
   const handle = await cbaTooltip._getHandle();
-  return handle.evaluate((tooltip, vertical, horizontal) => 
+  return handle.evaluate((tooltip, vertical, horizontal) =>
   {
     tooltip.style.position = "absolute";
     tooltip.style.top = "auto";
@@ -117,11 +116,13 @@ async function moveTooltip(vertical, horizontal) {
   }, vertical, horizontal);
 }
 
-async function setPageBody(body) {
+async function setPageBody(body)
+{
   return page().evaluate((bodyHTML) => document.body.innerHTML = bodyHTML, body);
 }
 
-async function hoverTooltip() {
+async function hoverTooltip()
+{
   const handle = await cbaTooltip._getHandle();
   return handle.hover();
 }

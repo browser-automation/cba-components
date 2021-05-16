@@ -109,7 +109,7 @@ it("Hovering table row dispatches rowmouseover event with the rowId in details",
 {
   const items = await prepopulatedItems();
   const detail = await cbaTable.dispatchExpectRowEvent(items[0].id, "mouseover",
-                                                       "rowmouseover");
+    "rowmouseover");
   equal(detail.rowId, items[0].id);
 });
 
@@ -117,7 +117,7 @@ it("Hovering out table row dispatches rowmouseout event with the rowId in detail
 {
   const items = await prepopulatedItems();
   const detail = await cbaTable.dispatchExpectRowEvent(items[0].id, "mouseout",
-                                                       "rowmouseout");
+    "rowmouseout");
   equal(detail.rowId, items[0].id);
 });
 
@@ -162,7 +162,8 @@ async function itemIsHighlighted(item)
 async function prepopulatedItems()
 {
   const items = [];
-  for (let index = 1; index <= 3; index++) {
+  for (let index = 1; index <= 3; index++)
+  {
     const item = {
       id: "row" + index,
       data: "Info",

@@ -231,9 +231,4 @@ async function prepopulatedItems(expanded)
   return items;
 }
 
-function wait(milliseconds = 200)
-{
-  page().waitFor(milliseconds);
-}
-
 module.exports = {pageSetup};
