@@ -1,3 +1,4 @@
+/* eslint-disable */
 import {html, render} from 'lit-html';
 import shadowCSS from './shadow.css';
 import ConstructableCSS from '../ConstructableCSS';
