@@ -44,6 +44,7 @@
 }
 
 #tooltip {
+  font-size: 1em;
   border: var(--border-size) solid var(--color-border);
   background-color: var(--color-background);
   color: var(--color-foreground);
@@ -62,10 +63,6 @@
 {
   opacity: 0;
   visibility: hidden;
-}
-
-#tooltip {
-  font-size: 1em;
 }
 
 #tooltip h4 {

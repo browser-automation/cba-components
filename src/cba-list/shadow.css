@@ -211,7 +211,6 @@ li > button
   position: absolute;
   width: 18px;
   height: calc(1em + 4px);
-  position: absolute;
   cursor: pointer;
   border: 0px;
 }
@@ -257,6 +256,8 @@ li > button.collapsed
   opacity: 1;
   transition: visibility 0.3s, opacity 0.3s linear;
   font-size: 1em;
+  top: var(--tooltip-adjust-y);
+  left: var(--tooltip-adjust-x);
   z-index: 21;
 }
 
@@ -292,9 +293,4 @@ li > button.collapsed
 
 #tooltip a {
   float: right;
-}
-
-#tooltip {
-  top: var(--tooltip-adjust-y);
-  left: var(--tooltip-adjust-x);
 }

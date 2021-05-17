@@ -28,6 +28,8 @@ h2
   font-size: 11px;
   padding: 3px;
   background: linear-gradient(#dedede, #cecece);
+  top: 0px;
+  position: sticky;
   z-index: 20;
 }
 table
@@ -90,12 +92,6 @@ thead
 
 thead tr
 {
-  position: sticky;
-}
-
-h2
-{
-  top: 0px;
   position: sticky;
 }
 
