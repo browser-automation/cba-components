@@ -31,7 +31,8 @@
   --tooltip-adjust-y: calc(var(--tooltip-offset-y) + var(--content-height) - var(--arrow-adjust-y) + 2px);
 }
 
-#tooltip::before {
+#tooltip::before
+{
   content: "";
   font-size: 0;
   line-height: 0;
@@ -43,7 +44,8 @@
   transform: rotate(45deg);
 }
 
-#tooltip {
+#tooltip
+{
   font-size: 1em;
   border: var(--border-size) solid var(--color-border);
   background-color: var(--color-background);
@@ -65,120 +67,143 @@
   visibility: hidden;
 }
 
-#tooltip h4 {
+#tooltip h4
+{
   margin: 0;
 }
 
-#tooltip p {
+#tooltip p
+{
   margin: 0;
 }
 
-#tooltip #links {
+#tooltip #links
+{
   float: right;
 }
 
-#tooltip[data-tooltip="right-bottom"] {
+#tooltip[data-tooltip="right-bottom"]
+{
   left: var(--tooltip-adjust-x);
   top: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="right-bottom"]::before {
+#tooltip[data-tooltip="right-bottom"]::before
+{
   top: var(--arrow-adjust-y);
   left: var(--arrow-adjust-x);
 }
 
-#tooltip[data-tooltip="right-bottom"][data-arrow="y"] {
+#tooltip[data-tooltip="right-bottom"][data-arrow="y"]
+{
   left: var(--tooltip-adjust-x);
   top: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="right-bottom"][data-arrow="y"]::before {
+#tooltip[data-tooltip="right-bottom"][data-arrow="y"]::before
+{
   top: var(--arrow-adjust-y);
   left: var(--arrow-adjust-x);
 }
 
-#tooltip[data-tooltip="left-bottom"] {
+#tooltip[data-tooltip="left-bottom"]
+{
   right: var(--tooltip-adjust-x);
   top: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="left-bottom"]::before {
+#tooltip[data-tooltip="left-bottom"]::before
+{
   top: var(--arrow-adjust-y);
   right: var(--arrow-adjust-x);
 }
 
-#tooltip[data-tooltip="left-bottom"][data-arrow="y"] {
+#tooltip[data-tooltip="left-bottom"][data-arrow="y"]
+{
   right: var(--tooltip-adjust-x);
   top: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="left-bottom"][data-arrow="y"]::before {
+#tooltip[data-tooltip="left-bottom"][data-arrow="y"]::before
+{
   top: var(--arrow-adjust-y);
   right: var(--arrow-adjust-x);
 }
 
-#tooltip[data-tooltip="right-top"] {
+#tooltip[data-tooltip="right-top"]
+{
   left: var(--tooltip-adjust-x);
   bottom: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="right-top"]::before {
+#tooltip[data-tooltip="right-top"]::before
+{
   left: var(--arrow-adjust-x);
   bottom: var(--arrow-adjust-y);
 }
 
-#tooltip[data-tooltip="right-top"][data-arrow="y"] {
+#tooltip[data-tooltip="right-top"][data-arrow="y"]
+{
   left: var(--tooltip-adjust-x);
   bottom: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="right-top"][data-arrow="y"]::before {
+#tooltip[data-tooltip="right-top"][data-arrow="y"]::before
+{
   bottom: var(--arrow-adjust-y);
   right: var(--arrow-adjust-x);
 }
 
-#tooltip[data-tooltip="left-top"] {
+#tooltip[data-tooltip="left-top"]
+{
   right: var(--tooltip-adjust-x);
   bottom: var(--tooltip-adjust-y);
 }
 
-#tooltip[data-tooltip="left-top"]::before {
+#tooltip[data-tooltip="left-top"]::before
+{
   right: var(--arrow-adjust-x);
   bottom: var(--arrow-adjust-y);
 }
 
-#tooltip[data-tooltip="left-top"][data-arrow="y"] {
+#tooltip[data-tooltip="left-top"][data-arrow="y"]
+{
   right: var(--tooltip-adjust-x);
   bottom: var(--tooltip-adjust-y);
 }
 
 /* Arrow borders */
 
-#tooltip[data-tooltip="left-top"][data-arrow="y"]::before {
+#tooltip[data-tooltip="left-top"][data-arrow="y"]::before
+{
   bottom: var(--arrow-adjust-y);
   right: var(--arrow-adjust-x);
 }
 
 #tooltip[data-tooltip="left-top"][data-arrow="x"]::before,
-#tooltip[data-tooltip="left-bottom"][data-arrow="x"]::before {
+#tooltip[data-tooltip="left-bottom"][data-arrow="x"]::before
+{
   border-bottom-color: transparent;
   border-left-color: transparent;
 }
 
 #tooltip[data-tooltip="right-top"][data-arrow="x"]::before,
-#tooltip[data-tooltip="right-bottom"][data-arrow="x"]::before {
+#tooltip[data-tooltip="right-bottom"][data-arrow="x"]::before
+{
   border-top-color: transparent;
   border-right-color: transparent;
 }
 
 #tooltip[data-tooltip="left-top"][data-arrow="y"]::before,
-#tooltip[data-tooltip="right-top"][data-arrow="y"]::before {
+#tooltip[data-tooltip="right-top"][data-arrow="y"]::before
+{
   border-top-color: transparent;
   border-left-color: transparent;
 }
 
 #tooltip[data-tooltip="left-bottom"][data-arrow="y"]::before,
-#tooltip[data-tooltip="right-bottom"][data-arrow="y"]::before {
+#tooltip[data-tooltip="right-bottom"][data-arrow="y"]::before
+{
   border-right-color: transparent;
   border-bottom-color: transparent;
 }

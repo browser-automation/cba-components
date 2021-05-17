@@ -177,7 +177,8 @@ thead tr:after
                               var(--column-secondary) 100%);
 }
 
-#container.dragenter tbody:after {
+#container.dragenter tbody:after
+{
   position: absolute;
   content: "";
   border: 1px solid var(--color-border);
@@ -186,7 +187,8 @@ thead tr:after
   display: block;
 }
 
-#container.dragenter tbody:empty:after {
+#container.dragenter tbody:empty:after
+{
   background: linear-gradient(var(--hover-primary) 0%,
                               var(--hover-primary) 50%,
                               var(--hover-secondary) 50%,

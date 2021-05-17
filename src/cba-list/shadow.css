@@ -261,7 +261,8 @@ li > button.collapsed
   z-index: 21;
 }
 
-#tooltip::before {
+#tooltip::before
+{
   content: "";
   font-size: 0;
   line-height: 0;
@@ -283,14 +284,17 @@ li > button.collapsed
   visibility: hidden;
 }
 
-#tooltip h4 {
+#tooltip h4
+{
   margin: 0;
 }
 
-#tooltip p {
+#tooltip p
+{
   margin: 0;
 }
 
-#tooltip a {
+#tooltip a
+{
   float: right;
 }

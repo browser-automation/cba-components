@@ -2,6 +2,7 @@
 "extends": "stylelint-config-recommended",
   "rules": {
     "block-closing-brace-newline-after": "always",
+    "block-opening-brace-newline-before": "always",
     "no-descending-specificity": null
   }
 }
