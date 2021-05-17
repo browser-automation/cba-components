@@ -1,3 +1,4 @@
+/* eslint-disable */
 const cbaList = document.querySelector("cba-list-new");
 const items = [
   {
@@ -28,8 +29,7 @@ const items = [
   },
 ];
 
-for (let i = 4; i < 20; i++)
-{
+for (let i = 4; i < 20; i++) {
   items.push({
     id: `row${i}`,
     data: `Info`,
