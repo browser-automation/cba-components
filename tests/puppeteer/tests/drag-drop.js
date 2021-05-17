@@ -1,7 +1,6 @@
 const assert = require("assert");
 const equal = assert.strictEqual;
 const deepEqual = assert.deepStrictEqual;
-const notDeepEqual = assert.notDeepStrictEqual;
 const ok = assert.ok;
 const notOk = (value) => ok(!value);
 
@@ -130,7 +129,8 @@ it("Dragging cba-list item and dropping to cba-table row bottom adds item below 
 async function populateCbaList()
 {
   const items = [];
-  for (let index = 1; index <= 3; index++) {
+  for (let index = 1; index <= 3; index++)
+  {
     const item = {
       id: "row" + index,
       data: {
@@ -153,7 +153,8 @@ async function populateCbaList()
 async function populateCbaTable()
 {
   const items = [];
-  for (let index = 1; index <= 5; index++) {
+  for (let index = 1; index <= 5; index++)
+  {
     const item = {
       id: `row${index}`,
       data: "Info",
@@ -175,8 +176,10 @@ async function triggerDrop(id, data)
 {
   const handle = await cbaTable.getRowHandle(id);
   const table = await cbaTable._getHandle();
-  return handle.evaluate((cbaTableRow, cbaTable, data) => {
-    return new Promise((resolve) => {
+  return handle.evaluate((cbaTableRow, cbaTable, data) =>
+  {
+    return new Promise((resolve) =>
+    {
       cbaTable.addEventListener('dragndrop', ({detail}) =>
       {
         return resolve(detail);
@@ -189,13 +192,14 @@ async function triggerDrop(id, data)
       });
       cbaTableRow.dispatchEvent(event);
     });
-    
+
   }, table, data);
 }
 
 async function triggerDragStart(handle)
 {
-  return handle.evaluate((row) => {
+  return handle.evaluate((row) =>
+  {
     const event = new DragEvent("dragstart", {
       bubbles: true,
       dataTransfer: new DataTransfer()
@@ -214,7 +218,8 @@ async function itemIsRenderedOnRowIndex({texts}, index)
 async function isCbaTableRowHidden(id)
 {
   const handle = await cbaTable.getRowHandle(id);
-  return handle.evaluate((cbaTableRow) => {
+  return handle.evaluate((cbaTableRow) =>
+  {
     return window.getComputedStyle(cbaTableRow).getPropertyValue("display") === "none";
   });
 }

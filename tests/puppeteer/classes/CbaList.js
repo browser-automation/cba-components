@@ -1,4 +1,3 @@
-const {page} = require("../main");
 const {Common} = require("./Common");
 
 const cbaListMethods = ["addRow", "updateRow", "deleteRow", "getItem",
@@ -138,10 +137,12 @@ class CbaList extends Common
     const item = await this.getItem(id);
     return item.expanded === true;
   }
-};
+}
 
-cbaListMethods.forEach((methodName) => {
-  CbaList.prototype[methodName] = async function() {
+cbaListMethods.forEach((methodName) =>
+{
+  CbaList.prototype[methodName] = async function()
+  {
     return await this._executeMethod(methodName, ...arguments)
   };
 });

@@ -1,8 +1,7 @@
-const {page} = require("../main");
 const {Common} = require("./Common");
 
 const cbaTableMethods = ["addRow", "updateRow", "deleteRow", "getItem",
-                         "selectRow", "selectNextRow", "selectPreviousRow"];
+  "selectRow", "selectNextRow", "selectPreviousRow"];
 
 class CbaTable extends Common
 {
@@ -46,12 +45,13 @@ class CbaTable extends Common
     if (!rowHandle)
       return false;
 
-    return rowHandle.evaluate((row) => 
+    return rowHandle.evaluate((row) =>
     {
       const cells = row.querySelectorAll("td");
       if (!cells.length)
         return false;
-      return [...cells].reduce((acc, cell) => {
+      return [...cells].reduce((acc, cell) =>
+      {
         acc.push(cell.textContent);
         return acc;
       }, []);
@@ -81,7 +81,8 @@ class CbaTable extends Common
   async getRowBoundingClientRect(id)
   {
     const handle = await this.getRowHandle(id);
-    return handle.evaluate((cbaTableRow) => {
+    return handle.evaluate((cbaTableRow) =>
+    {
       const {top, left, bottom, right} = cbaTableRow.getBoundingClientRect();
       return {top, left, bottom, right};
     });
@@ -96,8 +97,10 @@ class CbaTable extends Common
   {
     const rowHandle = await this.getRowHandle(rowId);
     const cbaTableHandle = await this._getHandle();
-    return cbaTableHandle.evaluate((cbaTable, row, dispatch, expect) => {
-      return new Promise((resolve) => {
+    return cbaTableHandle.evaluate((cbaTable, row, dispatch, expect) =>
+    {
+      return new Promise((resolve) =>
+      {
         cbaTable.addEventListener(expect, ({detail}) =>
         {
           return resolve(detail);
@@ -112,10 +115,12 @@ class CbaTable extends Common
     const handle = await this.getRowHandle(id);
     return handle.hover();
   }
-};
+}
 
-cbaTableMethods.forEach((methodName) => {
-  CbaTable.prototype[methodName] = async function() {
+cbaTableMethods.forEach((methodName) =>
+{
+  CbaTable.prototype[methodName] = async function()
+  {
     return await this._executeMethod(methodName, ...arguments)
   };
 });

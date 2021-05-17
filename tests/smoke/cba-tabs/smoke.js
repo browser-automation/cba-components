@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 document.addEventListener("DOMContentLoaded", () =>
 {
   document.querySelector("cba-tabs").select("import-tab");

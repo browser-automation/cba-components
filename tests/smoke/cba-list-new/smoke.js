@@ -1,3 +1,4 @@
+/* eslint-disable */
 const cbaList = document.querySelector("cba-list-new");
 const items = [
   {

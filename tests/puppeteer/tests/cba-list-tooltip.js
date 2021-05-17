@@ -1,12 +1,7 @@
 const assert = require("assert");
 const equal = assert.strictEqual;
-const deepEqual = assert.deepStrictEqual;
-const notDeepEqual = assert.notDeepStrictEqual;
 const ok = assert.ok;
 const notOk = (value) => ok(!value);
-
-// page is only accessible in it() functions, as those are called after before()
-const {page} = require("../main");
 
 const pageSetup = {
   body: `<cba-list heading="Heading text" subHeading="Subheading text" tooltip-text="tooltip.text" tooltip-link="tooltip.link" tooltip-link-text="tooltip.linkText"></cba-list>`,
@@ -74,10 +69,5 @@ it("cba-list rows with matching data of tooltip-text and tooltip-link attribute 
   await cbaList.hoverRow(tooltipRowId);
   equal(await cbaList.getTooltipAttribute("class"), "");
 });
-
-function wait(milliseconds = 200)
-{
-  page().waitFor(milliseconds);
-}
 
 module.exports = {pageSetup};

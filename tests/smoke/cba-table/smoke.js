@@ -8,7 +8,8 @@ items.push({
   type: "Event"
 });
 
-for (let index = 0; index < 30; index++) {
+for (let index = 0; index < 30; index++)
+{
   items.push({
     id: "row" + index,
     data: "Info",

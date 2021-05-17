@@ -1,12 +1,5 @@
 const assert = require("assert");
 const equal = assert.strictEqual;
-const deepEqual = assert.deepStrictEqual;
-const notDeepEqual = assert.notDeepStrictEqual;
-const ok = assert.ok;
-const notOk = (value) => ok(!value);
-
-// page is only accessible in it() functions, as those are called after before()
-const {page} = require("../main");
 
 const pageSetup = {
   body: `<cba-list sort="asc"></cba-list>`,
@@ -31,7 +24,7 @@ it("sort='asc' should sort items ascendingly", async() =>
 
 it("sort='desc' should sort items descendingly", async() =>
 {
-  
+
   await cbaList.setSort("desc");
   await prepopulatedItems();
   equal(await cbaList.getDomRowIndexText(0), "List3");

@@ -5,8 +5,10 @@ import ConstructableCSS from '../ConstructableCSS';
 
 const constructableCSS = new ConstructableCSS(shadowCSS);
 
-class Table extends HTMLElement {
-  constructor() {
+class Table extends HTMLElement
+{
+  constructor()
+  {
     super();
     this._data = [];
     this.columns = [];
@@ -20,7 +22,7 @@ class Table extends HTMLElement {
     this.reordering = false;
     this.rowLastHoverId = null;
 
-    this.attachShadow({ mode: "open" });
+    this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <div id="container">
       <h2></h2>
@@ -42,11 +44,12 @@ class Table extends HTMLElement {
    */
   set items(rowItems)
   {
-    this._data = rowItems.map((rowItem) => 
+    this._data = rowItems.map((rowItem) =>
     {
       if (!rowItem.id)
       {
-        while (this.getItem(`cba-table-id-${++this.idCount}`)) {}
+        while (this.getItem(`cba-table-id-${++this.idCount}`))
+        {}
         rowItem.id = `cba-table-id-${this.idCount}`;
       }
       return rowItem;
@@ -63,7 +66,8 @@ class Table extends HTMLElement {
     return JSON.parse(JSON.stringify(this._data));
   }
 
-  static get observedAttributes() {
+  static get observedAttributes()
+  {
     return ["caption"];
   }
 
@@ -108,9 +112,9 @@ class Table extends HTMLElement {
     // offset of the sticky header
     const offset = this.tableElem.offsetTop + "px";
     this.tableElem.style.setProperty("--head-columns-offset", offset);
-    
+
     this._renderBody();
-    this.tableBodyElem.addEventListener("click", ({target}) => 
+    this.tableBodyElem.addEventListener("click", ({target}) =>
     {
       const row = target.closest("tr");
       if (row)
@@ -128,7 +132,7 @@ class Table extends HTMLElement {
       }
     });
 
-    this.tableBodyElem.addEventListener("mouseout", ({target}) => 
+    this.tableBodyElem.addEventListener("mouseout", ({target}) =>
     {
       const row = target.closest("tr");
       if (row && row.dataset.id === this.rowLastHoverId)
@@ -168,7 +172,7 @@ class Table extends HTMLElement {
         if (e.clientY < 50)
         {
           this.containerElem.scroll({
-            top: this.containerElem.scrollTop - 100, 
+            top: this.containerElem.scrollTop - 100,
             behavior: "smooth"
           });
         }
@@ -229,7 +233,7 @@ class Table extends HTMLElement {
         {
           const dropIndex = this._getItemIndex(dropRowId);
           const itemBefore = dropAfter ? this._data[dropIndex] :
-                                         this._data[dropIndex - 1];
+            this._data[dropIndex - 1];
 
           if (dropIndex == 0 && !dropAfter)
             this.addFirstRow(item);
@@ -302,7 +306,7 @@ class Table extends HTMLElement {
       {
         this.reordering = true;
         const row = e.target.closest("[data-id]");
-        
+
         // Hiding dragged row
         window.requestAnimationFrame(()=>
         {
@@ -342,7 +346,7 @@ class Table extends HTMLElement {
 
   /**
    * Unshifts a new row to items
-   * @param {object} data  new row data 
+   * @param {object} data  new row data
    */
   addFirstRow(data)
   {
@@ -412,7 +416,7 @@ class Table extends HTMLElement {
     const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
     if (selectedIndex == -1)
       return;
-    
+
     const itemToSelect = this._data[selectedIndex + 1] || this._data[0];
     this.selectRow(itemToSelect.id);
   }
@@ -425,7 +429,7 @@ class Table extends HTMLElement {
     const selectedIndex = this._getItemIndex(this.getSelectedItem().id);
     if (selectedIndex == -1)
       return;
-    
+
     const itemToSelect = this._data[selectedIndex - 1] ||
                          this._data[this._data.length - 1];
     this.selectRow(itemToSelect.id);
@@ -481,7 +485,8 @@ class Table extends HTMLElement {
     }
     else if (colText.includes("$"))
     {
-      return colText.split("$").reduce((acc, prop, index, {length}) => {
+      return colText.split("$").reduce((acc, prop, index, {length}) =>
+      {
         if (index -1 === length)
           return acc[parseInt(prop, 10)] || "";
         else
@@ -496,10 +501,12 @@ class Table extends HTMLElement {
    */
   _renderBody()
   {
-    const createRow = (rowData) => {
+    const createRow = (rowData) =>
+    {
       const {id, selected} = rowData;
       const selectedClass = selected ? "highlight" : undefined;
-      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) => {
+      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) =>
+      {
         const text = this._getText(rowData, name);
         return html`<td data-id="${name}" title="${text}">${text}</td>`;
       })}</tr>`;
@@ -513,8 +520,8 @@ class Table extends HTMLElement {
                                <span class="resize"></span>`;
     const columns = html`<tr data-action="select"
                              data-key-down="next-sibling"
-                             data-key-up="previouse-sibling">${this.columns.map((column) => 
-                    html`<th data-id="${column}">${columnContent}</th>`)}</tr>`;
+                             data-key-up="previouse-sibling">${this.columns.map((column) =>
+    html`<th data-id="${column}">${columnContent}</th>`)}</tr>`;
     render(columns, this.tableHeadElem);
   }
 
@@ -529,8 +536,10 @@ class Table extends HTMLElement {
  * new custom element which reflects the status of those elements in the shadow
  * DOM.
  */
-class Column extends HTMLElement {
-  constructor() {
+class Column extends HTMLElement
+{
+  constructor()
+  {
     super();
     this.table = null;
     this.tableElem = null;
@@ -543,7 +552,8 @@ class Column extends HTMLElement {
     this.startWidth = 0;
   }
 
-  static get observedAttributes() {
+  static get observedAttributes()
+  {
     return ["text", "width"];
   }
 
@@ -589,9 +599,9 @@ class Column extends HTMLElement {
     // Fetch content change
     const observer = new MutationObserver(this._render.bind(this));
     const config = {characterData: true,
-                    attributes: false,
-                    childList: false,
-                    subtree: true };
+      attributes: false,
+      childList: false,
+      subtree: true};
     observer.observe(this, config);
 
     this._render();

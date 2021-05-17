@@ -1,4 +1,3 @@
-const {page} = require("../main");
 const {Common} = require("./Common");
 
 const cbaTooltipMethods = ["setData", "disable", "enable", "isDisabled"];
@@ -58,10 +57,12 @@ class CbaTooltip extends Common
     const handle = await tooltipHandle.$("a:nth-of-type(2)");
     return handle.click();
   }
-};
+}
 
-cbaTooltipMethods.forEach((methodName) => {
-  CbaTooltip.prototype[methodName] = async function() {
+cbaTooltipMethods.forEach((methodName) =>
+{
+  CbaTooltip.prototype[methodName] = async function()
+  {
     return await this._executeMethod(methodName, ...arguments);
   };
 });

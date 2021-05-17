@@ -4,7 +4,8 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 
 */
 
-.hljs {
+.hljs
+{
   display: block;
   overflow-x: auto;
   padding: 0.5em;
@@ -13,14 +14,16 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 }
 
 .hljs-comment,
-.hljs-quote {
+.hljs-quote
+{
   color: #998;
   font-style: italic;
 }
 
 .hljs-keyword,
 .hljs-selector-tag,
-.hljs-subst {
+.hljs-subst
+{
   color: #333;
   font-weight: bold;
 }
@@ -29,71 +32,85 @@ github.com style (c) Vasily Polovnyov <vast@whiteants.net>
 .hljs-literal,
 .hljs-variable,
 .hljs-template-variable,
-.hljs-tag .hljs-attr {
+.hljs-tag .hljs-attr
+{
   color: #008080;
 }
 
 .hljs-string,
-.hljs-doctag {
+.hljs-doctag
+{
   color: #d14;
 }
 
 .hljs-title,
 .hljs-section,
-.hljs-selector-id {
+.hljs-selector-id
+{
   color: #900;
   font-weight: bold;
 }
 
-.hljs-subst {
+.hljs-subst
+{
   font-weight: normal;
 }
 
 .hljs-type,
-.hljs-class .hljs-title {
+.hljs-class .hljs-title
+{
   color: #458;
   font-weight: bold;
 }
 
 .hljs-tag,
 .hljs-name,
-.hljs-attribute {
+.hljs-attribute
+{
   color: #000080;
   font-weight: normal;
 }
 
 .hljs-regexp,
-.hljs-link {
+.hljs-link
+{
   color: #009926;
 }
 
 .hljs-symbol,
-.hljs-bullet {
+.hljs-bullet
+{
   color: #990073;
 }
 
 .hljs-built_in,
-.hljs-builtin-name {
+.hljs-builtin-name
+{
   color: #0086b3;
 }
 
-.hljs-meta {
+.hljs-meta
+{
   color: #999;
   font-weight: bold;
 }
 
-.hljs-deletion {
+.hljs-deletion
+{
   background: #fdd;
 }
 
-.hljs-addition {
+.hljs-addition
+{
   background: #dfd;
 }
 
-.hljs-emphasis {
+.hljs-emphasis
+{
   font-style: italic;
 }
 
-.hljs-strong {
+.hljs-strong
+{
   font-weight: bold;
 }
