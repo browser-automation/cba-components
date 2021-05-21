@@ -154,6 +154,7 @@ li .row:not(.highlight):hover
 
 ul li 
 {
+  cursor: default;
   position: relative;
 }
 
@@ -304,6 +305,9 @@ li
 }
 .kebab-btn:after
 {
+  opacity: 0;
+  width: 8px;
+  height: 8px;
   content: "";
   width: 8px;
   height: 8px;
@@ -314,13 +318,7 @@ li
 {
 cursor: pointer;
 }
-.kebab-btn:after 
-{
-  opacity: 0;
-  width: 8px;
-  height: 8px;
-  background: no-repeat var(--icon-kebab-btn);
-}
+
 .subitem__wrapper:active .subitem-btn-kebab 
 {
   opacity: 1;
@@ -334,10 +332,7 @@ div.row
   height: 20px;
   cursor: default !important;
 }
-ul li 
-{
-  cursor: default;
-}
+
 /* Alex */
 li > button 
 {
