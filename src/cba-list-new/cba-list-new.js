@@ -1,9 +1,4 @@
-<<<<<<< HEAD
-/* eslint-disable */
-import {html, render} from 'lit-html';
-=======
 import { html, render } from 'lit-html';
->>>>>>> 098432d (issue #45 - implemented cba-list-new component)
 import shadowCSS from './shadow.css';
 import ConstructableCSS from '../ConstructableCSS';
 
