@@ -19,6 +19,7 @@
     "no-trailing-spaces": "error",
     "no-empty": "off",
     "object-curly-spacing": ["error", "never"],
-    "no-console": "error"
+    "no-console": "error",
+    "space-in-parens": "error"
   }
 }
