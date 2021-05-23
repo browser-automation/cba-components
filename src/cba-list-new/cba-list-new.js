@@ -2,7 +2,7 @@ import {html, render} from 'lit-html';
 import shadowCSS from './shadow.css';
 import ConstructableCSS from '../ConstructableCSS';
 
-const constructableCSS = new ConstructableCSS( shadowCSS );
+const constructableCSS = new ConstructableCSS(shadowCSS);
 
 class List extends HTMLElement
 {
@@ -21,7 +21,7 @@ class List extends HTMLElement
 
     ];
 
-    this.attachShadow( {mode: "open"} );
+    this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <div id="container">
       <h2></h2>
@@ -33,15 +33,15 @@ class List extends HTMLElement
       <div id="tooltip"></div>
     </div>
     `;
-    constructableCSS.load( this.shadowRoot );
+    constructableCSS.load(this.shadowRoot);
   }
 
   // add-item
-  _addItemsHandler( {target} )
+  _addItemsHandler({target})
   {
     // console.log("list");
     // Addrow
-    this.dispatchEvent( new CustomEvent( "addItem" ) )
+    this.dispatchEvent(new CustomEvent("addItem"))
   }
 
 
@@ -49,28 +49,28 @@ class List extends HTMLElement
    * Populate and render items ensuring the ids and sorting
    * @param {array} rowItems Items, item contains of: {id, data, text}
    */
-  set items( rowItems )
+  set items(rowItems)
   {
     this.hasSubtiems = false;
-    const setId = ( rowItem ) =>
+    const setId = (rowItem) =>
     {
-      if ( !rowItem.id )
+      if (!rowItem.id)
       {
-        while ( this.getItem( `cba-list-id-${++this.idCount}` ) )
+        while (this.getItem(`cba-list-id-${++this.idCount}`))
         {}
         rowItem.id = `cba-list-id-${this.idCount}`;
       }
-      if ( rowItem.subItems )
+      if (rowItem.subItems)
       {
         this.hasSubtiems = true;
-        rowItem.subItems = rowItem.subItems.map( setId );
+        rowItem.subItems = rowItem.subItems.map(setId);
         return rowItem;
       }
       else
         return rowItem;
     }
-    this._data = rowItems.map( setId );
-    if ( this.sort )
+    this._data = rowItems.map(setId);
+    if (this.sort)
       this._sortItems();
     this._render();
   }
@@ -81,7 +81,7 @@ class List extends HTMLElement
    */
   get items()
   {
-    return JSON.parse( JSON.stringify( this._data ) );
+    return JSON.parse(JSON.stringify(this._data));
   }
 
   static get observedAttributes()
@@ -95,19 +95,19 @@ class List extends HTMLElement
    * @param {String} oldValue Old value of the attribute
    * @param {String} newValue New value of the attribute
    */
-  attributeChangedCallback( name, oldValue, newValue )
+  attributeChangedCallback(name, oldValue, newValue)
   {
-    if ( oldValue === newValue || !this.connected )
+    if (oldValue === newValue || !this.connected)
     {
       return;
     }
-    if ( name === "sort" )
+    if (name === "sort")
     {
-      this.sort = this.getAttribute( "sort" );
+      this.sort = this.getAttribute("sort");
       this._sortItems();
       this._render();
     }
-    if ( name === "heading" || name === "subheading" )
+    if (name === "heading" || name === "subheading")
     {
       this._renderHeading();
     }
@@ -118,90 +118,90 @@ class List extends HTMLElement
    */
   connectedCallback()
   {
-    this.heading = this.shadowRoot.querySelector( "h2" );
-    this.subheading = this.shadowRoot.querySelector( "h3 a" );
-    this.container = this.shadowRoot.querySelector( "ul" );
-    this.tooltip = this.shadowRoot.querySelector( "#tooltip" );
-    this.subheadingContainer = this.shadowRoot.querySelector( "#column" );
-    this.drag = this.getAttribute( "drag" ) == "true";
-    this.sort = this.getAttribute( "sort" );
-    this.tooltipText = this.getAttribute( "tooltip-text" );
-    this.tooltipLink = this.getAttribute( "tooltip-link" );
-    this.tooltipLinkText = this.getAttribute( "tooltip-link-text" );
+    this.heading = this.shadowRoot.querySelector("h2");
+    this.subheading = this.shadowRoot.querySelector("h3 a");
+    this.container = this.shadowRoot.querySelector("ul");
+    this.tooltip = this.shadowRoot.querySelector("#tooltip");
+    this.subheadingContainer = this.shadowRoot.querySelector("#column");
+    this.drag = this.getAttribute("drag") == "true";
+    this.sort = this.getAttribute("sort");
+    this.tooltipText = this.getAttribute("tooltip-text");
+    this.tooltipLink = this.getAttribute("tooltip-link");
+    this.tooltipLinkText = this.getAttribute("tooltip-link-text");
     this.tooltipLinkTextDefault = "Learn more";
     this.connected = true;
-    this.group = this.shadowRoot.querySelector( "#group" );
+    this.group = this.shadowRoot.querySelector("#group");
 
-    this.container.addEventListener( "click", ( {target} ) =>
+    this.container.addEventListener("click", ({target}) =>
     {
-      if ( target.classList.contains( "collapsed" ) || target.classList.contains( "expanded" ) )
+      if (target.classList.contains("collapsed") || target.classList.contains("expanded"))
       {
-        const item = this.getItem( target.parentElement.dataset.id );
-        this.setExpansion( item.id, !item.expanded );
+        const item = this.getItem(target.parentElement.dataset.id);
+        this.setExpansion(item.id, !item.expanded);
         return;
       }
-      const row = target.closest( ".row" );
-      if ( row )
+      const row = target.closest(".row");
+      if (row)
       {
-        this.selectRow( row.parentElement.dataset.id );
+        this.selectRow(row.parentElement.dataset.id);
       }
-    } );
+    });
 
-    if ( this.drag )
+    if (this.drag)
     {
-      this.container.addEventListener( "dragstart", ( e ) =>
+      this.container.addEventListener("dragstart", (e) =>
       {
-        const rowId = e.target.closest( "[data-id]" ).dataset.id;
-        e.dataTransfer.setData( "text/plain", `${rowId}#${this.id}` );
-      } );
+        const rowId = e.target.closest("[data-id]").dataset.id;
+        e.dataTransfer.setData("text/plain", `${rowId}#${this.id}`);
+      });
     }
 
-    this.container.addEventListener( "keydown", ( e ) =>
+    this.container.addEventListener("keydown", (e) =>
     {
       const {editable} = this.getSelectedItem();
-      if ( e.key === "ArrowDown" && !editable )
+      if (e.key === "ArrowDown" && !editable)
       {
         e.preventDefault();
         this.selectNextRow();
       }
-      if ( e.key === "ArrowUp" && !editable )
+      if (e.key === "ArrowUp" && !editable)
       {
         e.preventDefault();
         this.selectPreviousRow();
       }
-      if ( e.key === "ArrowRight" && !editable )
+      if (e.key === "ArrowRight" && !editable)
       {
         e.preventDefault();
-        this.setExpansion( this.getSelectedItem().id, true );
+        this.setExpansion(this.getSelectedItem().id, true);
       }
-      if ( e.key === "ArrowLeft" && !editable )
+      if (e.key === "ArrowLeft" && !editable)
       {
         e.preventDefault();
         const selectedId = this.getSelectedItem().id;
-        const parentItem = this.getParentItem( selectedId );
-        if ( parentItem )
+        const parentItem = this.getParentItem(selectedId);
+        if (parentItem)
         {
-          this.selectRow( parentItem.id );
-          this.setExpansion( parentItem.id, false );
+          this.selectRow(parentItem.id);
+          this.setExpansion(parentItem.id, false);
         }
         else
-          this.setExpansion( selectedId, false );
+          this.setExpansion(selectedId, false);
       }
     }
     );
 
-    if ( this.sort )
+    if (this.sort)
     {
-      this.subheadingContainer.addEventListener( "click", ( e ) =>
+      this.subheadingContainer.addEventListener("click", (e) =>
       {
         e.preventDefault();
-        if ( this.sort == "desc" )
-          this.setAttribute( "sort", "asc" );
-        else if ( this.sort == "asc" )
-          this.setAttribute( "sort", "desc" );
+        if (this.sort == "desc")
+          this.setAttribute("sort", "asc");
+        else if (this.sort == "asc")
+          this.setAttribute("sort", "desc");
         else
-          this.setAttribute( "sort", "asc" );
-      } );
+          this.setAttribute("sort", "asc");
+      });
     }
     this._renderGroup();
     this._renderHeading();
@@ -210,29 +210,29 @@ class List extends HTMLElement
 
   _renderGroup()
   {
-    const result = html`<span>Group</span><button @click=${this._addItemsHandler.bind( this )} class="add-item"></button>`;
-    render( result, this.group );
+    const result = html`<span>Group</span><button @click=${this._addItemsHandler.bind(this)} class="add-item"></button>`;
+    render(result, this.group);
   }
 
   _sortItems()
   {
     let sortMethod = null;
-    if ( this.sort == "asc" )
+    if (this.sort == "asc")
     {
-      sortMethod = ( a, b ) =>
+      sortMethod = (a, b) =>
       {
-        return a.text.localeCompare( b.text, undefined, {numeric: true} )
+        return a.text.localeCompare(b.text, undefined, {numeric: true})
       }
     }
-    if ( this.sort == "desc" )
+    if (this.sort == "desc")
     {
-      sortMethod = ( a, b ) =>
+      sortMethod = (a, b) =>
       {
-        return b.text.localeCompare( a.text, undefined, {numeric: true} );
+        return b.text.localeCompare(a.text, undefined, {numeric: true});
       }
     }
-    if ( sortMethod )
-      this._data = this._data.sort( sortMethod );
+    if (sortMethod)
+      this._data = this._data.sort(sortMethod);
     return this._data;
   }
 
@@ -240,24 +240,24 @@ class List extends HTMLElement
    * Highlight and focuses a specific item
    * @param {string} rowId Id of if the row to focus
    */
-  selectRow( rowId )
+  selectRow(rowId)
   {
-    const updateSelected = ( items ) =>
+    const updateSelected = (items) =>
     {
-      for ( const item of items )
+      for (const item of items)
       {
-        if ( item.selected )
+        if (item.selected)
           delete item.selected;
-        if ( item.id === rowId )
+        if (item.id === rowId)
           item.selected = true;
-        if ( item.subItems )
-          updateSelected( item.subItems );
+        if (item.subItems)
+          updateSelected(item.subItems);
       }
     };
-    updateSelected( this._data );
+    updateSelected(this._data);
     this._render();
     this._focusSelected();
-    this.dispatchEvent( new CustomEvent( "select" ) );
+    this.dispatchEvent(new CustomEvent("select"));
   }
 
   /**
@@ -265,11 +265,11 @@ class List extends HTMLElement
    * @param {string} id Row ID
    * @param {boolean} state expansion state (true means expanded)
    */
-  setExpansion( id, state )
+  setExpansion(id, state)
   {
-    this._findItem( "id", id ).expanded = state;
+    this._findItem("id", id).expanded = state;
     this._render();
-    this.dispatchEvent( new CustomEvent( "expand" ) );
+    this.dispatchEvent(new CustomEvent("expand"));
   }
 
   /**
@@ -277,9 +277,9 @@ class List extends HTMLElement
    * @param {string} id Row ID
    * @return {string} row's textContent
    */
-  _getRowContent( id )
+  _getRowContent(id)
   {
-    const rowElement = this.container.querySelector( `[data-id="${id}"] .row` );
+    const rowElement = this.container.querySelector(`[data-id="${id}"] .row`);
     return rowElement ? rowElement.textContent : "";
   }
 
@@ -288,10 +288,10 @@ class List extends HTMLElement
    */
   saveEditables()
   {
-    while ( this._findItem( "editable", true ) )
+    while (this._findItem("editable", true))
     {
-      const item = this._findItem( "editable", true );
-      item.text = this._getRowContent( item.id );
+      const item = this._findItem("editable", true);
+      item.text = this._getRowContent(item.id);
       item.editable = false;
     }
     this._render();
@@ -302,11 +302,11 @@ class List extends HTMLElement
    * @param {string} id Row ID
    * @param {boolean} state editable state (true means editable)
    */
-  setEditable( id, state )
+  setEditable(id, state)
   {
-    this._findItem( "id", id ).editable = state;
+    this._findItem("id", id).editable = state;
     this._render();
-    this.selectRow( id );
+    this.selectRow(id);
   }
 
   /**
@@ -315,21 +315,21 @@ class List extends HTMLElement
   selectNextRow()
   {
     const item = this.getSelectedItem();
-    const [index, parentIndex] = this.getIndex( item.id );
-    if ( parentIndex >= 0 )
+    const [index, parentIndex] = this.getIndex(item.id);
+    if (parentIndex >= 0)
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index + 1] ||
         this._data[parentIndex + 1] ||
         this._data[0];
-      this.selectRow( itemToSelect.id );
+      this.selectRow(itemToSelect.id);
     }
     else
     {
       let itemToSelect = this._data[index + 1] || this._data[0];
-      if ( item.subItems && item.expanded )
+      if (item.subItems && item.expanded)
         itemToSelect = item.subItems[0];
-      this.selectRow( itemToSelect.id );
+      this.selectRow(itemToSelect.id);
     }
   }
 
@@ -339,36 +339,36 @@ class List extends HTMLElement
   selectPreviousRow()
   {
     const item = this.getSelectedItem();
-    const [index, parentIndex] = this.getIndex( item.id );
-    if ( parentIndex >= 0 )
+    const [index, parentIndex] = this.getIndex(item.id);
+    if (parentIndex >= 0)
     {
       const items = this._data[parentIndex].subItems;
       const itemToSelect = items[index - 1] ||
         this._data[parentIndex] ||
         this._data[this._data.length - 1];
-      this.selectRow( itemToSelect.id );
+      this.selectRow(itemToSelect.id);
     }
     else
     {
       const previousItem = this._data[index - 1];
       let itemToSelect = this._data[index - 1] || this._data[this._data.length - 1];
-      if ( previousItem && previousItem.subItems && previousItem.expanded )
+      if (previousItem && previousItem.subItems && previousItem.expanded)
         itemToSelect = previousItem.subItems[previousItem.subItems.length - 1];
-      this.selectRow( itemToSelect.id );
+      this.selectRow(itemToSelect.id);
     }
   }
 
-  _findItem( property, value, parent )
+  _findItem(property, value, parent)
   {
-    const search = ( items, parentItem ) =>
+    const search = (items, parentItem) =>
     {
-      for ( const item of items )
+      for (const item of items)
       {
-        if ( item[property] && item[property] === value )
+        if (item[property] && item[property] === value)
         {
-          if ( parent )
+          if (parent)
           {
-            if ( parentItem )
+            if (parentItem)
               return parentItem;
             else
               return false;
@@ -376,16 +376,16 @@ class List extends HTMLElement
           else
             return item
         }
-        if ( item.subItems )
+        if (item.subItems)
         {
-          const found = search( item.subItems, item );
-          if ( found )
+          const found = search(item.subItems, item);
+          if (found)
             return found;
         }
       }
       return false;
     };
-    return search( this._data );
+    return search(this._data);
   }
 
   /**
@@ -393,10 +393,10 @@ class List extends HTMLElement
    * @param {string} rowId Row id
    * @return {object}
    */
-  getItem( rowId )
+  getItem(rowId)
   {
-    const item = this._findItem( "id", rowId );
-    return item ? JSON.parse( JSON.stringify( item ) ) : false;
+    const item = this._findItem("id", rowId);
+    return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
   /**
@@ -404,14 +404,14 @@ class List extends HTMLElement
    * @param {string} rowId ID of the row item
    * @return {array} [index, parentIndex]
    */
-  getIndex( rowId )
+  getIndex(rowId)
   {
-    const parent = this._findItem( "id", rowId, true );
-    const item = this._findItem( "id", rowId );
-    if ( parent )
-      return [parent.subItems.indexOf( item ), this._data.indexOf( parent )];
+    const parent = this._findItem("id", rowId, true);
+    const item = this._findItem("id", rowId);
+    if (parent)
+      return [parent.subItems.indexOf(item), this._data.indexOf(parent)];
     else
-      return [this._data.indexOf( item ), -1];
+      return [this._data.indexOf(item), -1];
   }
 
   /**
@@ -420,8 +420,8 @@ class List extends HTMLElement
    */
   getSelectedItem()
   {
-    const item = this._findItem( "selected", true );
-    return item ? JSON.parse( JSON.stringify( item ) ) : false;
+    const item = this._findItem("selected", true);
+    return item ? JSON.parse(JSON.stringify(item)) : false;
   }
 
   /**
@@ -429,27 +429,27 @@ class List extends HTMLElement
    * @param {object} data Row data
    * @param {string} parentOrSubId (optional) Id specifying parent item
    */
-  addRow( data, parentOrSubId )
+  addRow(data, parentOrSubId)
   {
     const items = this.items;
-    const [index, parentIndex] = this.getIndex( parentOrSubId );
-    if ( parentOrSubId )
+    const [index, parentIndex] = this.getIndex(parentOrSubId);
+    if (parentOrSubId)
     {
-      if ( parentIndex != -1 )
+      if (parentIndex != -1)
       {
-        items[parentIndex].subItems.push( data );
+        items[parentIndex].subItems.push(data);
       }
-      else if ( index != -1 )
+      else if (index != -1)
       {
-        if ( !items[index].subItems )
+        if (!items[index].subItems)
           items[index].subItems = [];
-        items[index].subItems.push( data );
+        items[index].subItems.push(data);
       }
       else
         return false;
     }
     else
-      items.push( data );
+      items.push(data);
 
     this.items = items;
   }
@@ -459,10 +459,10 @@ class List extends HTMLElement
    * @param {object} data new item data
    * @param {string} rowId Row id
    */
-  updateRow( data, rowId )
+  updateRow(data, rowId)
   {
-    const item = this._findItem( "id", rowId );
-    for ( const key in data )
+    const item = this._findItem("id", rowId);
+    for (const key in data)
       item[key] = data[key];
     this._render();
   }
@@ -471,20 +471,20 @@ class List extends HTMLElement
    * Deletes a specific row
    * @param {string} rowId Row id
    */
-  deleteRow( rowId )
+  deleteRow(rowId)
   {
-    const [index, parentIndex] = this.getIndex( rowId );
-    if ( index < 0 )
+    const [index, parentIndex] = this.getIndex(rowId);
+    if (index < 0)
       return;
 
     const {id} = this.getSelectedItem();
-    if ( id === rowId )
+    if (id === rowId)
       this.selectPreviousRow();
 
-    if ( parentIndex >= 0 )
-      this._data[parentIndex].subItems.splice( index, 1 );
+    if (parentIndex >= 0)
+      this._data[parentIndex].subItems.splice(index, 1);
     else
-      this._data.splice( index, 1 );
+      this._data.splice(index, 1);
     this._render();
   }
 
@@ -493,10 +493,10 @@ class List extends HTMLElement
    * @param {string}  rowId Row id
    * @return {object} parent item or false
    */
-  getParentItem( rowId )
+  getParentItem(rowId)
   {
-    const [index, parentIndex] = this.getIndex( rowId );
-    if ( parentIndex >= 0 )
+    const [, parentIndex] = this.getIndex(rowId);
+    if (parentIndex >= 0)
       return this.items[parentIndex];
     else
       return false;
@@ -504,15 +504,15 @@ class List extends HTMLElement
 
   _focusSelected()
   {
-    const selectedItem = this.container.querySelector( ".highlight" );
-    if ( selectedItem )
+    const selectedItem = this.container.querySelector(".highlight");
+    if (selectedItem)
       selectedItem.focus();
   }
 
   _renderHeading()
   {
-    this.heading.textContent = this.getAttribute( "heading" );
-    this.subheading.textContent = this.getAttribute( "subheading" );
+    this.heading.textContent = this.getAttribute("heading");
+    this.subheading.textContent = this.getAttribute("subheading");
   }
 
   /**
@@ -520,68 +520,68 @@ class List extends HTMLElement
    * @param {object} item row item object
    * @param {string} tooltip "tooltip" attribute value
    */
-  _getText( item, tooltip )
+  _getText(item, tooltip)
   {
-    if ( !tooltip || !item )
+    if (!tooltip || !item)
     {
       return "";
     }
-    if ( tooltip.includes( "." ) )
+    if (tooltip.includes("."))
     {
-      return tooltip.split( "." ).reduce( ( acc, prop ) => acc[prop] || "", item );
+      return tooltip.split(".").reduce((acc, prop) => acc[prop] || "", item);
     }
-    else if ( tooltip.includes( "$" ) )
+    else if (tooltip.includes("$"))
     {
-      return tooltip.split( "$" ).reduce( ( acc, prop, index, {length} ) =>
+      return tooltip.split("$").reduce((acc, prop, index, {length}) =>
       {
-        if ( index - 1 === length )
-          return acc[parseInt( prop, 10 )] || "";
+        if (index - 1 === length)
+          return acc[parseInt(prop, 10)] || "";
         else
           return acc[prop] || "";
-      }, item );
+      }, item);
     }
     return item[tooltip] || "";
   }
 
-  showTooltip( {target} )
+  showTooltip({target})
   {
-    const itemId = target.closest( "li" ).dataset.id;
-    const item = this.getItem( itemId );
-    const infoText = this._getText( item, this.tooltipText );
-    if ( infoText )
+    const itemId = target.closest("li").dataset.id;
+    const item = this.getItem(itemId);
+    const infoText = this._getText(item, this.tooltipText);
+    if (infoText)
     {
       // On first tooltip render when cba-list is placed inside of flexbox the
       // tooltip location is calculated wrongly, recalculation fixes that.
-      if ( !this.tooltip.querySelector( "p" ) )
-        this._renderTooltip( target, item );
-      this._renderTooltip( target, item );
+      if (!this.tooltip.querySelector("p"))
+        this._renderTooltip(target, item);
+      this._renderTooltip(target, item);
     }
   }
 
-  _renderTooltip( infoElem, item )
+  _renderTooltip(infoElem, item)
   {
-    const infoText = this._getText( item, this.tooltipText );
-    const infoLink = this._getText( item, this.tooltipLink );
-    const infoLinkText = this._getText( item, this.tooltipLinkText ) ||
+    const infoText = this._getText(item, this.tooltipText);
+    const infoLink = this._getText(item, this.tooltipLink);
+    const infoLinkText = this._getText(item, this.tooltipLinkText) ||
       this.tooltipLinkTextDefault;
     const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
-    render( html`<p>${infoText}</p>${subitems}`, this.tooltip );
+    render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
     const infoRect = infoElem.getBoundingClientRect();
     const tooltipRect = this.tooltip.getBoundingClientRect();
-    this.style.setProperty( "--tooltip-offset-y", `${infoRect.top}px` );
-    this.style.setProperty( "--tooltip-offset-x", `${tooltipRect.width}px` );
-    this.tooltip.classList.add( "visible" );
+    this.style.setProperty("--tooltip-offset-y", `${infoRect.top}px`);
+    this.style.setProperty("--tooltip-offset-x", `${tooltipRect.width}px`);
+    this.tooltip.classList.add("visible");
   }
 
   hideTooltip()
   {
-    this.tooltip.classList.remove( "visible" )
+    this.tooltip.classList.remove("visible")
   }
 
-  _addSubitemsHandler( {target} )
+  _addSubitemsHandler({target})
   {
-    const {id} = target.closest( "[data-id]" ).dataset;
-    this.dispatchEvent( new CustomEvent( "addSubitem", {detail: {id}} ) )
+    const {id} = target.closest("[data-id]").dataset;
+    this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
   }
 
 
@@ -592,23 +592,23 @@ class List extends HTMLElement
   _render()
   {
     this.container.dataset.subitems = this.hasSubtiems;
-    const createRow = ( item ) =>
+    const createRow = (item) =>
     {
       const {text, selected, editable = false} = item;
       const classes = ["row"];
-      if ( selected )
-        classes.push( "highlight" );
+      if (selected)
+        classes.push("highlight");
       const addSubitemsButton = html`
       <div class="subitem__wrapper">
-        <button class="subitem-btn" @click=${this._addSubitemsHandler.bind( this )}></button>
+        <button class="subitem-btn" @click=${this._addSubitemsHandler.bind(this)}></button>
         <button class="kebab-btn" ></button>
       </div>
       `;
-      const row = html`<div class="${classes.join( " " )}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</div>`;
-      const infoText = this._getText( item, this.tooltipText );
-      if ( infoText )
+      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</div>`;
+      const infoText = this._getText(item, this.tooltipText);
+      if (infoText)
       {
-        const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind( this )}" @mouseleave="${this.hideTooltip.bind( this )}"></span>`;
+        const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}"></span>`;
         return html`${tooltip}${row}`;
       }
       else
@@ -616,33 +616,33 @@ class List extends HTMLElement
         return row;
       }
     }
-    const createList = ( item ) =>
+    const createList = (item) =>
     {
       const {id} = item;
       return html`<li data-id="${id}">
-                      ${createRow( item )}
+                      ${createRow(item)}
                   </li>`;
     }
-    const result = this._data.map( ( row ) =>
+    const result = this._data.map((row) =>
     {
       const {id, subItems, expanded} = row;
-      if ( subItems )
+      if (subItems)
       {
         let subitems = "";
-        if ( expanded )
-          subitems = html`<ul>${row.subItems.map( createList )}</ul>`;
+        if (expanded)
+          subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow( row )}
+                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(row)}
                         ${subitems}
                     </li>`;
       }
       else
       {
-        return createList( row );
+        return createList(row);
       }
-    } );
-    render( result, this.container );
+    });
+    render(result, this.container);
   }
 }
 
-customElements.define( 'cba-list-new', List );
+customElements.define('cba-list-new', List);

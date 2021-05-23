@@ -309,8 +309,6 @@ li
   width: 8px;
   height: 8px;
   content: "";
-  width: 8px;
-  height: 8px;
   background: no-repeat var(--icon-kebab-btn);
 }
 .kebab-btn:hover,
