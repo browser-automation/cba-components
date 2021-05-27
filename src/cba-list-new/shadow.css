@@ -4,7 +4,7 @@
   --hover-secondary: #e4e4e4;
   --color-primary: #222222;
   --color-border: #aaaaaa;
-  --color-selected: #cccccc;
+  --color-selected: #F4F4F4;
   --color-focus: #a1bbbe;
   --column-primary: #f1f1f1;
   --column-secondary: #ededed;
@@ -41,7 +41,7 @@ h2
   border: solid 1px var(--color-border);
   border-left-width: 0;
   border-right-width: 0;
-  font-weight: 300;
+  font-weight: 400;
   padding: 0;
   margin: 0;
   text-align: center;
@@ -55,8 +55,9 @@ h2
 {
   text-decoration: none;
   color: var(--column-tertiary);
-  font-weight: 300;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 11px;
+  line-height: 12.65px;
   display: inline-block;
   position: relative;
 }
@@ -97,8 +98,9 @@ h2
   border: solid 1px var(--color-border);
   border-radius: 5px;
   position: relative;
-  font-weight: 300;
-  font-size: 14px;
+  font-weight: 400;
+  font-size: 11px;
+  /* line-height: 12.65px; */
   flex-flow: column;
   height: 100%;
   display: flex;
@@ -122,11 +124,11 @@ ul
 li .row
 {
   display: block;
-  border: solid 1px var(--color-border);
+  /* border: solid 1px var(--color-border); */
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
-  font-weight: 300;
+  font-weight: 400;
   padding-left: 5px;
   overflow: hidden;
 }
@@ -139,22 +141,24 @@ li .row:not([contenteditable="true"])
 
 li .row:not(.highlight):hover
 {
-  background: linear-gradient(var(--hover-primary) 0%,
+  /* background-color:  var(--color-selected); */
+  
+  /* linear-gradient(var(--hover-primary) 0%,
               var(--hover-primary) 50%,
               var(--hover-secondary) 50%,
-              var(--hover-secondary) 100%);
+              var(--hover-secondary) 100%); */
   cursor: pointer;
 }
 
 ul li
 {
-  cursor: default;
+  /* cursor: default; */
   position: relative;
 }
 
 li > .row.highlight
 {
-  background-color: var(--color-selected);
+  /* background-color: var(--color-selected); */
   cursor: pointer;
 }
 
@@ -215,22 +219,21 @@ span.row
 /* Alex */
 #group
 {
-  padding-left: 20px;
+  padding-left: 8px;
   padding-right: 22px;
-  border-bottom: 1px solid #bbbbbb;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
   position: relative;
-  height: 20px;
+  height: 21px;
 }
 
 .add-item
 {
-  margin-left: 15px;
-  width: 15px;
-  height: 15px;
+  width: 13px;
+  height: 12px;
   display: inline-block;
   background: no-repeat var(--icon-group-btn);
 }
@@ -255,19 +258,18 @@ cursor: pointer;
   left: 0;
   right: 0;
   bottom: 0;
-  margin-right: 5px;
-  margin-left: 20px;
-  cursor: default;
+  margin-left: 22px;
+  /* cursor: default; */
   height: 20px;
 }
 li
 {
-  cursor: default ;
+  /* cursor: default ; */
 }
 
 .subitem-btn
 {
-  margin-right: 5px;
+  margin-right: 8px;
   opacity: 0;
   width: 15px;
   height: 15px;
@@ -294,7 +296,7 @@ li
 {
   opacity: 0;
   width: 8px;
-  height: 8px;
+  height: 12px;
   background: no-repeat var(--icon-kebab-btn);
 }
 .kebab-btn:after
@@ -321,13 +323,19 @@ cursor: pointer;
 }
 div.row
 {
-  height: 20px;
-  cursor: default !important;
+  height: 21px;
+  line-height: 185%;
+  /* cursor: default !important; */
+}
+ li ul li > div:hover
+{
+  background-color:  var(--color-selected); 
 }
 
 /* Alex */
 li > button
 {
+  top: 1px;
   background: transparent;
   padding: 0;
   margin: 0;

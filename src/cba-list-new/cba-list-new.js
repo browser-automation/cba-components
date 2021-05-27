@@ -207,7 +207,7 @@ class List extends HTMLElement
 
   _renderGroup()
   {
-    const result = html`<span>Group</span><button @click=${this._addItemsHandler.bind(this)} class="add-item"></button>`;
+    const result = html`<span>group</span><button @click=${this._addItemsHandler.bind(this)} class="add-item"></button>`;
     render(result, this.group);
   }
 
