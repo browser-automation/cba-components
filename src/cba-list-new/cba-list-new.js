@@ -22,10 +22,10 @@ class List extends HTMLElement
     this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <div id="container">
-      <h2></h2>
-      <h3 id="column"><a href="#"></a></h3>
+      <h1></h1>
+      <p id="column"><a href="#"></a></p>
       <div id="list-body">
-        <div id="group"></div>
+        <p id="group"></p>
         <ul></ul>
       </div>
       <div id="tooltip"></div>
@@ -596,12 +596,12 @@ class List extends HTMLElement
       if (selected)
         classes.push("highlight");
       const addSubitemsButton = html`
-      <div class="subitem__wrapper">
+      <div class="control">
         <button class="subitem-btn" @click=${this._addSubitemsHandler.bind(this)}></button>
         <button class="kebab-btn" ></button>
       </div>
       `;
-      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</div>`;
+      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</span>`;
       const infoText = this._getText(item, this.tooltipText);
       if (infoText)
       {

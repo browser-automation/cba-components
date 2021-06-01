@@ -100,7 +100,6 @@ h2
   position: relative;
   font-weight: 400;
   font-size: 11px;
-  /* line-height: 12.65px; */
   flex-flow: column;
   height: 100%;
   display: flex;
@@ -124,7 +123,6 @@ ul
 li .row
 {
   display: block;
-  /* border: solid 1px var(--color-border); */
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
@@ -141,24 +139,16 @@ li .row:not([contenteditable="true"])
 
 li .row:not(.highlight):hover
 {
-  /* background-color:  var(--color-selected); */
-  
-  /* linear-gradient(var(--hover-primary) 0%,
-              var(--hover-primary) 50%,
-              var(--hover-secondary) 50%,
-              var(--hover-secondary) 100%); */
   cursor: pointer;
 }
 
 ul li
 {
-  /* cursor: default; */
   position: relative;
 }
 
 li > .row.highlight
 {
-  /* background-color: var(--color-selected); */
   cursor: pointer;
 }
 
@@ -216,7 +206,6 @@ span.row
   height: 20px;
 }
 
-/* Alex */
 #group
 {
   padding-left: 8px;
@@ -248,8 +237,9 @@ span.row
 {
 cursor: pointer;
 }
-.subitem__wrapper
+.control
 {
+  padding-top: 2px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -259,16 +249,12 @@ cursor: pointer;
   right: 0;
   bottom: 0;
   margin-left: 22px;
-  /* cursor: default; */
   height: 20px;
-}
-li
-{
-  /* cursor: default ; */
 }
 
 .subitem-btn
 {
+  margin-top: 3px;
   margin-right: 8px;
   opacity: 0;
   width: 15px;
@@ -283,11 +269,11 @@ li
   height: 8px;
   background: no-repeat var(--icon-subitem-btn);
 }
-.subitem__wrapper:hover .subitem-btn
+.control:hover .subitem-btn
 {
   opacity: 1;
 }
-.subitem__wrapper:hover .kebab-btn
+.control:hover .kebab-btn
 {
   opacity: 1;
 }
@@ -312,12 +298,11 @@ li
 {
 cursor: pointer;
 }
-
-.subitem__wrapper:active .subitem-btn-kebab
+.control:active .subitem-btn-kebab
 {
   opacity: 1;
 }
-.subitem__wrapper:hover .subitem-btn-kebab
+.control:hover .subitem-btn-kebab
 {
   opacity: 1;
 }
@@ -325,17 +310,24 @@ div.row
 {
   height: 21px;
   line-height: 185%;
-  /* cursor: default !important; */
 }
- li ul li > div:hover
+span.row
+{
+  display: block;
+  padding-top: 5px;
+  height: 19px;
+}
+li > span:hover
 {
   background-color:  var(--color-selected); 
 }
-
-/* Alex */
+li > span:active
+{
+  background-color:  var(--column-secondary); 
+}
 li > button
 {
-  top: 1px;
+  top: 3px;
   background: transparent;
   padding: 0;
   margin: 0;
