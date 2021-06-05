@@ -31,46 +31,9 @@ h2
   color: var(--color-primary);
   margin: 0;
   font-size: 11px;
-  padding: 3px;
   background: linear-gradient(#dedede, #cecece);
   z-index: 20;
 }
-
-#column
-{
-  border: solid 1px var(--color-border);
-  border-left-width: 0;
-  border-right-width: 0;
-  font-weight: 400;
-  padding: 0;
-  margin: 0;
-  text-align: center;
-  background: linear-gradient(var(--column-primary) 0%,
-              var(--column-primary) 50%,
-              var(--column-secondary) 50%,
-              var(--column-secondary) 100%);
-}
-
-#column a
-{
-  text-decoration: none;
-  color: var(--column-tertiary);
-  font-weight: 400;
-  font-size: 11px;
-  line-height: 12.65px;
-  display: inline-block;
-  position: relative;
-}
-
-:host([sort]) #column:hover
-{
-  background: linear-gradient(var(--hover-primary) 0%,
-                              var(--hover-primary) 50%,
-                              var(--hover-secondary) 50%,
-                              var(--hover-secondary) 100%);
-  cursor: pointer;
-}
-
 :host([sort]) #column a:after
 {
   content: "";
@@ -181,11 +144,6 @@ li .hasInfo::after
   padding-left: 15px;
 }
 
-[data-subitems="true"] li .row
-{
-  padding-left: 20px;
-}
-
 [data-subitems="true"] li li .row
 {
   padding-left: 20px;
@@ -201,22 +159,17 @@ li .hasInfo::after
   margin-bottom: 1px;
   background: no-repeat var(--icon-project);
 }
-span.row
-{
-  height: 20px;
-}
 
 #group
 {
   padding-left: 8px;
-  padding-right: 22px;
+  padding-right: 41px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  position: relative;
-  height: 21px;
+  position: sticky;
 }
 
 .add-item
@@ -239,7 +192,7 @@ cursor: pointer;
 }
 .control
 {
-  padding-top: 2px;
+  padding-top: 3px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -249,12 +202,10 @@ cursor: pointer;
   right: 0;
   bottom: 0;
   margin-left: 22px;
-  height: 20px;
 }
 
 .subitem-btn
 {
-  margin-top: 3px;
   margin-right: 8px;
   opacity: 0;
   width: 15px;
@@ -298,40 +249,35 @@ cursor: pointer;
 {
 cursor: pointer;
 }
-.control:active .subitem-btn-kebab
-{
-  opacity: 1;
-}
 .control:hover .subitem-btn-kebab
 {
   opacity: 1;
 }
-div.row
+li > div.row
 {
-  height: 21px;
-  line-height: 185%;
+  display: flex ;
+  align-items: center;
+  padding: 8px 0 8px 20px;
 }
-span.row
-{
-  display: block;
-  padding-top: 5px;
-  height: 19px;
-}
-li > span:hover
+li > div:hover
 {
   background-color:  var(--color-selected); 
 }
-li > span:active
+li > div:active
 {
   background-color:  var(--column-secondary); 
 }
 li > button
 {
-  top: 3px;
+  top: 4%;
+  transform-origin: 45% 55%;
+  flex-direction: column;
   background: transparent;
   padding: 0;
   margin: 0;
   position: absolute;
+  top: 10%;
+  left: 5px;
   width: 18px;
   height: calc(1em + 4px);
   cursor: pointer;

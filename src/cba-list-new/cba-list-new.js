@@ -22,10 +22,8 @@ class List extends HTMLElement
     this.attachShadow({mode: "open"});
     this.shadowRoot.innerHTML = `
     <div id="container">
-      <h1></h1>
-      <p id="column"><a href="#"></a></p>
-      <div id="list-body">
-        <p id="group"></p>
+      <p id="group"></p>
+      <div id="list-body">       
         <ul></ul>
       </div>
       <div id="tooltip"></div>
@@ -132,12 +130,36 @@ class List extends HTMLElement
 
     this.container.addEventListener("click", ({target}) =>
     {
-      if (target.classList.contains("collapsed") || target.classList.contains("expanded"))
+      switch (target.dataseet.action)
       {
-        const item = this.getItem(target.parentElement.dataset.id);
-        this.setExpansion(item.id, !item.expanded);
-        return;
+        case "collapsed":
+          {
+            const item = this.getItem(target.parentElement.dataset.id);
+            this.setExpansion(item.id, !item.expanded);
+            return;
+          }
+        case "exapnded":
+          {
+            const item = this.getItem(target.parentElement.dataset.id);
+            this.setExpansion(item.id, !item.expanded);
+            return;
+          }
+        case "additem":
+          {
+            this.dispatchEvent(new CustomEvent("addItem"))
+          }
+        case "addsubitem":
+          {
+            const {id} = target.closest("[data-id]").dataset;
+            this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
+          }
       }
+      // if (target.classList.contains("collapsed") || target.classList.contains("expanded"))
+      // {
+      //   const item = this.getItem(target.parentElement.dataset.id);
+      //   this.setExpansion(item.id, !item.expanded);
+      //   return;
+      // }
       const row = target.closest(".row");
       if (row)
       {
@@ -207,7 +229,7 @@ class List extends HTMLElement
 
   _renderGroup()
   {
-    const result = html`<span>group</span><button @click=${this._addItemsHandler.bind(this)} class="add-item"></button>`;
+    const result = html`<span>group</span><button class="add-item"></button>`;
     render(result, this.group);
   }
 
@@ -580,9 +602,6 @@ class List extends HTMLElement
     const {id} = target.closest("[data-id]").dataset;
     this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
   }
-
-
-
   /**
    * Render method to be called after each state change
    */
@@ -601,7 +620,7 @@ class List extends HTMLElement
         <button class="kebab-btn" ></button>
       </div>
       `;
-      const row = html`<span class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${text}${addSubitemsButton}</span>`;
+      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}"><span>${text}</span>${addSubitemsButton}</div>`;
       const infoText = this._getText(item, this.tooltipText);
       if (infoText)
       {

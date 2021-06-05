@@ -87,14 +87,14 @@ document.querySelector("#save").addEventListener("click", () =>
   cbaList.saveEditables();
 });
 
-cbaList.addEventListener("addSubitem", (e) =>
+cbaList.addEventListener("addSubitem", ({detail}) =>
 {
   count++;
   const {id} = cbaList.getSelectedItem();
   cbaList.addRow({
     data: `Info${count}`,
     text: `List${count}`
-  }, id);
+  }, detail.id);
 });
 cbaList.addEventListener("addItem", (e) =>
 {
