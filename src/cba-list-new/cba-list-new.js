@@ -33,12 +33,11 @@ class List extends HTMLElement
   }
 
   // add-item
-  _addItemsHandler({target})
-  {
-    // console.log("list");
-    // Addrow
-    this.dispatchEvent(new CustomEvent("addItem"))
-  }
+
+  // _addItemsHandler({target})
+  // {
+  //   this.dispatchEvent(new CustomEvent("addItem"))
+  // }
 
 
   /**
@@ -130,25 +129,19 @@ class List extends HTMLElement
 
     this.container.addEventListener("click", ({target}) =>
     {
-      switch (target.dataseet.action)
+      switch (target.dataset.action)
       {
-        case "collapsed":
+        case "toggleExpantion":
           {
             const item = this.getItem(target.parentElement.dataset.id);
             this.setExpansion(item.id, !item.expanded);
             return;
           }
-        case "exapnded":
-          {
-            const item = this.getItem(target.parentElement.dataset.id);
-            this.setExpansion(item.id, !item.expanded);
-            return;
-          }
-        case "additem":
+        case "addItem":
           {
             this.dispatchEvent(new CustomEvent("addItem"))
           }
-        case "addsubitem":
+        case "addSubitem":
           {
             const {id} = target.closest("[data-id]").dataset;
             this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
@@ -229,7 +222,7 @@ class List extends HTMLElement
 
   _renderGroup()
   {
-    const result = html`<span>group</span><button class="add-item"></button>`;
+    const result = html`<span>group</span><button class="add-item" data-action="addItem"></button>`;
     render(result, this.group);
   }
 
@@ -597,11 +590,12 @@ class List extends HTMLElement
     this.tooltip.classList.remove("visible")
   }
 
-  _addSubitemsHandler({target})
-  {
-    const {id} = target.closest("[data-id]").dataset;
-    this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
-  }
+  // _addSubitemsHandler({target})
+  // {
+  //   const {id} = target.closest("[data-id]").dataset;
+  //   this.dispatchEvent(new CustomEvent("addSubitem", {detail: {id}}))
+  // }
+
   /**
    * Render method to be called after each state change
    */
@@ -616,7 +610,7 @@ class List extends HTMLElement
         classes.push("highlight");
       const addSubitemsButton = html`
       <div class="control">
-        <button class="subitem-btn" @click=${this._addSubitemsHandler.bind(this)}></button>
+        <button class="subitem-btn" data-action="addSubitem"></button>
         <button class="kebab-btn" ></button>
       </div>
       `;
@@ -648,7 +642,7 @@ class List extends HTMLElement
         if (expanded)
           subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}"></button>${createRow(row)}
+                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}" data-action="toggleExpantion"></button>${createRow(row)}
                         ${subitems}
                     </li>`;
       }

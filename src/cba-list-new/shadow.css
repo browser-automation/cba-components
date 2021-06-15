@@ -103,6 +103,7 @@ li .row:not([contenteditable="true"])
 li .row:not(.highlight):hover
 {
   cursor: pointer;
+  background-color:  var(--hover-secondary); 
 }
 
 ul li
@@ -113,6 +114,7 @@ ul li
 li > .row.highlight
 {
   cursor: pointer;
+  background-color:  var(--hover-secondary); 
 }
 
 li li .row
@@ -163,7 +165,7 @@ li .hasInfo::after
 #group
 {
   padding-left: 8px;
-  padding-right: 41px;
+  padding-right: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   display: flex;
   justify-content: space-between;
@@ -192,16 +194,10 @@ cursor: pointer;
 }
 .control
 {
-  padding-top: 3px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin-left: 22px;
+  flex: 0 1 content;
 }
 
 .subitem-btn
@@ -220,11 +216,19 @@ cursor: pointer;
   height: 8px;
   background: no-repeat var(--icon-subitem-btn);
 }
-.control:hover .subitem-btn
+div.row
+{
+  justify-content: space-between;
+}
+div.row span
+{
+  flex: 1 1 content;
+}
+div.row:hover .subitem-btn
 {
   opacity: 1;
 }
-.control:hover .kebab-btn
+div.row:hover .kebab-btn
 {
   opacity: 1;
 }
