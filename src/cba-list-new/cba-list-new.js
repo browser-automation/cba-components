@@ -600,9 +600,62 @@ class List extends HTMLElement
    * Render method to be called after each state change
    */
   _render()
+  // {
+  //   this.container.dataset.subitems = this.hasSubtiems;
+  //   const createRow = (item) =>
+  //   {
+  //     const {text, selected, editable = false} = item;
+  //     const classes = ["row"];
+  //     if (selected)
+  //       classes.push("highlight");
+  //     const addSubitemsButton = html`
+  //     <div class="control">
+  //       <button class="subitem-btn" data-action="addSubitem"></button>
+  //       <button class="kebab-btn" ></button>
+  //     </div>
+  //     `;
+  //     const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}"><span>${text}</span>${addSubitemsButton}</div>`;
+  //     const infoText = this._getText(item, this.tooltipText);
+  //     if (infoText)
+  //     {
+  //       const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}"></span>`;
+  //       return html`${tooltip}${row}`;
+  //     }
+  //     else
+  //     {
+  //       return row;
+  //     }
+  //   }
+  //   const createList = (item) =>
+  //   {
+  //     const {id} = item;
+  //     return html`<li data-id="${id}">
+  //                     ${createRow(item)}
+  //                 </li>`;
+  //   }
+  //   const result = this._data.map((row) =>
+  //   {
+  //     const {id, subItems, expanded} = row;
+  //     if (subItems)
+  //     {
+  //       let subitems = "";
+  //       if (expanded)
+  //         subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
+  //       return html`<li data-id="${id}">
+  //                       <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}" data-action="toggleExpantion"></button>${createRow(row)}
+  //                       ${subitems}
+  //                   </li>`;
+  //     }
+  //     else
+  //     {
+  //       return createList(row);
+  //     }
+  //   });
+  //   render(result, this.container);
+  // }
   {
     this.container.dataset.subitems = this.hasSubtiems;
-    const createRow = (item) =>
+    const createRow = (item, hasSubItems, expanded) =>
     {
       const {text, selected, editable = false} = item;
       const classes = ["row"];
@@ -614,17 +667,14 @@ class List extends HTMLElement
         <button class="kebab-btn" ></button>
       </div>
       `;
-      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}"><span>${text}</span>${addSubitemsButton}</div>`;
-      const infoText = this._getText(item, this.tooltipText);
-      if (infoText)
+      const textAndControls = html`<span>${text}</span>${addSubitemsButton}`;
+      let expansionButton = "";
+      if (hasSubItems)
       {
-        const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}"></span>`;
-        return html`${tooltip}${row}`;
+        expansionButton = html`<button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}" data-action="toggleExpantion"></button>`;
       }
-      else
-      {
-        return row;
-      }
+      const row = html`<div class="${classes.join(" ")}" tabindex="${selected ? 0 : -1}" draggable="${this.drag}" contenteditable="${editable}" title="${text}">${hasSubItems ? expansionButton : ""}${textAndControls}</div>`;
+      return row;
     }
     const createList = (item) =>
     {
@@ -640,9 +690,10 @@ class List extends HTMLElement
       {
         let subitems = "";
         if (expanded)
+        console.log(expanded);
           subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
-                        <button tabindex="-1" class="${expanded ? "expanded" : "collapsed"}" data-action="toggleExpantion"></button>${createRow(row)}
+                        ${createRow(row, true, expanded)}
                         ${subitems}
                     </li>`;
       }

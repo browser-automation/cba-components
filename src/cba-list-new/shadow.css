@@ -223,6 +223,8 @@ div.row
 div.row span
 {
   flex: 1 1 content;
+  margin-right: auto;
+  padding-left: 15px;
 }
 div.row:hover .subitem-btn
 {
@@ -261,7 +263,7 @@ li > div.row
 {
   display: flex ;
   align-items: center;
-  padding: 8px 0 8px 20px;
+  padding: 8px 5px 8px 5px;
 }
 li > div:hover
 {
@@ -271,43 +273,41 @@ li > div:active
 {
   background-color:  var(--column-secondary); 
 }
-li > button
+div.row > button
 {
-  top: 4%;
+  /* top: 4%; */
   transform-origin: 45% 55%;
-  flex-direction: column;
   background: transparent;
   padding: 0;
   margin: 0;
-  position: absolute;
+  /* position: absolute;
   top: 10%;
-  left: 5px;
+  left: 5px; */
   width: 18px;
-  height: calc(1em + 4px);
   cursor: pointer;
   border: 0px;
 }
 
-li > button::after
+div.row > button::after
 {
   display: inline-block;
   content: "";
   width: 10px;
   height: 5px;
-  vertical-align: middle;
+  /* vertical-align: middle; */
 }
 
-li > button.expanded::after
+div.row > button.expanded::after
 {
   background: var(--icon-group);
 }
 
-li > button.collapsed::after
+div.row > button.collapsed::after
 {
   background: var(--icon-group);
 }
 
-li > button.collapsed
+div.row > button.collapsed
 {
   transform: rotate(270deg);
 }
