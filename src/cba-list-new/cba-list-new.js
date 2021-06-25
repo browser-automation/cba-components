@@ -690,17 +690,17 @@ class List extends HTMLElement
       {
         let subitems = "";
         if (expanded)
-        console.log(expanded);
+        {
           subitems = html`<ul>${row.subItems.map(createList)}</ul>`;
         return html`<li data-id="${id}">
                         ${createRow(row, true, expanded)}
                         ${subitems}
                     </li>`;
-      }
-      else
-      {
-        return createList(row);
-      }
+        }
+        else
+        {
+          return createList(row);
+        }
     });
     render(result, this.container);
   }
