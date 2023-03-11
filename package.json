@@ -8,9 +8,9 @@
   },
   "scripts": {
     "build": "run-s clean webpack",
-    "build:puppeteer": "run-s clean \"webpack -- --puppeteer\"",
-    "build:smoke": "run-s clean \"webpack -- --smoke\"",
-    "build:smoke:watch": "run-s clean \"webpack -- --smoke --watch\"",
+    "build:puppeteer": "PPTR=1 run-s clean webpack",
+    "build:smoke": "SMOKE=1 run-s clean webpack",
+    "build:smoke:watch": "SMOKE=1 WATCH=1 run-s clean webpack",
     "clean": "rm -r dist || true",
     "start": "run-p -r build:smoke:watch \"server -- 3000\"",
     "server": "http-server dist -p",
