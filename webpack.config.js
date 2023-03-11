@@ -42,7 +42,7 @@ module.exports =
 
 if (existsSync(`${srcFolder}/${assetsPath}`))
 {
-  module.exports.plugins.push(new CopyPlugin([{from: `${srcFolder}/${assetsPath}`, to: assetsPath}]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: `${srcFolder}/${assetsPath}`, to: assetsPath}]}));
 }
 if (process.env.COMP)
 {
@@ -50,11 +50,11 @@ if (process.env.COMP)
 }
 if (process.env.SMOKE)
 {
-  module.exports.plugins.push(new CopyPlugin([{from: './tests/smoke', to: "smoke", ignore: ["*.ejs"]}]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/smoke', to: "smoke", ignore: ["*.ejs"]}]}));
 }
 if (process.env.PPTR)
 {
-  module.exports.plugins.push(new CopyPlugin([{flatten: true, from: './tests/puppeteer/index.html', to: 'puppeteer'}]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/puppeteer/index.html', to: 'puppeteer/[name][ext]'}]}));
 }
 if (process.env.WATCH)
 {
