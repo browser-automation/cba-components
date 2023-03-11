@@ -50,7 +50,7 @@ if (process.env.COMP)
 }
 if (process.env.SMOKE)
 {
-  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/smoke', to: "smoke", ignore: ["*.ejs"]}]}));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/smoke', to: "smoke", globOptions: {ignore: ["*.ejs"]}}]}));
 }
 if (process.env.PPTR)
 {
