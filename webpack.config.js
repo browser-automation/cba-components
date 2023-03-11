@@ -42,21 +42,21 @@ module.exports =
 
 if (existsSync(`${srcFolder}/${assetsPath}`))
 {
-  module.exports.plugins.push(new CopyPlugin([{ from: `${srcFolder}/${assetsPath}`, to: assetsPath }]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: `${srcFolder}/${assetsPath}`, to: assetsPath}]}));
 }
-if (argv.comp)
+if (process.env.COMP)
 {
-  components = argv.comp;
+  components = [process.env.COMP];
 }
-if (argv.smoke)
+if (process.env.SMOKE)
 {
-  module.exports.plugins.push(new CopyPlugin([{from: './tests/smoke', to: "smoke", ignore: ["*.ejs"]}]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/smoke', to: "smoke", globOptions: {ignore: ["*.ejs"]}}]}));
 }
-if (argv.puppeteer)
+if (process.env.PPTR)
 {
-  module.exports.plugins.push(new CopyPlugin([{flatten: true, from: './tests/puppeteer/index.html', to: 'puppeteer'}]));
+  module.exports.plugins.push(new CopyPlugin({patterns: [{from: './tests/puppeteer/index.html', to: 'puppeteer/[name][ext]'}]}));
 }
-if (argv.watch)
+if (process.env.WATCH)
 {
   module.exports.watch = true;
 }
@@ -67,8 +67,7 @@ if (argv.output)
 // Entry and output
 if (argv["single-bundle"])
 {
-  module.exports.entry = components.map((component) =>
-                         `${srcFolder}/${component}/${component}.js`);
+  module.exports.entry = components.map((component) => `${srcFolder}/${component}/${component}.js`);
   module.exports.output.filename = singleBundle;
 }
 else

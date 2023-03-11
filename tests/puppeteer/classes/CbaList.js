@@ -74,13 +74,13 @@ class CbaList extends Common
   async getTooltipLink()
   {
     const shadowRoot = await this._getTooltipHandle();
-    const handle = await shadowRoot.$("#tooltip a");
+    const handle = await shadowRoot.$("a");
     return this._getAttribute(handle, "href");
   }
   async getTooltipLinkText()
   {
     const shadowRoot = await this._getTooltipHandle();
-    const handle = await shadowRoot.$("#tooltip a");
+    const handle = await shadowRoot.$("a");
     return await (await handle.getProperty("textContent")).jsonValue();
   }
   async clickItem(id)
