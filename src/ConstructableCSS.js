@@ -7,7 +7,7 @@ class ConstructableCSS
 {
   /**
    * Initialize CSSStyleSheet element
-   * @param {String} css Style Sheet string
+   * @param {string} css Style Sheet string
    */
   constructor(css)
   {
@@ -26,8 +26,7 @@ class ConstructableCSS
   }
   /**
    * Import styles into Shadow DOM
-   * @param shadowRoot Shadow DOM root
-   * @param sheet      StyleSheet to be used for loading into shadowDom
+   * @param {ShadowRoot} shadowRoot - Shadow DOM root
    */
   load(shadowRoot)
   {

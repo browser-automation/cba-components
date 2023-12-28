@@ -35,7 +35,7 @@ class List extends HTMLElement
 
   /**
    * Populate and render items ensuring the ids and sorting
-   * @param {array} rowItems Items, item contains of: {id, data, text}
+   * @param {Array} rowItems Items, item contains of: {id, data, text}
    */
   set items(rowItems)
   {
@@ -65,7 +65,7 @@ class List extends HTMLElement
 
   /**
    * Get Items
-   * @return {array}
+   * @returns {Array}
    */
   get items()
   {
@@ -79,9 +79,9 @@ class List extends HTMLElement
 
   /**
    * Called each time an attribute on the custom element is changed
-   * @param {String} name attribute name
-   * @param {String} oldValue Old value of the attribute
-   * @param {String} newValue New value of the attribute
+   * @param {string} name attribute name
+   * @param {string} oldValue Old value of the attribute
+   * @param {string} newValue New value of the attribute
    */
   attributeChangedCallback(name, oldValue, newValue)
   {
@@ -254,7 +254,7 @@ class List extends HTMLElement
   /**
    * Get textContent of the row element
    * @param {string} id Row ID
-   * @return {string} row's textContent
+   * @returns {string} row's textContent
    */
   _getRowContent(id)
   {
@@ -370,7 +370,7 @@ class List extends HTMLElement
   /**
    * Get a specific row record
    * @param {string} rowId Row id
-   * @return {object}
+   * @returns {object}
    */
   getItem(rowId)
   {
@@ -381,7 +381,7 @@ class List extends HTMLElement
   /**
    * Get index and parentIndex for a row item.
    * @param {string} rowId ID of the row item
-   * @return {array} [index, parentIndex]
+   * @returns {Array} [index, parentIndex]
    */
   getIndex(rowId)
   {
@@ -395,7 +395,7 @@ class List extends HTMLElement
 
   /**
    * Gets selected row record
-   * @return {object}
+   * @returns {object}
    */
   getSelectedItem()
   {
@@ -470,7 +470,7 @@ class List extends HTMLElement
   /**
    * Gets parent item if target has one
    * @param {string}  rowId Row id
-   * @return {object} parent item or false
+   * @returns {object} parent item or false
    */
   getParentItem(rowId)
   {
