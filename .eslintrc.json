@@ -1,5 +1,5 @@
 {
-  "extends": "eslint:recommended",
+  "extends": ["eslint:recommended", "plugin:jsdoc/recommended-error"],
   "ignorePatterns": ["tests/smoke/res"],
   "env": {
     "es6": true,
@@ -11,6 +11,7 @@
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
+  "plugins": ["jsdoc"],
   "rules": {
     "brace-style": ["error", "allman"],
     "eol-last": ["error", "always"],
@@ -20,6 +21,10 @@
     "no-empty": "off",
     "object-curly-spacing": ["error", "never"],
     "no-console": "error",
-    "space-in-parens": "error"
+    "space-in-parens": "error",
+    "jsdoc/require-jsdoc": "off",
+    "jsdoc/require-returns": "off",
+    "jsdoc/require-returns-description": "off",
+    "jsdoc/require-param-description": "off"
   }
 }

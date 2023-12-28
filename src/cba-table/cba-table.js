@@ -5,12 +5,25 @@ import ConstructableCSS from '../ConstructableCSS';
 
 const constructableCSS = new ConstructableCSS(shadowCSS);
 
-class Table extends HTMLElement
+
+/**
+ * @typedef  {{[key: string]: string}} TableItemTexts
+ */
+
+/**
+ * @typedef  {object} TableItem
+ * @property {string} [id] - unique id of the row.
+ * @property {TableItemTexts} texts - texts for each cell. Key is column name.
+ * @property {any} data - payload.
+ */
+
+export class Table extends HTMLElement
 {
   constructor()
   {
     super();
     this._data = [];
+    /** @type {string[]} */
     this.columns = [];
     this.tableElem = null;
     this.tableBodyElem = null;
@@ -39,7 +52,7 @@ class Table extends HTMLElement
 
   /**
    * Populate and render items ensuring the ids
-   * @param {array} rowItems Items, item contains of: {id, data, text: {data,
+   * @param {Array} rowItems Items, item contains of: {id, data, text: {data,
    *                                                   event, value}}
    */
   set items(rowItems)
@@ -59,7 +72,7 @@ class Table extends HTMLElement
 
   /**
    * Get Items
-   * @return {array}
+   * @returns {Array}
    */
   get items()
   {
@@ -73,9 +86,9 @@ class Table extends HTMLElement
 
   /**
    * Called each time an attribute on the custom element is changed
-   * @param {String} name attribute name
-   * @param {String} oldValue Old value of the attribute
-   * @param {String} newValue New value of the attribute
+   * @param {string} name attribute name
+   * @param {string} oldValue Old value of the attribute
+   * @param {string} newValue New value of the attribute
    */
   attributeChangedCallback(name, oldValue, newValue)
   {
@@ -320,7 +333,7 @@ class Table extends HTMLElement
 
   /**
    * Gets all cba-column elements
-   * @return {array} array of nodes
+   * @returns {Array} array of nodes
    */
   getAllColumns()
   {
@@ -329,8 +342,8 @@ class Table extends HTMLElement
 
   /**
    * Add a new row to the end or after a specific item
-   * @param {object} data   new row data
-   * @param {string} after  (optional) rowId that comes after
+   * @param {TableItem} data - new row data
+   * @param {string} after - (optional) rowId that comes after
    */
   addRow(data, after)
   {
@@ -346,7 +359,7 @@ class Table extends HTMLElement
 
   /**
    * Unshifts a new row to items
-   * @param {object} data  new row data
+   * @param {TableItem} data  new row data
    */
   addFirstRow(data)
   {
@@ -357,7 +370,7 @@ class Table extends HTMLElement
 
   /**
    * Update a specific row
-   * @param {object} data   row data
+   * @param {TableItem} data   row data
    * @param {string} rowId  (optional) if not specified row ID from data is used
    */
   updateRow(data, rowId)
@@ -444,18 +457,18 @@ class Table extends HTMLElement
 
   /**
    * Get a specific row record
-   * @param {string} rowId Row id
-   * @return {object}
+   * @param {string} id - Row id.
+   * @returns {TableItem|false}
    */
   getItem(id)
   {
     const item = this._data.filter(item => item.id === id)[0];
-    return item ? item: false;
+    return item ? item : false;
   }
 
   /**
    * Gets selected row record
-   * @return {object}
+   * @returns {TableItem|false}
    */
   getSelectedItem()
   {
@@ -559,9 +572,9 @@ class Column extends HTMLElement
 
   /**
    * Called each time an attribute on the custom element is changed
-   * @param {String} name attribute name
-   * @param {String} oldValue Old value of the attribute
-   * @param {String} newValue New value of the attribute
+   * @param {string} name attribute name
+   * @param {string} oldValue Old value of the attribute
+   * @param {string} newValue New value of the attribute
    */
   attributeChangedCallback(name, oldValue, newValue)
   {

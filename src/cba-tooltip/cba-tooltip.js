@@ -40,9 +40,9 @@ class List extends HTMLElement
 
   /**
    * Called each time an attribute on the custom element is changed
-   * @param {String} name attribute name
-   * @param {String} oldValue Old value of the attribute
-   * @param {String} newValue New value of the attribute
+   * @param {string} name attribute name
+   * @param {string} oldValue Old value of the attribute
+   * @param {string} newValue New value of the attribute
    */
   attributeChangedCallback(name, oldValue, newValue)
   {
