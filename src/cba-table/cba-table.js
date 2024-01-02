@@ -7,7 +7,13 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
 
 
 /**
- * @typedef  {{[key: string]: string}} TableItemTexts
+ * @typedef {{[key: string]: string}} TableItemTexts
+ */
+
+/**
+ * @typedef  {object} Alert - alert object.
+ * @property {string} [text] - alert text.
+ * @property {"error"} [type] - alert type.
  */
 
 /**
@@ -15,6 +21,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
  * @property {string} [id] - unique id of the row.
  * @property {TableItemTexts} texts - texts for each cell. Key is column name.
  * @property {any} data - payload.
+ * @property {Alert} alert - highlight row.
  */
 
 export class Table extends HTMLElement
@@ -514,14 +521,22 @@ export class Table extends HTMLElement
    */
   _renderBody()
   {
+    /**
+     * @param {TableItem} rowData - row data.
+     */
     const createRow = (rowData) =>
     {
-      const {id, selected} = rowData;
-      const selectedClass = selected ? "highlight" : undefined;
-      return html`<tr data-id="${id}" class=${ifDefined(selectedClass)} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) =>
+      const {id, selected, alert} = rowData;
+      const classes = [];
+      if (selected)
+        classes.push("highlight");
+      if (alert && alert.type === "error")
+        classes.push("alert");
+      const alertText = alert && alert.text ? alert.text : "";
+      return html`<tr data-id="${id}" class=${ifDefined(classes.join(" "))} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) =>
       {
         const text = this._getText(rowData, name);
-        return html`<td data-id="${name}" title="${text}">${text}</td>`;
+        return html`<td data-id="${name}" title="${alertText || text}">${text}</td>`;
       })}</tr>`;
     };
     render(html`${this._data.map(createRow)}`, this.tableBodyElem);

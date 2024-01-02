@@ -2,6 +2,7 @@
 {
   --hover-primary: #eaeaea;
   --hover-secondary: #e4e4e4;
+  --color-alert: #f57777b3;
   --color-primary: #222222;
   --color-border: #aaaaaa;
   --color-selected: #cccccc;
@@ -118,6 +119,11 @@ tbody tr.highlight
   outline: none;
 }
 
+tbody tr.alert
+{
+  background-color: var(--color-alert);
+}
+
 tbody tr
 {
   outline: none;
@@ -129,7 +135,7 @@ tbody tr:focus
   filter: drop-shadow(0 0 4px var(--color-focus));
 }
 
-tbody tr:not(.highlight):hover
+tbody tr:not(.highlight):not(.alert):hover
 {
   background: linear-gradient(var(--hover-primary) 0%,
                               var(--hover-primary) 50%,
