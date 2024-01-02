@@ -1,4 +1,7 @@
 const cbaTable = document.querySelector("cba-table");
+/**
+ * @type {import("../../../src/cba-table/cba-table").TableItem[]}
+ */
 const items = [];
 
 items.push({
@@ -6,6 +9,13 @@ items.push({
   values: [`Please enter a long
   multilne text here`, "Value"],
   type: "Event"
+});
+
+items.push({
+  id: "alert-item",
+  values: ["Alert", "Value alert"],
+  type: "Event alert",
+  alert: {type: "error", text: "This is an alert"},
 });
 
 for (let index = 0; index < 30; index++)
