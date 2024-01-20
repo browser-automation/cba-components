@@ -117,20 +117,21 @@ ul
 
 li .row
 {
-  display: block;
+  display: flex;
+  align-items: center;
   border: solid 1px var(--color-border);
   border-top-width: 0;
   border-left-width: 0;
   border-right-width: 0;
   font-weight: 300;
   padding-left: 5px;
-  overflow: hidden;
 }
 
-li .row:not([contenteditable="true"])
+li .row .text:not([contenteditable="true"])
 {
   white-space: pre;
   text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 li .row:not(.highlight):hover
@@ -142,12 +143,25 @@ li .row:not(.highlight):hover
   cursor: pointer;
 }
 
+li .alert
+{
+  position: absolute;
+  right: 5px;
+  top: 0px;
+  cursor: pointer;
+}
+
+li .alert svg g
+{
+  fill: rgb(255, 131, 131);
+}
+
 ul li
 {
   position: relative;
 }
 
-li > .row.highlight
+li .row.highlight
 {
   background-color: var(--color-selected);
   cursor: pointer;

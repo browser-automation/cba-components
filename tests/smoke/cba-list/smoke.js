@@ -3,7 +3,11 @@ const items = [
   {
     id: "row1",
     data: "Info",
-    text: "List1"
+    text: "List1",
+    alert: {
+      text: "Topmost element Alert text",
+      type: "error"
+    }
   },
   {
     id: "row2",
@@ -16,8 +20,17 @@ const items = [
         text: "Sub List1"
       },
       {
+        id: "subrow2",
         data: "Info",
-        text: "Sub List2"
+        text: "Sub List2",
+        alert: {
+          text: "Subitem Alert text",
+          type: "error"
+        }
+      },
+      {
+        data: "Info",
+        text: "Sub List3"
       }
     ]
   },
