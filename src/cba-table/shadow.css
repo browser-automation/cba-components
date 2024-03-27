@@ -112,16 +112,12 @@ tbody
   position: relative;
 }
 
-tbody tr.highlight
+tbody tr.highlight,
+tbody tr.alert
 {
   background-color: var(--color-selected);
   cursor: pointer;
   outline: none;
-}
-
-tbody tr.alert
-{
-  background-color: var(--color-alert);
 }
 
 tbody tr

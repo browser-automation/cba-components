@@ -85,14 +85,16 @@ class List extends HTMLElement
   _setDirection()
   {
     const clientRect = this.getBoundingClientRect();
-    const viewportWidth = document.documentElement.clientWidth;
-    const viewportHeight = document.documentElement.clientHeight;
+    const hostElement = this.getRootNode().host;
+    const viewportWidth = hostElement ? hostElement.clientWidth :  document.documentElement.clientWidth;
+    const viewportHeight = hostElement ? hostElement.clientHeight : document.documentElement.clientHeight;
+    const distanceTop = hostElement ? clientRect.top - hostElement.getBoundingClientRect().top : clientRect.top;
     const distanceLeft = clientRect.left;
-    const distanceTop = clientRect.top;
+    const clientVerticalCenter = distanceTop + clientRect.height / 2;
+    const viewportVerticalCenter = viewportHeight / 2;
     const distanceRight = viewportWidth - clientRect.right;
-    const distanceBottom = viewportHeight - clientRect.bottom;
     const placementX = distanceLeft - distanceRight > 0 ? "left" : "right";
-    const placementY = distanceTop - distanceBottom > 0 ? "top" : "bottom";
+    const placementY = viewportVerticalCenter > clientVerticalCenter ? "bottom" : "top";
     this.tooltipElem.dataset.tooltip = `${placementX}-${placementY}`;
   }
 
