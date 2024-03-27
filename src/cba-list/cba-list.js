@@ -27,7 +27,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
  * @property {ListSubItem["selected"]} selected - Is the item selected.
  * @property {ListSubItem["editable"]} editable - Is the item editable.
  * @property {ListSubItem[]} subItems - Sub items of the item.
- * @property {Alert} alert - highlight row.
+ * @property {Alert} [alert] - highlight row.
  */
 
 const infoIcon = html`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" viewBox="0 0 487.65 487.65" width="12px" height="12px">
