@@ -70,7 +70,7 @@ export class List extends HTMLElement
 
   /**
    * Populate and render items ensuring the ids and sorting
-   * @param {Array} rowItems Items, item contains of: {id, data, text}
+   * @param {ListItem[]|ListSubItem[]} rowItems Items, item contains of: {id, data, text}
    */
   set items(rowItems)
   {
