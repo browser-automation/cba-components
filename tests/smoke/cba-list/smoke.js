@@ -43,12 +43,29 @@ const items = [
 
 for (let i = 4; i < 20; i++)
 {
-  items.push({
+  const item = {
     id: `row${i}`,
     data: `Info`,
     text: `List${i}`
-  });
+  }
+  if (i === 10)
+  {
+    item.alert = {
+      text: "Middle Alert text",
+      type: "error"
+    }
+  }
+  items.push(item);
 }
+items.push({
+  id: "row20",
+  data: "Info",
+  text: "List20",
+  alert: {
+    text: "Bottom Alert text",
+    type: "error"
+  }
+});
 cbaList.items = items;
 
 const cbaSortableList = document.querySelector("#sortable");
