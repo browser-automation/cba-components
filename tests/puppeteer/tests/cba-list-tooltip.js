@@ -35,8 +35,9 @@ it("cba-list rows with matching data of tooltip-text and tooltip-link attribute 
       id: tooltipRowId,
       data: "Info",
       text: "List3",
-      tooltip: {
-        text: tooltipText,
+      info: {
+        description: "Tooltip text",
+        type: "info",
         link: tooltipLink,
         linkText: tooltipLinkText
       }
@@ -45,9 +46,10 @@ it("cba-list rows with matching data of tooltip-text and tooltip-link attribute 
       id: tooltipNoLinkTextRowId,
       data: "Info",
       text: "List4",
-      tooltip: {
-        text: tooltipText,
-        link: tooltipLink
+      info: {
+        description: "Tooltip text",
+        type: "info",
+        link: tooltipLink,
       }
     },
   ];

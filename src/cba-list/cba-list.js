@@ -556,7 +556,7 @@ export class List extends HTMLElement
   _renderTooltip(infoElem, item)
   {
     const infoText = item.description || "";
-    const subitems = item.link ? html`<a href="${item.link}">${item.linkText}</a>` : "";
+    const subitems = item.link ? html`<a href="${item.link}">${item.linkText || "Learn more"}</a>` : "";
     render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
     const infoRect = infoElem.getBoundingClientRect();
     const offsetTop = (infoRect.top  + infoRect.height / 2) - this.getBoundingClientRect().top - 2;
