@@ -44,7 +44,7 @@ class CbaList extends Common
   async getRowInfoHandle(id)
   {
     const rowHandel = await this.getRowHandle(id);
-    return rowHandel.$(".hasInfo");
+    return rowHandel.$(".info");
   }
   async getTooltipAttribute(attribute)
   {

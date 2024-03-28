@@ -120,6 +120,11 @@ tbody tr.alert
   outline: none;
 }
 
+tbody tr.alert
+{
+  background-color: var(--color-alert);
+}
+
 tbody tr
 {
   outline: none;
