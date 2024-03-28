@@ -5,9 +5,11 @@ import ConstructableCSS from '../ConstructableCSS';
 const constructableCSS = new ConstructableCSS(shadowCSS);
 
 /**
- * @typedef  {object} Alert - alert object.
- * @property {string} [text] - alert text.
- * @property {"error"} [type] - alert type.
+ * @typedef  {object} Info - information tooltip.
+ * @property {string} [description] - tooltip text.
+ * @property {"error" | "info"} [type] - tooltip type.
+ * @property {string} [link] - tooltip link.
+ * @property {string} [linkText] - tooltip link text.
  */
 
 /**
@@ -16,7 +18,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
  * @property {string} text - Text to be displayed.
  * @property {boolean} selected - Is the item selected.
  * @property {boolean} editable - Is the item editable.
- * @property {Alert} alert - highlight row.
+ * @property {Info} [info] - information tooltip.
  */
 
 /**
@@ -27,7 +29,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
  * @property {ListSubItem["selected"]} selected - Is the item selected.
  * @property {ListSubItem["editable"]} editable - Is the item editable.
  * @property {ListSubItem[]} subItems - Sub items of the item.
- * @property {Alert} [alert] - highlight row.
+ * @property {Info} [info] - information tooltip.
  */
 
 const infoIcon = html`<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" viewBox="0 0 487.65 487.65" width="12px" height="12px">
@@ -530,61 +532,49 @@ export class List extends HTMLElement
     this.subheading.textContent = this.getAttribute("subheading");
   }
 
-  /**
-   * Get tooltip text from the item
-   * @param {object} item row item object
-   * @param {string} tooltip "tooltip" attribute value
-   */
-  _getText(item, tooltip)
-  {
-    if (!tooltip || !item)
-    {
-      return "";
-    }
-    if (tooltip.includes("."))
-    {
-      return tooltip.split(".").reduce((acc, prop) => acc[prop] || "" , item);
-    }
-    else if (tooltip.includes("$"))
-    {
-      return tooltip.split("$").reduce((acc, prop, index, {length}) =>
-      {
-        if (index -1 === length)
-          return acc[parseInt(prop, 10)] || "";
-        else
-          return acc[prop] || "";
-      }, item);
-    }
-    return item[tooltip] || "";
-  }
-
   showTooltip({target})
   {
     const itemId =  target.closest("li").dataset.id;
     const item = this.getItem(itemId);
-    const infoText = this._getText(item, this.tooltipText);
-    if (infoText)
+    if (item.info)
     {
+      const isFirstRender = !this.tooltip.querySelector("p");
       // On first tooltip render when cba-list is placed inside of flexbox the
       // tooltip location is calculated wrongly, recalculation fixes that.
-      if (!this.tooltip.querySelector("p"))
-        this._renderTooltip(target, item);
-      this._renderTooltip(target, item);
+      this._renderTooltip(target, item.info);
+      if (isFirstRender)
+      {
+        setTimeout(() => this._renderTooltip(target, item.info), 50);
+      }
     }
   }
 
+  /**
+   * @param {HTMLElement} infoElem info icon wrapper
+   * @param {Info} item row item object
+   */
   _renderTooltip(infoElem, item)
   {
-    const infoText = this._getText(item, this.tooltipText);
-    const infoLink = this._getText(item, this.tooltipLink);
-    const infoLinkText = this._getText(item, this.tooltipLinkText) ||
-                          this.tooltipLinkTextDefault;
-    const subitems = infoLink ? html`<a href="${infoLink}">${infoLinkText}</a>` : "";
+    const infoText = item.description || "";
+    const subitems = item.link ? html`<a href="${item.link}">${item.linkText}</a>` : "";
     render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
     const infoRect = infoElem.getBoundingClientRect();
+    const offsetTop = (infoRect.top  + infoRect.height / 2) - this.getBoundingClientRect().top - 2;
     const tooltipRect = this.tooltip.getBoundingClientRect();
-    this.style.setProperty("--tooltip-offset-y", `${infoRect.top}px`);
-    this.style.setProperty("--tooltip-offset-x", `${tooltipRect.width}px`);
+    const placementX = infoRect.x - tooltipRect.width < 0 ? "right" : "left";
+    this.tooltip.dataset.direction = placementX;
+
+    if (placementX === "right")
+    {
+      const offsetX = infoRect.x + 5;
+      this.style.setProperty("--tooltip-offset-x", `${offsetX}px`);
+    }
+    else
+    {
+      const offsetX = infoRect.width + 5;
+      this.style.setProperty("--tooltip-offset-x", `${offsetX}px`);
+    }
+    this.style.setProperty("--tooltip-offset-y", `${offsetTop}px`);
     this.tooltip.classList.add("visible");
   }
 
@@ -608,22 +598,21 @@ export class List extends HTMLElement
       const classes = ["row"];
       if (selected)
         classes.push("highlight");
-      let alertTmpl = "";
-      if (item.alert)
+      const row = html`<span class="${classes.join(" ")}" draggable="${this.drag}" title="${text}" tabindex="${selected ? 0 : -1}" contenteditable="${editable}" class="text">${text}</span>`;
+      if (item.info)
       {
-        alertTmpl = html`<span class="alert ${item.alert.type}"><cba-tooltip text="${item.alert.text}" arrow="x">${infoIcon}</cba-tooltip></span>`;
+        const infoTypeClassname = item.info.type === "error" ? "alert" : "default";
+        const tooltip = html`<span class="${infoTypeClassname} info" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}">${infoIcon}</span>`;
+        if (item.info.type === "error")
+        {
+          return html`<div class="rowWrapper">${tooltip}${row}</div>`;
+        }
+        else
+        {
+          return html`<div class="rowWrapper">${tooltip}${row}</div>`;
+        }
       }
-      const row = html`<div><span class="${classes.join(" ")}" draggable="${this.drag}" title="${text}" tabindex="${selected ? 0 : -1}" contenteditable="${editable}" class="text">${text}</span>${alertTmpl}</div>`;
-      const infoText = this._getText(item, this.tooltipText);
-      if (infoText)
-      {
-        const tooltip = html`<span class="${infoText ? "hasInfo" : ""}" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}"></span>`;
-        return html`${tooltip}${row}`;
-      }
-      else
-      {
-        return row;
-      }
+      return html`<div class="rowWrapper">${row}</div>`;
     }
     const createList = (item) =>
     {

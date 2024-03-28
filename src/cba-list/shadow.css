@@ -118,11 +118,8 @@ ul
 li .row
 {
   display: flex;
+  flex: 1;
   align-items: center;
-  border: solid 1px var(--color-border);
-  border-top-width: 0;
-  border-left-width: 0;
-  border-right-width: 0;
   font-weight: 300;
   padding-left: 5px;
 }
@@ -143,7 +140,7 @@ li .row:not(.highlight):hover
   cursor: pointer;
 }
 
-li .alert
+li .info
 {
   position: absolute;
   right: 5px;
@@ -151,9 +148,23 @@ li .alert
   cursor: pointer;
 }
 
-li .alert svg g
+.rowWrapper
+{
+  display: flex;
+  border: solid 1px var(--color-border);
+  border-top-width: 0;
+  border-left-width: 0;
+  border-right-width: 0;
+}
+
+li .info.alert svg g
 {
   fill: rgb(255, 131, 131);
+}
+
+li .info.default svg g
+{
+ fill: #999;
 }
 
 ul li
@@ -257,7 +268,7 @@ li > button.collapsed
 {
   --arrow-adjust-x: calc(0px - var(--tooltip-arrow-size) / 2 - var(--tooltip-border-size));
   --arrow-adjust-y: calc(var(--arrow-adjust-x) + var(--tooltip-arrow-size));
-  --tooltip-adjust-x: calc((var(--tooltip-offset-x) * -1) - var(--tooltip-arrow-size));
+  --tooltip-adjust-x: calc(var(--tooltip-offset-x) + var(--tooltip-arrow-size));
   --tooltip-adjust-y: calc(var(--tooltip-offset-y) - var(--tooltip-arrow-size));
 
   border: var(--tooltip-border-size) solid var(--tooltip-border-color);
@@ -266,12 +277,11 @@ li > button.collapsed
   padding: 10px;
   position: absolute;
   max-width: var(--tooltip-max-width);
+  width: 100%;
   visibility: visible;
   opacity: 1;
   transition: visibility 0.3s, opacity 0.3s linear;
   font-size: 1em;
-  top: var(--tooltip-adjust-y);
-  left: var(--tooltip-adjust-x);
   z-index: 21;
 }
 
@@ -286,10 +296,35 @@ li > button.collapsed
   background-color: var(--tooltip-color-background);
   border: var(--tooltip-border-size) solid var(--tooltip-border-color);
   transform: rotate(45deg);
-  top: var(--arrow-adjust-y);
-  right: var(--arrow-adjust-x);
+}
+
+#tooltip:not([data-direction="right"])
+{
+  top: var(--tooltip-adjust-y);
+  right: var(--tooltip-adjust-x);
+}
+
+#tooltip:not([data-direction="right"])::before
+{
   border-bottom-color: transparent;
   border-left-color: transparent;
+  top: var(--arrow-adjust-y);
+  right: var(--arrow-adjust-x);
+}
+
+#tooltip[data-direction="right"]
+{
+  top: var(--tooltip-adjust-y);
+  left: var(--tooltip-adjust-x);
+}
+
+#tooltip[data-direction="right"]:before
+{
+  top: var(--arrow-adjust-y);
+  bottom: var(--arrow-adjust-y);
+  left: var(--arrow-adjust-x);
+  border-right-color: transparent;
+  border-top-color: transparent;
 }
 
 #tooltip:not(.visible):not(:hover)

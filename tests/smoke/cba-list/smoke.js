@@ -4,8 +4,8 @@ const items = [
     id: "row1",
     data: "Info",
     text: "List1",
-    alert: {
-      text: "Topmost element Alert text",
+    info: {
+      description: "Topmost element Alert text",
       type: "error"
     }
   },
@@ -23,8 +23,8 @@ const items = [
         id: "subrow2",
         data: "Info",
         text: "Sub List2",
-        alert: {
-          text: "Subitem Alert text",
+        info: {
+          description: "Subitem Alert text",
           type: "error"
         }
       },
@@ -51,7 +51,7 @@ for (let i = 4; i < 20; i++)
   if (i === 10)
   {
     item.alert = {
-      text: "Middle Alert text",
+      description: "Middle Alert text",
       type: "error"
     }
   }
@@ -61,8 +61,8 @@ items.push({
   id: "row20",
   data: "Info",
   text: "List20",
-  alert: {
-    text: "Bottom Alert text",
+  info: {
+    description: "Bottom Alert text",
     type: "error"
   }
 });
@@ -71,10 +71,13 @@ cbaList.items = items;
 const cbaSortableList = document.querySelector("#sortable");
 cbaSortableList.items = [
   {
-    text: "A longer List1 to test wrap"
+    text: "A longer",
   },
   {
-    text: "List3"
+    text: "List3",
+    info: {
+      description: "Info description to be visible when hovered over the icon."
+    },
   },
   {
     text: "List2"
