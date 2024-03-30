@@ -13,7 +13,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
 /**
  * @typedef  {object} Alert - alert object.
  * @property {string} [text] - alert text.
- * @property {"error"} [type] - alert type.
+ * @property {"error" | "warning"} [type] - alert type.
  */
 
 /**
@@ -530,8 +530,14 @@ export class Table extends HTMLElement
       const classes = [];
       if (selected)
         classes.push("highlight");
-      if (alert && alert.type === "error")
+      if (alert)
+      {
         classes.push("alert");
+        if (alert.type)
+        {
+          classes.push(alert.type);
+        }
+      }
       const alertText = alert && alert.text ? alert.text : "";
       return html`<tr data-id="${id}" class=${ifDefined(classes.join(" "))} draggable="${ifDefined(this.reorder)}" tabindex=${selected ? 0 : -1}>${this.columns.map((name) =>
       {

@@ -3,6 +3,7 @@
   --hover-primary: #eaeaea;
   --hover-secondary: #e4e4e4;
   --color-alert: #f57777b3;
+  --color-warning: #f5f577b3;
   --color-primary: #222222;
   --color-border: #aaaaaa;
   --color-selected: #cccccc;
@@ -120,9 +121,14 @@ tbody tr.alert
   outline: none;
 }
 
-tbody tr.alert
+tbody tr.error
 {
   background-color: var(--color-alert);
+}
+
+tbody tr.warning
+{
+  background-color: var(--color-warning);
 }
 
 tbody tr

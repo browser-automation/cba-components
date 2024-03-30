@@ -7,7 +7,7 @@ const constructableCSS = new ConstructableCSS(shadowCSS);
 /**
  * @typedef  {object} Info - information tooltip.
  * @property {string} [description] - tooltip text.
- * @property {"error" | "info"} [type] - tooltip type.
+ * @property {"error" | "warning" | "info"} [type] - tooltip type.
  * @property {string} [link] - tooltip link.
  * @property {string} [linkText] - tooltip link text.
  */
@@ -556,7 +556,7 @@ export class List extends HTMLElement
   _renderTooltip(infoElem, item)
   {
     const infoText = item.description || "";
-    const subitems = item.link ? html`<a href="${item.link}">${item.linkText || "Learn more"}</a>` : "";
+    const subitems = item.link ? html`<a href="${item.link}" target="_blank">${item.linkText || "Learn more"}</a>` : "";
     render(html`<p>${infoText}</p>${subitems}`, this.tooltip);
     const infoRect = infoElem.getBoundingClientRect();
     const offsetTop = (infoRect.top  + infoRect.height / 2) - this.getBoundingClientRect().top - 2;
@@ -601,8 +601,7 @@ export class List extends HTMLElement
       const row = html`<span class="${classes.join(" ")}" draggable="${this.drag}" title="${text}" tabindex="${selected ? 0 : -1}" contenteditable="${editable}" class="text">${text}</span>`;
       if (item.info)
       {
-        const infoTypeClassname = item.info.type === "error" ? "alert" : "default";
-        const tooltip = html`<span class="${infoTypeClassname} info" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}">${infoIcon}</span>`;
+        const tooltip = html`<span class="${item.info.type || "default"} info" @mouseenter="${this.showTooltip.bind(this)}" @mouseleave="${this.hideTooltip.bind(this)}">${infoIcon}</span>`;
         if (item.info.type === "error")
         {
           return html`<div class="rowWrapper">${tooltip}${row}</div>`;
