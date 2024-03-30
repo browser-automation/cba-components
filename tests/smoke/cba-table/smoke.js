@@ -18,6 +18,13 @@ items.push({
   alert: {type: "error", text: "This is an alert"},
 });
 
+items.push({
+  id: "warning-item",
+  values: ["Warning", "Value warning"],
+  type: "Event warning",
+  alert: {type: "warning", text: "This is a warning"},
+});
+
 for (let index = 0; index < 30; index++)
 {
   items.push({

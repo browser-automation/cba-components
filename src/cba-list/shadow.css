@@ -157,9 +157,14 @@ li .info
   border-right-width: 0;
 }
 
-li .info.alert svg g
+li .info.error svg g
 {
   fill: rgb(255, 131, 131);
+}
+
+li .info.warning svg g
+{
+  fill: rgb(213, 184, 105);
 }
 
 li .info.default svg g

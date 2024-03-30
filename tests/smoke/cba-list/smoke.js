@@ -37,7 +37,11 @@ const items = [
   {
     id: "row3",
     data: "Info",
-    text: "List3"
+    text: "List3",
+    info: {
+      type: "warning",
+      description: "Middle warning text"
+    }
   },
 ];
 
